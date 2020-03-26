@@ -102,6 +102,32 @@ public interface I_AM_MaintenancePattern
 	/** Get AM Maintenance Pattern	  */
 	public int getAM_MaintenancePattern_ID();
 
+    /** Column name AM_PatternType_ID */
+    public static final String COLUMNNAME_AM_PatternType_ID = "AM_PatternType_ID";
+
+	/** Set AM_PatternType ID	  */
+	public void setAM_PatternType_ID (int AM_PatternType_ID);
+
+	/** Get AM_PatternType ID	  */
+	public int getAM_PatternType_ID();
+
+	public org.eam.model.I_AM_PatternType getAM_PatternType() throws RuntimeException;
+
+    /** Column name C_DocType_ID */
+    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
+
+	/** Set Document Type.
+	  * Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID);
+
+	/** Get Document Type.
+	  * Document type or rules
+	  */
+	public int getC_DocType_ID();
+
+	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
+
     /** Column name CalculateCost */
     public static final String COLUMNNAME_CalculateCost = "CalculateCost";
 
@@ -153,6 +179,19 @@ public interface I_AM_MaintenancePattern
 	  */
 	public int getCreatedBy();
 
+    /** Column name DateDoc */
+    public static final String COLUMNNAME_DateDoc = "DateDoc";
+
+	/** Set Document Date.
+	  * Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc);
+
+	/** Get Document Date.
+	  * Date of the Document
+	  */
+	public Timestamp getDateDoc();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -192,6 +231,19 @@ public interface I_AM_MaintenancePattern
 	  */
 	public String getDocStatus();
 
+    /** Column name DocumentNo */
+    public static final String COLUMNNAME_DocumentNo = "DocumentNo";
+
+	/** Set Document No.
+	  * Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo);
+
+	/** Get Document No.
+	  * Document sequence number of the document
+	  */
+	public String getDocumentNo();
+
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -205,6 +257,19 @@ public interface I_AM_MaintenancePattern
 	  */
 	public boolean isActive();
 
+    /** Column name IsApproved */
+    public static final String COLUMNNAME_IsApproved = "IsApproved";
+
+	/** Set Approved.
+	  * Indicates if this document requires approval
+	  */
+	public void setIsApproved (boolean IsApproved);
+
+	/** Get Approved.
+	  * Indicates if this document requires approval
+	  */
+	public boolean isApproved();
+
     /** Column name MaintenanceArea */
     public static final String COLUMNNAME_MaintenanceArea = "MaintenanceArea";
 
@@ -213,15 +278,6 @@ public interface I_AM_MaintenancePattern
 
 	/** Get Maintenance Area	  */
 	public String getMaintenanceArea();
-
-    /** Column name MaintenancePatternType */
-    public static final String COLUMNNAME_MaintenancePatternType = "MaintenancePatternType";
-
-	/** Set Maintenance Pattern Type	  */
-	public void setMaintenancePatternType (String MaintenancePatternType);
-
-	/** Get Maintenance Pattern Type	  */
-	public String getMaintenancePatternType();
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -235,6 +291,28 @@ public interface I_AM_MaintenancePattern
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
+
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
+
+	/** Set Processed.
+	  * The document has been processed
+	  */
+	public void setProcessed (boolean Processed);
+
+	/** Get Processed.
+	  * The document has been processed
+	  */
+	public boolean isProcessed();
+
+    /** Column name Processing */
+    public static final String COLUMNNAME_Processing = "Processing";
+
+	/** Set Process Now	  */
+	public void setProcessing (boolean Processing);
+
+	/** Get Process Now	  */
+	public boolean isProcessing();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

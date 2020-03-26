@@ -19,9 +19,11 @@ package org.eam.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
+import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.Env;
+import org.compiere.util.KeyNamePair;
 
 /** Generated Model for AM_MaintenancePattern
  *  @author Adempiere (generated) 
@@ -32,7 +34,7 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200325L;
+	private static final long serialVersionUID = 20200326L;
 
     /** Standard Constructor */
     public X_AM_MaintenancePattern (Properties ctx, int AM_MaintenancePattern_ID, String trxName)
@@ -41,6 +43,19 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
       /** if (AM_MaintenancePattern_ID == 0)
         {
 			setAM_MaintenancePattern_ID (0);
+			setC_DocType_ID (0);
+// 0
+			setDateDoc (new Timestamp( System.currentTimeMillis() ));
+// @#Date@
+			setDocumentNo (null);
+// 0
+			setIsApproved (false);
+// N
+			setName (null);
+			setProcessed (false);
+// N
+			setProcessing (false);
+// N
         } */
     }
 
@@ -148,6 +163,59 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		return ii.intValue();
 	}
 
+	public org.eam.model.I_AM_PatternType getAM_PatternType() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_PatternType)MTable.get(getCtx(), org.eam.model.I_AM_PatternType.Table_Name)
+			.getPO(getAM_PatternType_ID(), get_TrxName());	}
+
+	/** Set AM_PatternType ID.
+		@param AM_PatternType_ID AM_PatternType ID	  */
+	public void setAM_PatternType_ID (int AM_PatternType_ID)
+	{
+		if (AM_PatternType_ID < 1) 
+			set_Value (COLUMNNAME_AM_PatternType_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_PatternType_ID, Integer.valueOf(AM_PatternType_ID));
+	}
+
+	/** Get AM_PatternType ID.
+		@return AM_PatternType ID	  */
+	public int getAM_PatternType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_PatternType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_DocType)MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
+			.getPO(getC_DocType_ID(), get_TrxName());	}
+
+	/** Set Document Type.
+		@param C_DocType_ID 
+		Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID)
+	{
+		if (C_DocType_ID < 0) 
+			set_Value (COLUMNNAME_C_DocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+	}
+
+	/** Get Document Type.
+		@return Document type or rules
+	  */
+	public int getC_DocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Calculate Cost.
 		@param CalculateCost Calculate Cost	  */
 	public void setCalculateCost (String CalculateCost)
@@ -197,6 +265,23 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set Document Date.
+		@param DateDoc 
+		Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc)
+	{
+		set_Value (COLUMNNAME_DateDoc, DateDoc);
+	}
+
+	/** Get Document Date.
+		@return Date of the Document
+	  */
+	public Timestamp getDateDoc () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
 	/** Set Description.
@@ -308,6 +393,55 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		return (String)get_Value(COLUMNNAME_DocStatus);
 	}
 
+	/** Set Document No.
+		@param DocumentNo 
+		Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo)
+	{
+		set_Value (COLUMNNAME_DocumentNo, DocumentNo);
+	}
+
+	/** Get Document No.
+		@return Document sequence number of the document
+	  */
+	public String getDocumentNo () 
+	{
+		return (String)get_Value(COLUMNNAME_DocumentNo);
+	}
+
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), getDocumentNo());
+    }
+
+	/** Set Approved.
+		@param IsApproved 
+		Indicates if this document requires approval
+	  */
+	public void setIsApproved (boolean IsApproved)
+	{
+		set_Value (COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
+	}
+
+	/** Get Approved.
+		@return Indicates if this document requires approval
+	  */
+	public boolean isApproved () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsApproved);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** MaintenanceArea AD_Reference_ID=53818 */
 	public static final int MAINTENANCEAREA_AD_Reference_ID=53818;
 	/** Electrical = EL */
@@ -333,29 +467,6 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		return (String)get_Value(COLUMNNAME_MaintenanceArea);
 	}
 
-	/** MaintenancePatternType AD_Reference_ID=53817 */
-	public static final int MAINTENANCEPATTERNTYPE_AD_Reference_ID=53817;
-	/** Type A = AA */
-	public static final String MAINTENANCEPATTERNTYPE_TypeA = "AA";
-	/** Type B = BB */
-	public static final String MAINTENANCEPATTERNTYPE_TypeB = "BB";
-	/** Type C = CC */
-	public static final String MAINTENANCEPATTERNTYPE_TypeC = "CC";
-	/** Set Maintenance Pattern Type.
-		@param MaintenancePatternType Maintenance Pattern Type	  */
-	public void setMaintenancePatternType (String MaintenancePatternType)
-	{
-
-		set_Value (COLUMNNAME_MaintenancePatternType, MaintenancePatternType);
-	}
-
-	/** Get Maintenance Pattern Type.
-		@return Maintenance Pattern Type	  */
-	public String getMaintenancePatternType () 
-	{
-		return (String)get_Value(COLUMNNAME_MaintenancePatternType);
-	}
-
 	/** Set Name.
 		@param Name 
 		Alphanumeric identifier of the entity
@@ -371,6 +482,51 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 	public String getName () 
 	{
 		return (String)get_Value(COLUMNNAME_Name);
+	}
+
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Process Now.
+		@param Processing Process Now	  */
+	public void setProcessing (boolean Processing)
+	{
+		set_Value (COLUMNNAME_Processing, Boolean.valueOf(Processing));
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public boolean isProcessing () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Immutable Universally Unique Identifier.
