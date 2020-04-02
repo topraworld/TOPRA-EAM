@@ -34,7 +34,7 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200326L;
+	private static final long serialVersionUID = 20200402L;
 
     /** Standard Constructor */
     public X_AM_MaintenancePattern (Properties ctx, int AM_MaintenancePattern_ID, String trxName)
@@ -44,7 +44,7 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
         {
 			setAM_MaintenancePattern_ID (0);
 			setC_DocType_ID (0);
-// 0
+// 1000058
 			setDateDoc (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
 			setDocumentNo (null);
@@ -143,6 +143,31 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		return ii.intValue();
 	}
 
+	public org.eam.model.I_AM_MaintenanceArea getAM_MaintenanceArea() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_MaintenanceArea)MTable.get(getCtx(), org.eam.model.I_AM_MaintenanceArea.Table_Name)
+			.getPO(getAM_MaintenanceArea_ID(), get_TrxName());	}
+
+	/** Set AM_MaintenanceArea ID.
+		@param AM_MaintenanceArea_ID AM_MaintenanceArea ID	  */
+	public void setAM_MaintenanceArea_ID (int AM_MaintenanceArea_ID)
+	{
+		if (AM_MaintenanceArea_ID < 1) 
+			set_Value (COLUMNNAME_AM_MaintenanceArea_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_MaintenanceArea_ID, Integer.valueOf(AM_MaintenanceArea_ID));
+	}
+
+	/** Get AM_MaintenanceArea ID.
+		@return AM_MaintenanceArea ID	  */
+	public int getAM_MaintenanceArea_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_MaintenanceArea_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set AM Maintenance Pattern.
 		@param AM_MaintenancePattern_ID AM Maintenance Pattern	  */
 	public void setAM_MaintenancePattern_ID (int AM_MaintenancePattern_ID)
@@ -216,20 +241,6 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		return ii.intValue();
 	}
 
-	/** Set Calculate Cost.
-		@param CalculateCost Calculate Cost	  */
-	public void setCalculateCost (String CalculateCost)
-	{
-		set_Value (COLUMNNAME_CalculateCost, CalculateCost);
-	}
-
-	/** Get Calculate Cost.
-		@return Calculate Cost	  */
-	public String getCalculateCost () 
-	{
-		return (String)get_Value(COLUMNNAME_CalculateCost);
-	}
-
 	/** Set Copy From.
 		@param CopyFrom 
 		Copy From Record
@@ -253,8 +264,7 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 	  */
 	public void setCostAmt (BigDecimal CostAmt)
 	{
-		set_Value (COLUMNNAME_CostAmt, CostAmt);
-	}
+		throw new IllegalArgumentException ("CostAmt is virtual column");	}
 
 	/** Get Cost Value.
 		@return Value with Cost
@@ -442,29 +452,32 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 		return false;
 	}
 
-	/** MaintenanceArea AD_Reference_ID=53818 */
-	public static final int MAINTENANCEAREA_AD_Reference_ID=53818;
-	/** Electrical = EL */
-	public static final String MAINTENANCEAREA_Electrical = "EL";
-	/** General = GE */
-	public static final String MAINTENANCEAREA_General = "GE";
-	/** Mechanic = ME */
-	public static final String MAINTENANCEAREA_Mechanic = "ME";
-	/** Refrigeration = RE */
-	public static final String MAINTENANCEAREA_Refrigeration = "RE";
-	/** Set Maintenance Area.
-		@param MaintenanceArea Maintenance Area	  */
-	public void setMaintenanceArea (String MaintenanceArea)
-	{
+	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException
+    {
+		return (org.compiere.model.I_M_PriceList)MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
+			.getPO(getM_PriceList_ID(), get_TrxName());	}
 
-		set_Value (COLUMNNAME_MaintenanceArea, MaintenanceArea);
+	/** Set Price List.
+		@param M_PriceList_ID 
+		Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID)
+	{
+		if (M_PriceList_ID < 1) 
+			set_Value (COLUMNNAME_M_PriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
 	}
 
-	/** Get Maintenance Area.
-		@return Maintenance Area	  */
-	public String getMaintenanceArea () 
+	/** Get Price List.
+		@return Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_MaintenanceArea);
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_PriceList_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Name.
@@ -482,6 +495,29 @@ public class X_AM_MaintenancePattern extends PO implements I_AM_MaintenancePatte
 	public String getName () 
 	{
 		return (String)get_Value(COLUMNNAME_Name);
+	}
+
+	/** Set Parent.
+		@param Parent_ID 
+		Parent of Entity
+	  */
+	public void setParent_ID (int Parent_ID)
+	{
+		if (Parent_ID < 1) 
+			set_Value (COLUMNNAME_Parent_ID, null);
+		else 
+			set_Value (COLUMNNAME_Parent_ID, Integer.valueOf(Parent_ID));
+	}
+
+	/** Get Parent.
+		@return Parent of Entity
+	  */
+	public int getParent_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Parent_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Processed.

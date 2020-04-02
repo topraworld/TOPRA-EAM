@@ -93,6 +93,17 @@ public interface I_AM_MaintenancePattern
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AM_MaintenanceArea_ID */
+    public static final String COLUMNNAME_AM_MaintenanceArea_ID = "AM_MaintenanceArea_ID";
+
+	/** Set AM_MaintenanceArea ID	  */
+	public void setAM_MaintenanceArea_ID (int AM_MaintenanceArea_ID);
+
+	/** Get AM_MaintenanceArea ID	  */
+	public int getAM_MaintenanceArea_ID();
+
+	public org.eam.model.I_AM_MaintenanceArea getAM_MaintenanceArea() throws RuntimeException;
+
     /** Column name AM_MaintenancePattern_ID */
     public static final String COLUMNNAME_AM_MaintenancePattern_ID = "AM_MaintenancePattern_ID";
 
@@ -127,15 +138,6 @@ public interface I_AM_MaintenancePattern
 	public int getC_DocType_ID();
 
 	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
-
-    /** Column name CalculateCost */
-    public static final String COLUMNNAME_CalculateCost = "CalculateCost";
-
-	/** Set Calculate Cost	  */
-	public void setCalculateCost (String CalculateCost);
-
-	/** Get Calculate Cost	  */
-	public String getCalculateCost();
 
     /** Column name CopyFrom */
     public static final String COLUMNNAME_CopyFrom = "CopyFrom";
@@ -270,14 +272,20 @@ public interface I_AM_MaintenancePattern
 	  */
 	public boolean isApproved();
 
-    /** Column name MaintenanceArea */
-    public static final String COLUMNNAME_MaintenanceArea = "MaintenanceArea";
+    /** Column name M_PriceList_ID */
+    public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
 
-	/** Set Maintenance Area	  */
-	public void setMaintenanceArea (String MaintenanceArea);
+	/** Set Price List.
+	  * Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID);
 
-	/** Get Maintenance Area	  */
-	public String getMaintenanceArea();
+	/** Get Price List.
+	  * Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID();
+
+	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -291,6 +299,19 @@ public interface I_AM_MaintenancePattern
 	  * Alphanumeric identifier of the entity
 	  */
 	public String getName();
+
+    /** Column name Parent_ID */
+    public static final String COLUMNNAME_Parent_ID = "Parent_ID";
+
+	/** Set Parent.
+	  * Parent of Entity
+	  */
+	public void setParent_ID (int Parent_ID);
+
+	/** Get Parent.
+	  * Parent of Entity
+	  */
+	public int getParent_ID();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
