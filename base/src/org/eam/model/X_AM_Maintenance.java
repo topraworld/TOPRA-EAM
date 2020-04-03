@@ -33,7 +33,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200320L;
+	private static final long serialVersionUID = 20200403L;
 
     /** Standard Constructor */
     public X_AM_Maintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
@@ -41,13 +41,26 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
       super (ctx, AM_Maintenance_ID, trxName);
       /** if (AM_Maintenance_ID == 0)
         {
-			setAM_Area_ID (0);
 			setAM_Maintenance_ID (0);
+			setAM_ProgrammingType (null);
+			setC_DocType_ID (0);
+// 1000060
+			setDateDoc (new Timestamp( System.currentTimeMillis() ));
+// @#Date@
+			setDocAction (null);
+// CO
+			setDocStatus (null);
+// DR
 			setDocumentNo (null);
-			setInterval (Env.ZERO);
-			setMaintenanceType (null);
+			setIsApproved (false);
+// N
+			setM_PriceList_ID (0);
+// 1000001
 			setPriorityRule (null);
-			setStatus (null);
+			setProcessed (false);
+// N
+			setProcessing (false);
+// N
         } */
     }
 
@@ -78,6 +91,34 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
         .append(get_ID()).append("]");
       return sb.toString();
     }
+
+	public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException
+    {
+		return (org.compiere.model.I_A_Asset_Group)MTable.get(getCtx(), org.compiere.model.I_A_Asset_Group.Table_Name)
+			.getPO(getA_Asset_Group_ID(), get_TrxName());	}
+
+	/** Set Asset Group.
+		@param A_Asset_Group_ID 
+		Group of Assets
+	  */
+	public void setA_Asset_Group_ID (int A_Asset_Group_ID)
+	{
+		if (A_Asset_Group_ID < 1) 
+			set_Value (COLUMNNAME_A_Asset_Group_ID, null);
+		else 
+			set_Value (COLUMNNAME_A_Asset_Group_ID, Integer.valueOf(A_Asset_Group_ID));
+	}
+
+	/** Get Asset Group.
+		@return Group of Assets
+	  */
+	public int getA_Asset_Group_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_A_Asset_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
 
 	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException
     {
@@ -135,38 +176,35 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.eam.model.I_AM_Area getAM_Area() throws RuntimeException
-    {
-		return (org.eam.model.I_AM_Area)MTable.get(getCtx(), org.eam.model.I_AM_Area.Table_Name)
-			.getPO(getAM_Area_ID(), get_TrxName());	}
-
-	/** Set Maintenance Area.
-		@param AM_Area_ID 
-		Maintenance Area where will be process a work order
-	  */
-	public void setAM_Area_ID (int AM_Area_ID)
+	/** AM_CalendarType AD_Reference_ID=53823 */
+	public static final int AM_CALENDARTYPE_AD_Reference_ID=53823;
+	/** Daily = D */
+	public static final String AM_CALENDARTYPE_Daily = "D";
+	/** MonthlyFixed = M */
+	public static final String AM_CALENDARTYPE_MonthlyFixed = "M";
+	/** MonthlyRepetitive = R */
+	public static final String AM_CALENDARTYPE_MonthlyRepetitive = "R";
+	/** Weekly = W */
+	public static final String AM_CALENDARTYPE_Weekly = "W";
+	/** Yearly = Y */
+	public static final String AM_CALENDARTYPE_Yearly = "Y";
+	/** Set AM Calendar Type.
+		@param AM_CalendarType AM Calendar Type	  */
+	public void setAM_CalendarType (String AM_CalendarType)
 	{
-		if (AM_Area_ID < 1) 
-			set_Value (COLUMNNAME_AM_Area_ID, null);
-		else 
-			set_Value (COLUMNNAME_AM_Area_ID, Integer.valueOf(AM_Area_ID));
+
+		set_Value (COLUMNNAME_AM_CalendarType, AM_CalendarType);
 	}
 
-	/** Get Maintenance Area.
-		@return Maintenance Area where will be process a work order
-	  */
-	public int getAM_Area_ID () 
+	/** Get AM Calendar Type.
+		@return AM Calendar Type	  */
+	public String getAM_CalendarType () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Area_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		return (String)get_Value(COLUMNNAME_AM_CalendarType);
 	}
 
-	/** Set Asset Maintenance.
-		@param AM_Maintenance_ID 
-		Define a maintenance program assigned to Asset
-	  */
+	/** Set AM Maintenance.
+		@param AM_Maintenance_ID AM Maintenance	  */
 	public void setAM_Maintenance_ID (int AM_Maintenance_ID)
 	{
 		if (AM_Maintenance_ID < 1) 
@@ -175,12 +213,86 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_ID, Integer.valueOf(AM_Maintenance_ID));
 	}
 
-	/** Get Asset Maintenance.
-		@return Define a maintenance program assigned to Asset
-	  */
+	/** Get AM Maintenance.
+		@return AM Maintenance	  */
 	public int getAM_Maintenance_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.eam.model.I_AM_MaintenanceArea getAM_MaintenanceArea() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_MaintenanceArea)MTable.get(getCtx(), org.eam.model.I_AM_MaintenanceArea.Table_Name)
+			.getPO(getAM_MaintenanceArea_ID(), get_TrxName());	}
+
+	/** Set AM_MaintenanceArea ID.
+		@param AM_MaintenanceArea_ID AM_MaintenanceArea ID	  */
+	public void setAM_MaintenanceArea_ID (int AM_MaintenanceArea_ID)
+	{
+		if (AM_MaintenanceArea_ID < 1) 
+			set_Value (COLUMNNAME_AM_MaintenanceArea_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_MaintenanceArea_ID, Integer.valueOf(AM_MaintenanceArea_ID));
+	}
+
+	/** Get AM_MaintenanceArea ID.
+		@return AM_MaintenanceArea ID	  */
+	public int getAM_MaintenanceArea_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_MaintenanceArea_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.eam.model.I_AM_Maintenance getAM_MaintenanceParent() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_Maintenance)MTable.get(getCtx(), org.eam.model.I_AM_Maintenance.Table_Name)
+			.getPO(getAM_MaintenanceParent_ID(), get_TrxName());	}
+
+	/** Set AM Maintenance Parent.
+		@param AM_MaintenanceParent_ID AM Maintenance Parent	  */
+	public void setAM_MaintenanceParent_ID (int AM_MaintenanceParent_ID)
+	{
+		if (AM_MaintenanceParent_ID < 1) 
+			set_Value (COLUMNNAME_AM_MaintenanceParent_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_MaintenanceParent_ID, Integer.valueOf(AM_MaintenanceParent_ID));
+	}
+
+	/** Get AM Maintenance Parent.
+		@return AM Maintenance Parent	  */
+	public int getAM_MaintenanceParent_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_MaintenanceParent_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.eam.model.I_AM_MaintenancePattern getAM_MaintenancePatern() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_MaintenancePattern)MTable.get(getCtx(), org.eam.model.I_AM_MaintenancePattern.Table_Name)
+			.getPO(getAM_MaintenancePatern_ID(), get_TrxName());	}
+
+	/** Set AM_MaintenancePatern ID.
+		@param AM_MaintenancePatern_ID AM_MaintenancePatern ID	  */
+	public void setAM_MaintenancePatern_ID (int AM_MaintenancePatern_ID)
+	{
+		if (AM_MaintenancePatern_ID < 1) 
+			set_Value (COLUMNNAME_AM_MaintenancePatern_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_MaintenancePatern_ID, Integer.valueOf(AM_MaintenancePatern_ID));
+	}
+
+	/** Get AM_MaintenancePatern ID.
+		@return AM_MaintenancePatern ID	  */
+	public int getAM_MaintenancePatern_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_MaintenancePatern_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -191,10 +303,8 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return (org.eam.model.I_AM_Meter)MTable.get(getCtx(), org.eam.model.I_AM_Meter.Table_Name)
 			.getPO(getAM_Meter_ID(), get_TrxName());	}
 
-	/** Set Meter.
-		@param AM_Meter_ID 
-		Asset meter master
-	  */
+	/** Set AM Meter.
+		@param AM_Meter_ID AM Meter	  */
 	public void setAM_Meter_ID (int AM_Meter_ID)
 	{
 		if (AM_Meter_ID < 1) 
@@ -203,9 +313,8 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 			set_Value (COLUMNNAME_AM_Meter_ID, Integer.valueOf(AM_Meter_ID));
 	}
 
-	/** Get Meter.
-		@return Asset meter master
-	  */
+	/** Get AM Meter.
+		@return AM Meter	  */
 	public int getAM_Meter_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Meter_ID);
@@ -214,46 +323,36 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.eam.model.I_AM_Pattern getAM_Pattern() throws RuntimeException
-    {
-		return (org.eam.model.I_AM_Pattern)MTable.get(getCtx(), org.eam.model.I_AM_Pattern.Table_Name)
-			.getPO(getAM_Pattern_ID(), get_TrxName());	}
-
-	/** Set Maintenance Pattern.
-		@param AM_Pattern_ID 
-		Maintenance Pattern or template for maintenance
-	  */
-	public void setAM_Pattern_ID (int AM_Pattern_ID)
+	/** AM_ProgrammingType AD_Reference_ID=53827 */
+	public static final int AM_PROGRAMMINGTYPE_AD_Reference_ID=53827;
+	/** Calendar = C */
+	public static final String AM_PROGRAMMINGTYPE_Calendar = "C";
+	/** Meter = M */
+	public static final String AM_PROGRAMMINGTYPE_Meter = "M";
+	/** Set AM Programming Type.
+		@param AM_ProgrammingType AM Programming Type	  */
+	public void setAM_ProgrammingType (String AM_ProgrammingType)
 	{
-		if (AM_Pattern_ID < 1) 
-			set_Value (COLUMNNAME_AM_Pattern_ID, null);
-		else 
-			set_Value (COLUMNNAME_AM_Pattern_ID, Integer.valueOf(AM_Pattern_ID));
+
+		set_Value (COLUMNNAME_AM_ProgrammingType, AM_ProgrammingType);
 	}
 
-	/** Get Maintenance Pattern.
-		@return Maintenance Pattern or template for maintenance
-	  */
-	public int getAM_Pattern_ID () 
+	/** Get AM Programming Type.
+		@return AM Programming Type	  */
+	public String getAM_ProgrammingType () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Pattern_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		return (String)get_Value(COLUMNNAME_AM_ProgrammingType);
 	}
 
 	/** Set Average Use.
-		@param AverageUse 
-		Average Use for Asset
-	  */
+		@param AverageUse Average Use	  */
 	public void setAverageUse (BigDecimal AverageUse)
 	{
 		set_Value (COLUMNNAME_AverageUse, AverageUse);
 	}
 
 	/** Get Average Use.
-		@return Average Use for Asset
-	  */
+		@return Average Use	  */
 	public BigDecimal getAverageUse () 
 	{
 		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_AverageUse);
@@ -262,21 +361,49 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return bd;
 	}
 
-	/** Set Comments.
-		@param Comments 
-		Comments or additional information
+	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_DocType)MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
+			.getPO(getC_DocType_ID(), get_TrxName());	}
+
+	/** Set Document Type.
+		@param C_DocType_ID 
+		Document type or rules
 	  */
-	public void setComments (String Comments)
+	public void setC_DocType_ID (int C_DocType_ID)
 	{
-		set_Value (COLUMNNAME_Comments, Comments);
+		if (C_DocType_ID < 0) 
+			set_Value (COLUMNNAME_C_DocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
 	}
 
-	/** Get Comments.
-		@return Comments or additional information
+	/** Get Document Type.
+		@return Document type or rules
 	  */
-	public String getComments () 
+	public int getC_DocType_ID () 
 	{
-		return (String)get_Value(COLUMNNAME_Comments);
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Copy From.
+		@param CopyFrom 
+		Copy From Record
+	  */
+	public void setCopyFrom (String CopyFrom)
+	{
+		set_Value (COLUMNNAME_CopyFrom, CopyFrom);
+	}
+
+	/** Get Copy From.
+		@return Copy From Record
+	  */
+	public String getCopyFrom () 
+	{
+		return (String)get_Value(COLUMNNAME_CopyFrom);
 	}
 
 	/** Set Cost Value.
@@ -285,8 +412,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	  */
 	public void setCostAmt (BigDecimal CostAmt)
 	{
-		set_Value (COLUMNNAME_CostAmt, CostAmt);
-	}
+		throw new IllegalArgumentException ("CostAmt is virtual column");	}
 
 	/** Get Cost Value.
 		@return Value with Cost
@@ -297,6 +423,40 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set CurrentAM.
+		@param CurrentAM CurrentAM	  */
+	public void setCurrentAM (BigDecimal CurrentAM)
+	{
+		set_Value (COLUMNNAME_CurrentAM, CurrentAM);
+	}
+
+	/** Get CurrentAM.
+		@return CurrentAM	  */
+	public BigDecimal getCurrentAM () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CurrentAM);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Document Date.
+		@param DateDoc 
+		Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc)
+	{
+		set_Value (COLUMNNAME_DateDoc, DateDoc);
+	}
+
+	/** Get Document Date.
+		@return Date of the Document
+	  */
+	public Timestamp getDateDoc () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
 	/** Set Date last run.
@@ -316,18 +476,32 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return (Timestamp)get_Value(COLUMNNAME_DateLastRun);
 	}
 
-	/** Set Date Last Service Order.
-		@param DateLastServiceOrder Date Last Service Order	  */
-	public void setDateLastServiceOrder (Timestamp DateLastServiceOrder)
+	/** Set Date Last Run AM.
+		@param DateLastRunAM Date Last Run AM	  */
+	public void setDateLastRunAM (Timestamp DateLastRunAM)
 	{
-		set_Value (COLUMNNAME_DateLastServiceOrder, DateLastServiceOrder);
+		set_Value (COLUMNNAME_DateLastRunAM, DateLastRunAM);
+	}
+
+	/** Get Date Last Run AM.
+		@return Date Last Run AM	  */
+	public Timestamp getDateLastRunAM () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_DateLastRunAM);
+	}
+
+	/** Set Date Last Service Order.
+		@param DateLastSO Date Last Service Order	  */
+	public void setDateLastSO (Timestamp DateLastSO)
+	{
+		set_Value (COLUMNNAME_DateLastSO, DateLastSO);
 	}
 
 	/** Get Date Last Service Order.
 		@return Date Last Service Order	  */
-	public Timestamp getDateLastServiceOrder () 
+	public Timestamp getDateLastSO () 
 	{
-		return (Timestamp)get_Value(COLUMNNAME_DateLastServiceOrder);
+		return (Timestamp)get_Value(COLUMNNAME_DateLastSO);
 	}
 
 	/** Set Date next run.
@@ -364,6 +538,98 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
+	/** DocAction AD_Reference_ID=135 */
+	public static final int DOCACTION_AD_Reference_ID=135;
+	/** Complete = CO */
+	public static final String DOCACTION_Complete = "CO";
+	/** Approve = AP */
+	public static final String DOCACTION_Approve = "AP";
+	/** Reject = RJ */
+	public static final String DOCACTION_Reject = "RJ";
+	/** Post = PO */
+	public static final String DOCACTION_Post = "PO";
+	/** Void = VO */
+	public static final String DOCACTION_Void = "VO";
+	/** Close = CL */
+	public static final String DOCACTION_Close = "CL";
+	/** Reverse - Correct = RC */
+	public static final String DOCACTION_Reverse_Correct = "RC";
+	/** Reverse - Accrual = RA */
+	public static final String DOCACTION_Reverse_Accrual = "RA";
+	/** Invalidate = IN */
+	public static final String DOCACTION_Invalidate = "IN";
+	/** Re-activate = RE */
+	public static final String DOCACTION_Re_Activate = "RE";
+	/** <None> = -- */
+	public static final String DOCACTION_None = "--";
+	/** Prepare = PR */
+	public static final String DOCACTION_Prepare = "PR";
+	/** Unlock = XL */
+	public static final String DOCACTION_Unlock = "XL";
+	/** Wait Complete = WC */
+	public static final String DOCACTION_WaitComplete = "WC";
+	/** Set Document Action.
+		@param DocAction 
+		The targeted status of the document
+	  */
+	public void setDocAction (String DocAction)
+	{
+
+		set_Value (COLUMNNAME_DocAction, DocAction);
+	}
+
+	/** Get Document Action.
+		@return The targeted status of the document
+	  */
+	public String getDocAction () 
+	{
+		return (String)get_Value(COLUMNNAME_DocAction);
+	}
+
+	/** DocStatus AD_Reference_ID=131 */
+	public static final int DOCSTATUS_AD_Reference_ID=131;
+	/** Drafted = DR */
+	public static final String DOCSTATUS_Drafted = "DR";
+	/** Completed = CO */
+	public static final String DOCSTATUS_Completed = "CO";
+	/** Approved = AP */
+	public static final String DOCSTATUS_Approved = "AP";
+	/** Not Approved = NA */
+	public static final String DOCSTATUS_NotApproved = "NA";
+	/** Voided = VO */
+	public static final String DOCSTATUS_Voided = "VO";
+	/** Invalid = IN */
+	public static final String DOCSTATUS_Invalid = "IN";
+	/** Reversed = RE */
+	public static final String DOCSTATUS_Reversed = "RE";
+	/** Closed = CL */
+	public static final String DOCSTATUS_Closed = "CL";
+	/** Unknown = ?? */
+	public static final String DOCSTATUS_Unknown = "??";
+	/** In Progress = IP */
+	public static final String DOCSTATUS_InProgress = "IP";
+	/** Waiting Payment = WP */
+	public static final String DOCSTATUS_WaitingPayment = "WP";
+	/** Waiting Confirmation = WC */
+	public static final String DOCSTATUS_WaitingConfirmation = "WC";
+	/** Set Document Status.
+		@param DocStatus 
+		The current status of the document
+	  */
+	public void setDocStatus (String DocStatus)
+	{
+
+		set_Value (COLUMNNAME_DocStatus, DocStatus);
+	}
+
+	/** Get Document Status.
+		@return The current status of the document
+	  */
+	public String getDocStatus () 
+	{
+		return (String)get_Value(COLUMNNAME_DocStatus);
+	}
+
 	/** Set Document No.
 		@param DocumentNo 
 		Document sequence number of the document
@@ -379,42 +645,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public String getDocumentNo () 
 	{
 		return (String)get_Value(COLUMNNAME_DocumentNo);
-	}
-
-	/** FrequencyType AD_Reference_ID=221 */
-	public static final int FREQUENCYTYPE_AD_Reference_ID=221;
-	/** Minute = M */
-	public static final String FREQUENCYTYPE_Minute = "M";
-	/** Hour = H */
-	public static final String FREQUENCYTYPE_Hour = "H";
-	/** Day = D */
-	public static final String FREQUENCYTYPE_Day = "D";
-	/** Biweekly = B */
-	public static final String FREQUENCYTYPE_Biweekly = "B";
-	/** Monthly = N */
-	public static final String FREQUENCYTYPE_Monthly = "N";
-	/** Quarterly = Q */
-	public static final String FREQUENCYTYPE_Quarterly = "Q";
-	/** Weekly = W */
-	public static final String FREQUENCYTYPE_Weekly = "W";
-	/** Yearly = Y */
-	public static final String FREQUENCYTYPE_Yearly = "Y";
-	/** Set Frequency Type.
-		@param FrequencyType 
-		Frequency of event
-	  */
-	public void setFrequencyType (String FrequencyType)
-	{
-
-		set_Value (COLUMNNAME_FrequencyType, FrequencyType);
-	}
-
-	/** Get Frequency Type.
-		@return Frequency of event
-	  */
-	public String getFrequencyType () 
-	{
-		return (String)get_Value(COLUMNNAME_FrequencyType);
 	}
 
 	/** Set Interval.
@@ -434,85 +664,63 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return bd;
 	}
 
-	/** Set Last Measuring.
-		@param LastMeasuring 
-		Last Measuring used from last maintenance
+	/** Set Approved.
+		@param IsApproved 
+		Indicates if this document requires approval
 	  */
-	public void setLastMeasuring (BigDecimal LastMeasuring)
+	public void setIsApproved (boolean IsApproved)
 	{
-		set_Value (COLUMNNAME_LastMeasuring, LastMeasuring);
+		set_Value (COLUMNNAME_IsApproved, Boolean.valueOf(IsApproved));
 	}
 
-	/** Get Last Measuring.
-		@return Last Measuring used from last maintenance
+	/** Get Approved.
+		@return Indicates if this document requires approval
 	  */
-	public BigDecimal getLastMeasuring () 
+	public boolean isApproved () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LastMeasuring);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		Object oo = get_Value(COLUMNNAME_IsApproved);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
-	/** MaintenanceType AD_Reference_ID=54201 */
-	public static final int MAINTENANCETYPE_AD_Reference_ID=54201;
-	/** Calendar-Based Maintenance = CBM */
-	public static final String MAINTENANCETYPE_Calendar_BasedMaintenance = "CBM";
-	/** Measuring-Based Maintenance = MBM */
-	public static final String MAINTENANCETYPE_Measuring_BasedMaintenance = "MBM";
-	/** Set Maintenance Type.
-		@param MaintenanceType 
-		Maintenance Type define maintenance method for schedule
-	  */
-	public void setMaintenanceType (String MaintenanceType)
+	/** Set Child.
+		@param IsChild Child	  */
+	public void setIsChild (boolean IsChild)
 	{
-
-		set_Value (COLUMNNAME_MaintenanceType, MaintenanceType);
+		set_Value (COLUMNNAME_IsChild, Boolean.valueOf(IsChild));
 	}
 
-	/** Get Maintenance Type.
-		@return Maintenance Type define maintenance method for schedule
-	  */
-	public String getMaintenanceType () 
+	/** Get Child.
+		@return Child	  */
+	public boolean isChild () 
 	{
-		return (String)get_Value(COLUMNNAME_MaintenanceType);
-	}
-
-	/** Set Next Measuring.
-		@param NextMeasuring 
-		Next value for meter of maintenance
-	  */
-	public void setNextMeasuring (BigDecimal NextMeasuring)
-	{
-		set_Value (COLUMNNAME_NextMeasuring, NextMeasuring);
-	}
-
-	/** Get Next Measuring.
-		@return Next value for meter of maintenance
-	  */
-	public BigDecimal getNextMeasuring () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_NextMeasuring);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		Object oo = get_Value(COLUMNNAME_IsChild);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Friday.
-		@param OnFriday 
-		Available on Fridays
-	  */
-	public void setOnFriday (boolean OnFriday)
+		@param IsFriday Friday	  */
+	public void setIsFriday (boolean IsFriday)
 	{
-		set_Value (COLUMNNAME_OnFriday, Boolean.valueOf(OnFriday));
+		set_Value (COLUMNNAME_IsFriday, Boolean.valueOf(IsFriday));
 	}
 
 	/** Get Friday.
-		@return Available on Fridays
-	  */
-	public boolean isOnFriday () 
+		@return Friday	  */
+	public boolean isFriday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnFriday);
+		Object oo = get_Value(COLUMNNAME_IsFriday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -523,20 +731,17 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	}
 
 	/** Set Monday.
-		@param OnMonday 
-		Available on Mondays
-	  */
-	public void setOnMonday (boolean OnMonday)
+		@param IsMonday Monday	  */
+	public void setIsMonday (boolean IsMonday)
 	{
-		set_Value (COLUMNNAME_OnMonday, Boolean.valueOf(OnMonday));
+		set_Value (COLUMNNAME_IsMonday, Boolean.valueOf(IsMonday));
 	}
 
 	/** Get Monday.
-		@return Available on Mondays
-	  */
-	public boolean isOnMonday () 
+		@return Monday	  */
+	public boolean isMonday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnMonday);
+		Object oo = get_Value(COLUMNNAME_IsMonday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -547,20 +752,17 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	}
 
 	/** Set Saturday.
-		@param OnSaturday 
-		Available on Saturday
-	  */
-	public void setOnSaturday (boolean OnSaturday)
+		@param IsSaturday Saturday	  */
+	public void setIsSaturday (boolean IsSaturday)
 	{
-		set_Value (COLUMNNAME_OnSaturday, Boolean.valueOf(OnSaturday));
+		set_Value (COLUMNNAME_IsSaturday, Boolean.valueOf(IsSaturday));
 	}
 
 	/** Get Saturday.
-		@return Available on Saturday
-	  */
-	public boolean isOnSaturday () 
+		@return Saturday	  */
+	public boolean isSaturday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnSaturday);
+		Object oo = get_Value(COLUMNNAME_IsSaturday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -571,20 +773,17 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	}
 
 	/** Set Sunday.
-		@param OnSunday 
-		Available on Sundays
-	  */
-	public void setOnSunday (boolean OnSunday)
+		@param IsSunday Sunday	  */
+	public void setIsSunday (boolean IsSunday)
 	{
-		set_Value (COLUMNNAME_OnSunday, Boolean.valueOf(OnSunday));
+		set_Value (COLUMNNAME_IsSunday, Boolean.valueOf(IsSunday));
 	}
 
 	/** Get Sunday.
-		@return Available on Sundays
-	  */
-	public boolean isOnSunday () 
+		@return Sunday	  */
+	public boolean isSunday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnSunday);
+		Object oo = get_Value(COLUMNNAME_IsSunday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -595,20 +794,17 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	}
 
 	/** Set Thursday.
-		@param OnThursday 
-		Available on Thursdays
-	  */
-	public void setOnThursday (boolean OnThursday)
+		@param IsThursday Thursday	  */
+	public void setIsThursday (boolean IsThursday)
 	{
-		set_Value (COLUMNNAME_OnThursday, Boolean.valueOf(OnThursday));
+		set_Value (COLUMNNAME_IsThursday, Boolean.valueOf(IsThursday));
 	}
 
 	/** Get Thursday.
-		@return Available on Thursdays
-	  */
-	public boolean isOnThursday () 
+		@return Thursday	  */
+	public boolean isThursday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnThursday);
+		Object oo = get_Value(COLUMNNAME_IsThursday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -619,20 +815,17 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	}
 
 	/** Set Tuesday.
-		@param OnTuesday 
-		Available on Tuesdays
-	  */
-	public void setOnTuesday (boolean OnTuesday)
+		@param IsTuesday Tuesday	  */
+	public void setIsTuesday (boolean IsTuesday)
 	{
-		set_Value (COLUMNNAME_OnTuesday, Boolean.valueOf(OnTuesday));
+		set_Value (COLUMNNAME_IsTuesday, Boolean.valueOf(IsTuesday));
 	}
 
 	/** Get Tuesday.
-		@return Available on Tuesdays
-	  */
-	public boolean isOnTuesday () 
+		@return Tuesday	  */
+	public boolean isTuesday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnTuesday);
+		Object oo = get_Value(COLUMNNAME_IsTuesday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -643,20 +836,17 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	}
 
 	/** Set Wednesday.
-		@param OnWednesday 
-		Available on Wednesdays
-	  */
-	public void setOnWednesday (boolean OnWednesday)
+		@param IsWednesday Wednesday	  */
+	public void setIsWednesday (boolean IsWednesday)
 	{
-		set_Value (COLUMNNAME_OnWednesday, Boolean.valueOf(OnWednesday));
+		set_Value (COLUMNNAME_IsWednesday, Boolean.valueOf(IsWednesday));
 	}
 
 	/** Get Wednesday.
-		@return Available on Wednesdays
-	  */
-	public boolean isOnWednesday () 
+		@return Wednesday	  */
+	public boolean isWednesday () 
 	{
-		Object oo = get_Value(COLUMNNAME_OnWednesday);
+		Object oo = get_Value(COLUMNNAME_IsWednesday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -664,6 +854,85 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Last AM.
+		@param LastAM Last AM	  */
+	public void setLastAM (BigDecimal LastAM)
+	{
+		set_Value (COLUMNNAME_LastAM, LastAM);
+	}
+
+	/** Get Last AM.
+		@return Last AM	  */
+	public BigDecimal getLastAM () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LastAM);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Last Read.
+		@param LastRead Last Read	  */
+	public void setLastRead (BigDecimal LastRead)
+	{
+		set_Value (COLUMNNAME_LastRead, LastRead);
+	}
+
+	/** Get Last Read.
+		@return Last Read	  */
+	public BigDecimal getLastRead () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_LastRead);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException
+    {
+		return (org.compiere.model.I_M_PriceList)MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
+			.getPO(getM_PriceList_ID(), get_TrxName());	}
+
+	/** Set Price List.
+		@param M_PriceList_ID 
+		Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID)
+	{
+		if (M_PriceList_ID < 1) 
+			set_Value (COLUMNNAME_M_PriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
+	}
+
+	/** Get Price List.
+		@return Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_PriceList_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set NextAM.
+		@param NextAM NextAM	  */
+	public void setNextAM (BigDecimal NextAM)
+	{
+		set_Value (COLUMNNAME_NextAM, NextAM);
+	}
+
+	/** Get NextAM.
+		@return NextAM	  */
+	public BigDecimal getNextAM () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_NextAM);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** PriorityRule AD_Reference_ID=154 */
@@ -696,6 +965,51 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return (String)get_Value(COLUMNNAME_PriorityRule);
 	}
 
+	/** Set Processed.
+		@param Processed 
+		The document has been processed
+	  */
+	public void setProcessed (boolean Processed)
+	{
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+	}
+
+	/** Get Processed.
+		@return The document has been processed
+	  */
+	public boolean isProcessed () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processed);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Process Now.
+		@param Processing Process Now	  */
+	public void setProcessing (boolean Processing)
+	{
+		set_Value (COLUMNNAME_Processing, Boolean.valueOf(Processing));
+	}
+
+	/** Get Process Now.
+		@return Process Now	  */
+	public boolean isProcessing () 
+	{
+		Object oo = get_Value(COLUMNNAME_Processing);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
 	/** Set Range.
 		@param Range Range	  */
 	public void setRange (BigDecimal Range)
@@ -711,32 +1025,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
-	}
-
-	/** Status AD_Reference_ID=53822 */
-	public static final int STATUS_AD_Reference_ID=53822;
-	/** Critical = AC */
-	public static final String STATUS_Critical = "AC";
-	/** Active = AT */
-	public static final String STATUS_Active = "AT";
-	/** InActive = IT */
-	public static final String STATUS_InActive = "IT";
-	/** Set Status.
-		@param Status 
-		Status of the currently running check
-	  */
-	public void setStatus (String Status)
-	{
-
-		set_Value (COLUMNNAME_Status, Status);
-	}
-
-	/** Get Status.
-		@return Status of the currently running check
-	  */
-	public String getStatus () 
-	{
-		return (String)get_Value(COLUMNNAME_Status);
 	}
 
 	/** Set Immutable Universally Unique Identifier.

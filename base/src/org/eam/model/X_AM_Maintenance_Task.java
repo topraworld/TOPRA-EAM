@@ -22,33 +22,37 @@ import java.sql.ResultSet;
 import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.Env;
+import org.compiere.util.KeyNamePair;
 
-/** Generated Model for AM_MaintenanceTask
+/** Generated Model for AM_Maintenance_Task
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3 - $Id$ */
-public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_Persistent 
+public class X_AM_Maintenance_Task extends PO implements I_AM_Maintenance_Task, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200320L;
+	private static final long serialVersionUID = 20200403L;
 
     /** Standard Constructor */
-    public X_AM_MaintenanceTask (Properties ctx, int AM_MaintenanceTask_ID, String trxName)
+    public X_AM_Maintenance_Task (Properties ctx, int AM_Maintenance_Task_ID, String trxName)
     {
-      super (ctx, AM_MaintenanceTask_ID, trxName);
-      /** if (AM_MaintenanceTask_ID == 0)
+      super (ctx, AM_Maintenance_Task_ID, trxName);
+      /** if (AM_Maintenance_Task_ID == 0)
         {
 			setAM_Maintenance_ID (0);
-			setAM_MaintenanceTask_ID (0);
+			setAM_Maintenance_Task_ID (0);
 			setC_UOM_ID (0);
+// 103
+			setLine (0);
+// @SQL=SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM AM_Maintenance_Task WHERE AM_Maintenance_ID=@AM_Maintenance_ID@
 			setName (null);
         } */
     }
 
     /** Load Constructor */
-    public X_AM_MaintenanceTask (Properties ctx, ResultSet rs, String trxName)
+    public X_AM_Maintenance_Task (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -70,7 +74,7 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_AM_MaintenanceTask[")
+      StringBuffer sb = new StringBuffer ("X_AM_Maintenance_Task[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
@@ -80,10 +84,8 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 		return (org.eam.model.I_AM_Maintenance)MTable.get(getCtx(), org.eam.model.I_AM_Maintenance.Table_Name)
 			.getPO(getAM_Maintenance_ID(), get_TrxName());	}
 
-	/** Set Asset Maintenance.
-		@param AM_Maintenance_ID 
-		Define a maintenance program assigned to Asset
-	  */
+	/** Set AM Maintenance.
+		@param AM_Maintenance_ID AM Maintenance	  */
 	public void setAM_Maintenance_ID (int AM_Maintenance_ID)
 	{
 		if (AM_Maintenance_ID < 1) 
@@ -92,9 +94,8 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_ID, Integer.valueOf(AM_Maintenance_ID));
 	}
 
-	/** Get Asset Maintenance.
-		@return Define a maintenance program assigned to Asset
-	  */
+	/** Get AM Maintenance.
+		@return AM Maintenance	  */
 	public int getAM_Maintenance_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_ID);
@@ -103,47 +104,24 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 		return ii.intValue();
 	}
 
-	/** Set Maintenance Task.
-		@param AM_MaintenanceTask_ID 
-		Task that will be maked for asset maintenance
-	  */
-	public void setAM_MaintenanceTask_ID (int AM_MaintenanceTask_ID)
+	/** Set AM Maintenance Task.
+		@param AM_Maintenance_Task_ID AM Maintenance Task	  */
+	public void setAM_Maintenance_Task_ID (int AM_Maintenance_Task_ID)
 	{
-		if (AM_MaintenanceTask_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_AM_MaintenanceTask_ID, null);
+		if (AM_Maintenance_Task_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_Task_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_AM_MaintenanceTask_ID, Integer.valueOf(AM_MaintenanceTask_ID));
+			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_Task_ID, Integer.valueOf(AM_Maintenance_Task_ID));
 	}
 
-	/** Get Maintenance Task.
-		@return Task that will be maked for asset maintenance
-	  */
-	public int getAM_MaintenanceTask_ID () 
+	/** Get AM Maintenance Task.
+		@return AM Maintenance Task	  */
+	public int getAM_Maintenance_Task_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_MaintenanceTask_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_Task_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Cost Value.
-		@param CostAmt 
-		Value with Cost
-	  */
-	public void setCostAmt (BigDecimal CostAmt)
-	{
-		set_Value (COLUMNNAME_CostAmt, CostAmt);
-	}
-
-	/** Get Cost Value.
-		@return Value with Cost
-	  */
-	public BigDecimal getCostAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException
@@ -174,6 +152,26 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 		return ii.intValue();
 	}
 
+	/** Set Cost Value.
+		@param CostAmt 
+		Value with Cost
+	  */
+	public void setCostAmt (BigDecimal CostAmt)
+	{
+		set_Value (COLUMNNAME_CostAmt, CostAmt);
+	}
+
+	/** Get Cost Value.
+		@return Value with Cost
+	  */
+	public BigDecimal getCostAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -195,20 +193,20 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 		@param Duration 
 		Normal Duration in Duration Unit
 	  */
-	public void setDuration (BigDecimal Duration)
+	public void setDuration (int Duration)
 	{
-		set_Value (COLUMNNAME_Duration, Duration);
+		set_Value (COLUMNNAME_Duration, Integer.valueOf(Duration));
 	}
 
 	/** Get Duration.
 		@return Normal Duration in Duration Unit
 	  */
-	public BigDecimal getDuration () 
+	public int getDuration () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Duration);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		Integer ii = (Integer)get_Value(COLUMNNAME_Duration);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Line No.
@@ -247,6 +245,14 @@ public class X_AM_MaintenanceTask extends PO implements I_AM_MaintenanceTask, I_
 	{
 		return (String)get_Value(COLUMNNAME_Name);
 	}
+
+    /** Get Record ID/ColumnName
+        @return ID/ColumnName pair
+      */
+    public KeyNamePair getKeyNamePair() 
+    {
+        return new KeyNamePair(get_ID(), getName());
+    }
 
 	/** Set Immutable Universally Unique Identifier.
 		@param UUID 

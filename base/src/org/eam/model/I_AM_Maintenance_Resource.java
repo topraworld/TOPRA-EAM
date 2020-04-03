@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for AM_MaintenanceTask
+/** Generated Interface for AM_Maintenance_Resource
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3
  */
-public interface I_AM_MaintenanceTask 
+public interface I_AM_Maintenance_Resource 
 {
 
-    /** TableName=AM_MaintenanceTask */
-    public static final String Table_Name = "AM_MaintenanceTask";
+    /** TableName=AM_Maintenance_Resource */
+    public static final String Table_Name = "AM_Maintenance_Resource";
 
-    /** AD_Table_ID=54112 */
+    /** AD_Table_ID=54113 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -66,30 +66,48 @@ public interface I_AM_MaintenanceTask
     /** Column name AM_Maintenance_ID */
     public static final String COLUMNNAME_AM_Maintenance_ID = "AM_Maintenance_ID";
 
-	/** Set Asset Maintenance.
-	  * Define a maintenance program assigned to Asset
-	  */
+	/** Set AM Maintenance	  */
 	public void setAM_Maintenance_ID (int AM_Maintenance_ID);
 
-	/** Get Asset Maintenance.
-	  * Define a maintenance program assigned to Asset
-	  */
+	/** Get AM Maintenance	  */
 	public int getAM_Maintenance_ID();
 
 	public org.eam.model.I_AM_Maintenance getAM_Maintenance() throws RuntimeException;
 
-    /** Column name AM_MaintenanceTask_ID */
-    public static final String COLUMNNAME_AM_MaintenanceTask_ID = "AM_MaintenanceTask_ID";
+    /** Column name AM_Maintenance_Resource_ID */
+    public static final String COLUMNNAME_AM_Maintenance_Resource_ID = "AM_Maintenance_Resource_ID";
 
-	/** Set Maintenance Task.
-	  * Task that will be maked for asset maintenance
-	  */
-	public void setAM_MaintenanceTask_ID (int AM_MaintenanceTask_ID);
+	/** Set AM Maintenance Resource	  */
+	public void setAM_Maintenance_Resource_ID (int AM_Maintenance_Resource_ID);
 
-	/** Get Maintenance Task.
-	  * Task that will be maked for asset maintenance
+	/** Get AM Maintenance Resource	  */
+	public int getAM_Maintenance_Resource_ID();
+
+    /** Column name AM_Maintenance_Task_ID */
+    public static final String COLUMNNAME_AM_Maintenance_Task_ID = "AM_Maintenance_Task_ID";
+
+	/** Set AM Maintenance Task	  */
+	public void setAM_Maintenance_Task_ID (int AM_Maintenance_Task_ID);
+
+	/** Get AM Maintenance Task	  */
+	public int getAM_Maintenance_Task_ID();
+
+	public org.eam.model.I_AM_Maintenance_Task getAM_Maintenance_Task() throws RuntimeException;
+
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
 	  */
-	public int getAM_MaintenanceTask_ID();
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name CostAmt */
     public static final String COLUMNNAME_CostAmt = "CostAmt";
@@ -120,21 +138,6 @@ public interface I_AM_MaintenanceTask
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_UOM_ID */
-    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
-
-	/** Set UOM.
-	  * Unit of Measure
-	  */
-	public void setC_UOM_ID (int C_UOM_ID);
-
-	/** Get UOM.
-	  * Unit of Measure
-	  */
-	public int getC_UOM_ID();
-
-	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException;
-
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -147,19 +150,6 @@ public interface I_AM_MaintenanceTask
 	  * Optional short description of the record
 	  */
 	public String getDescription();
-
-    /** Column name Duration */
-    public static final String COLUMNNAME_Duration = "Duration";
-
-	/** Set Duration.
-	  * Normal Duration in Duration Unit
-	  */
-	public void setDuration (BigDecimal Duration);
-
-	/** Get Duration.
-	  * Normal Duration in Duration Unit
-	  */
-	public BigDecimal getDuration();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -187,18 +177,55 @@ public interface I_AM_MaintenanceTask
 	  */
 	public int getLine();
 
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
+    /** Column name M_Product_ID */
+    public static final String COLUMNNAME_M_Product_ID = "M_Product_ID";
 
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+	/** Set Product.
+	  * Product, Service, Item
 	  */
-	public void setName (String Name);
+	public void setM_Product_ID (int M_Product_ID);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Product.
+	  * Product, Service, Item
 	  */
-	public String getName();
+	public int getM_Product_ID();
+
+	public org.compiere.model.I_M_Product getM_Product() throws RuntimeException;
+
+    /** Column name Price */
+    public static final String COLUMNNAME_Price = "Price";
+
+	/** Set Price.
+	  * Price
+	  */
+	public void setPrice (BigDecimal Price);
+
+	/** Get Price.
+	  * Price
+	  */
+	public BigDecimal getPrice();
+
+    /** Column name ProductType */
+    public static final String COLUMNNAME_ProductType = "ProductType";
+
+	/** Set Product Type.
+	  * Type of product
+	  */
+	public void setProductType (String ProductType);
+
+	/** Get Product Type.
+	  * Type of product
+	  */
+	public String getProductType();
+
+    /** Column name QtyRequired */
+    public static final String COLUMNNAME_QtyRequired = "QtyRequired";
+
+	/** Set Qty Required	  */
+	public void setQtyRequired (BigDecimal QtyRequired);
+
+	/** Get Qty Required	  */
+	public BigDecimal getQtyRequired();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

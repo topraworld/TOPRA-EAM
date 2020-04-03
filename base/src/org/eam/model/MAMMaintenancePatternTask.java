@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.compiere.model.Query;
+import org.compiere.util.DB;
 
 public class MAMMaintenancePatternTask extends X_AM_MaintenancePattern_Task{
 
@@ -35,4 +36,12 @@ public class MAMMaintenancePatternTask extends X_AM_MaintenancePattern_Task{
 			.list();
 		return list.toArray(new MAMMPTaskResourse[list.size()]);
     }
+	 
+	 protected boolean beforeDelete (){
+		
+		 String sql = "DELETE FROM AM_MPTaskResourse WHERE AM_MaintenancePattern_Task_ID=?";
+		 DB.executeUpdate(sql, this.get_ID(), null);
+	
+		return true;
+	}
 }

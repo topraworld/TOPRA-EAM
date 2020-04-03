@@ -1,272 +1,366 @@
 /******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * This program is free software; you can redistribute it and/or modify it    *
+ * Product: ADempiere ERP & CRM Smart Business Solution                       *
+ * Copyright (C) 2006-2017 ADempiere Foundation, All Rights Reserved.         *
+ * This program is free software, you can redistribute it and/or modify it    *
  * under the terms version 2 of the GNU General Public License as published   *
+ * or (at your option) any later version.										*
  * by the Free Software Foundation. This program is distributed in the hope   *
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
+ * that it will be useful, but WITHOUT ANY WARRANTY, without even the implied *
  * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
  * See the GNU General Public License for more details.                       *
  * You should have received a copy of the GNU General Public License along    *
- * with this program; if not, see http://www.gnu.org/licenses or write to the * 
- * Free Software Foundation, Inc.,                                            *
+ * with this program, if not, write to the Free Software Foundation, Inc.,    *
  * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
  * For the text or an alternative of this public license, you may reach us    *
- * Copyright (C) 2003-2016                                                    *
- * All Rights Reserved.                                                       *
+ * or via info@adempiere.net or http://www.adempiere.net/license.html         *
  *****************************************************************************/
 package org.eam.model;
 
+import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.List;
 import java.util.Properties;
-
-import org.compiere.model.Query;
-import org.compiere.util.CCache;
+import org.compiere.model.*;
+import org.compiere.process.DocAction;
+import org.compiere.process.DocumentEngine;
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
-/**
- * Maintenance
- * @author OFB Consulting http://www.ofbconsulting.com
- * 	<li> Initial Contributor
- * @contributor Mario Calderon, Systemhaus Westfalia, http://www.westfalia-it.com
- * @contributor Adaxa http://www.adaxa.com
- * @contributor Deepak Pansheriya, Loglite Technologies, http://logilite.com
- * @contributor Victor Perez, victor.perez@e-evolution.com, eEvolution http://www.e-evolution.com
- * @contributor Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
- * @contributor Sachin Bhimani
- */
-public class MAMMaintenance extends X_AM_Maintenance {
+/** Generated Model for AM_Maintenance
+ *  @author Adempiere (generated) 
+ *  @version Release 3.9.3 - $Id$ */
+public class MAMMaintenance extends X_AM_Maintenance implements DocAction {
 
 	/**
-	 * 
+	 *
 	 */
-	private static final long serialVersionUID = -873522901044261117L;
+	private static final long serialVersionUID = 20200403L;
 
-	public MAMMaintenance(Properties ctx, int AM_Maintenance_ID, String trxName) {
-		super(ctx, AM_Maintenance_ID, trxName);
-	}
+    /** Standard Constructor */
+    public MAMMaintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
+    {
+      super (ctx, AM_Maintenance_ID, trxName);
+    }
 
-	public MAMMaintenance(Properties ctx, ResultSet rs, String trxName) {
-		super(ctx, rs, trxName);
-	}
-	/**	Cache						*/
-	private static CCache<Integer, MAMMaintenance> cache = new CCache<Integer, MAMMaintenance>(Table_Name, 40, 5);	//	5 minutes
+    /** Load Constructor */
+    public MAMMaintenance (Properties ctx, ResultSet rs, String trxName)
+    {
+      super (ctx, rs, trxName);
+    }
 
 	/**
-	 * get the tasks for a job
-	 * 
-	 * @param Maintenance
-	 * @return List with tasks
+	 * 	Get Document Info
+	 *	@return document info (untranslated)
 	 */
-	public List<MAMMaintenanceTask> getTasks() {
-		String whereClause = COLUMNNAME_AM_Maintenance_ID + "=? ";
-		List<MAMMaintenanceTask> list = new Query(getCtx(), I_AM_MaintenanceTask.Table_Name,
-				whereClause, get_TrxName())
-						.setClient_ID()
-						.setParameters(getAM_Maintenance_ID())
-						.setOnlyActiveRecords(true)
-						.list();
-		return list;
-	} // getMaintenanceTasks
-	
-	/**
-	 * get the costs of a Maintenance
-	 * 
-	 * @param none
-	 * @return Costs
-	 */
-	public BigDecimal getMaintenanceCosts() {
-		BigDecimal maintainCosts = BigDecimal.ZERO;
-		for (X_AM_MaintenanceTask task : getTasks()){
-			maintainCosts = maintainCosts.add(task.getCostAmt());
-		}
-		return maintainCosts;
-	} // getMaintainCosts
-
-	/**
-	 * update the costs of a job
-	 * 
-	 * @param none
-	 * @return none
-	 */
-	public void updateMaintenanceCosts() {
-		this.setCostAmt(getMaintenanceCosts());
-		this.saveEx();
-	} // updateMaintenanceCosts
-
-	/**
-	 * calculate and correct the field DateNextRun
-	 */
-	public void correctDateNextRun(Timestamp dateTimeNow) {
-		Timestamp calculatedDateNextRun = dateTimeNow;
-		Timestamp dateTimeReference;
-
-		// try to get dateNextRun as reference
-		if (getDateLastServiceOrder() == null) {
-			dateTimeReference = getDateNextRun() == null ? dateTimeNow : getDateNextRun();
-		} else {
-			dateTimeReference = getDateLastServiceOrder();
-		}
-		if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Day))
-			calculatedDateNextRun = calculateDateNextRun(dateTimeNow, dateTimeReference, Calendar.DATE);
-		else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Monthly))
-			calculatedDateNextRun = calculateDateNextRun(dateTimeNow, dateTimeReference, Calendar.MONTH);
-		else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Yearly))
-			calculatedDateNextRun = calculateDateNextRun(dateTimeNow, dateTimeReference, Calendar.YEAR);
-		else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Weekly))
-			calculatedDateNextRun = calculateDateNextRun(dateTimeNow, dateTimeReference, Calendar.WEEK_OF_YEAR);
-
-		setDateNextRun(calculatedDateNextRun);
-		saveEx();
-	} // correctDateNextRun
-
-	/**
-	 * calculates -based on the reference- the dateNextRun
-	 * 
-	 * @param dateTimeNow
-	 * @param calendarIncrement depending on the Calendar Type
-	 * @return Timestamp
-	 */
-	public Timestamp calculateDateNextRun(Timestamp dateTimeNow, Timestamp dateTimeReference, int calendarIncrement)
+	public String getDocumentInfo()
 	{
-		Calendar dateNow = Calendar.getInstance();
-		dateNow.setTimeInMillis(dateTimeNow.getTime());
-
-		Calendar suggestedDate = Calendar.getInstance();
-		suggestedDate.setTimeInMillis(dateTimeReference.getTime());
-
-		// First future date is brought to past, then past is brought to NEXT
-		// future, preserving interval
-		while (suggestedDate.after(dateNow)) { // suggested date AFTER now: go into a PAST date
-			if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Monthly)
-					|| getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Weekly)) {
-				// for repetitive months or weekly: DECREMENT months as defined
-				// in interval
-				suggestedDate.add(calendarIncrement, - getInterval().intValue());
-			} else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Monthly)) {	//	TODO: Add IsFixed attribute
-				// set day of month as defined in interval
-				suggestedDate.add(calendarIncrement, -1);
-				suggestedDate.set(Calendar.DAY_OF_MONTH, getInterval().intValue());
-			} else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Yearly)) {
-				// set day of year as defined in interval
-				suggestedDate.add(calendarIncrement, -1);
-				suggestedDate.set(Calendar.DAY_OF_YEAR, getInterval().intValue());
-			} else {
-				// for daily Maintenance:DECREMENT just by the Calendar
-				suggestedDate.add(calendarIncrement, -1);
-			}
-		}
-		//	Iterate
-		while (suggestedDate.before(dateNow)) {
-			// suggested date BEFORE now: go into a FUTURE date
-			if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Monthly)
-					|| getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Weekly)) {
-				// for repetitive months or weekly: INCREMENT months as defined
-				// in interval
-				suggestedDate.add(calendarIncrement, getInterval().intValue());
-			} else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Monthly)) {	//	TODO_ Add Fixed attribute
-				// set day of month as defined in interval
-				suggestedDate.add(calendarIncrement, 1);
-				suggestedDate.set(Calendar.DAY_OF_MONTH, getInterval().intValue());
-			} else if (getFrequencyType().equals(MAMMaintenance.FREQUENCYTYPE_Yearly)) {
-				// set day of year as defined in interval
-				suggestedDate.add(calendarIncrement, 1);
-				suggestedDate.set(Calendar.DAY_OF_YEAR, getInterval().intValue());
-			} else {
-				// for daily Maintenance: INCREMENT just by the Calendar
-				suggestedDate.add(calendarIncrement, 1);
-			}
-		}
-		// suggested date inside range
-		return (new Timestamp(suggestedDate.getTimeInMillis()));
-
-	} // calculateDateNextRun
+		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+		return dt.getName() + " " + getDocumentNo();
+	}	//	getDocumentInfo
 
 	/**
-	 * Get All
-	 * @param ctx
-	 * @return
+	 * 	Create PDF
+	 *	@return File or null
 	 */
-	public static List<MAMMaintenance> getByActive(Properties ctx) {
-		List<MAMMaintenance> list = new Query(ctx, Table_Name, null, null)
-				.setParameters(true, Env.getAD_Client_ID(ctx))
-				.setOnlyActiveRecords(true)
-				.setClient_ID()
-				.list();
-		return list;
-	} // getByActive
+	public File createPDF ()
+	{
+		try
+		{
+			File temp = File.createTempFile(get_TableName() + get_ID() +"_", ".pdf");
+			return createPDF (temp);
+		}
+		catch (Exception e)
+		{
+			log.severe("Could not create PDF - " + e.getMessage());
+		}
+		return null;
+	}	//	getPDF
 
 	/**
-	 * Get from cache
-	 * @param ctx
-	 * @param maintenanceId
-	 * @return
+	 * 	Create PDF file
+	 *	@param file output file
+	 *	@return file if success
 	 */
-	public static MAMMaintenance get (Properties ctx, int maintenanceId) {
-		if (maintenanceId <= 0) {
+	public File createPDF (File file)
+	{
+	//	ReportEngine re = ReportEngine.get (getCtx(), ReportEngine.INVOICE, getC_Invoice_ID());
+	//	if (re == null)
 			return null;
-		}
-		MAMMaintenance retValue = (MAMMaintenance) cache.get (maintenanceId);
-		if (retValue != null) {
-			return retValue;
-		}
-		retValue = new MAMMaintenance(ctx, maintenanceId, null);
-		if (retValue.get_ID () != 0) {
-			cache.put (maintenanceId, retValue);
-		}
-		return retValue;
-	}	//	get
+	//	return re.getPDF(file);
+	}	//	createPDF
+
+	
+	/**************************************************************************
+	 * 	Process document
+	 *	@param processAction document action
+	 *	@return true if performed
+	 */
+	public boolean processIt (String processAction)
+	{
+		m_processMsg = null;
+		DocumentEngine engine = new DocumentEngine (this, getDocStatus());
+		return engine.processIt (processAction, getDocAction());
+	}	//	processIt
+	
+	/**	Process Message 			*/
+	private String		m_processMsg = null;
+	/**	Just Prepared Flag			*/
+	private boolean		m_justPrepared = false;
+
+	/**
+	 * 	Unlock Document.
+	 * 	@return true if success 
+	 */
+	public boolean unlockIt()
+	{
+		log.info("unlockIt - " + toString());
+	//	setProcessing(false);
+		return true;
+	}	//	unlockIt
 	
 	/**
-	 * Create Tasks and resources from maintenance pattern
-	 * @param patternId
-	 * @return
+	 * 	Invalidate Document
+	 * 	@return true if success 
 	 */
-	public boolean createFromPattern(int patternId) {
-		//	Validate if exist pattern
-		if(getAM_Maintenance_ID() <= 0) {
-			return false;
-		}
-		//	Already have tasks
-		List<MAMMaintenanceTask> tasks = getTasks();
-		if(tasks == null
-				|| tasks.size() > 0) {
-			return false;
-		}
-		MAMPattern pattern = MAMPattern.get(getCtx(), patternId);
-		//	Iterate
-		pattern.getTasks().stream().forEach(patternTask -> {
-			MAMMaintenanceTask maintenanceTask = new MAMMaintenanceTask(getCtx(), 0, get_TrxName());
-			maintenanceTask.setAM_Maintenance_ID(getAM_Maintenance_ID());
-			maintenanceTask.setPatternTask(patternTask);
-			//	Save
-			maintenanceTask.saveEx();
-			//	Get Resource
-			patternTask.getResources().stream().forEach(taskResource -> {
-				MAMMaintenanceResource maintenanceResource = new MAMMaintenanceResource(getCtx(), 0, get_TrxName());
-				maintenanceResource.setAM_MaintenanceTask_ID(maintenanceTask.getAM_MaintenanceTask_ID());
-				maintenanceResource.setPatternResource(taskResource);
-				maintenanceResource.saveEx();
-			});
-		});
-		//	
-		setAM_Pattern_ID(pattern.getAM_Pattern_ID());
-		// copy Asset and Asset Group from Maintenance Pattern
-		setA_Asset_ID(pattern.getA_Asset_ID());
-		// copy Maintenance Area and Costs from Maintenance Pattern
-		setCostAmt(pattern.getCostAmt());
-		setAM_Area_ID(pattern.getAM_Area_ID());
-		saveEx();
-		//	Return ok
+	public boolean invalidateIt()
+	{
+		log.info("invalidateIt - " + toString());
+		setDocAction(DOCACTION_Prepare);
 		return true;
-	}
+	}	//	invalidateIt
 	
-	@Override
-	public String toString() {
-		return "MAMMaintenance [getAM_Maintenance_ID()=" + getAM_Maintenance_ID() + ", getDocumentNo()="
-				+ getDocumentNo() + "]";
+	/**
+	 *	Prepare Document
+	 * 	@return new status (In Progress or Invalid) 
+	 */
+	public String prepareIt()
+	{
+		log.info(toString());
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
+		if (m_processMsg != null)
+			return DocAction.STATUS_Invalid;
+		
+		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+
+		//	Std Period open?
+		if (!MPeriod.isOpen(getCtx(), getDateDoc(), dt.getDocBaseType(), getAD_Org_ID()))
+		{
+			m_processMsg = "@PeriodClosed@";
+			return DocAction.STATUS_Invalid;
+		}
+		//	Add up Amounts
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
+		if (m_processMsg != null)
+			return DocAction.STATUS_Invalid;
+		m_justPrepared = true;
+		if (!DOCACTION_Complete.equals(getDocAction()))
+			setDocAction(DOCACTION_Complete);
+		return DocAction.STATUS_InProgress;
+	}	//	prepareIt
+	
+	/**
+	 * 	Approve Document
+	 * 	@return true if success 
+	 */
+	public boolean  approveIt()
+	{
+		log.info("approveIt - " + toString());
+		setIsApproved(true);
+		return true;
+	}	//	approveIt
+	
+	/**
+	 * 	Reject Approval
+	 * 	@return true if success 
+	 */
+	public boolean rejectIt()
+	{
+		log.info("rejectIt - " + toString());
+		setIsApproved(false);
+		return true;
+	}	//	rejectIt
+	
+	/**
+	 * 	Complete Document
+	 * 	@return new status (Complete, In Progress, Invalid, Waiting ..)
+	 */
+	public String completeIt()
+	{
+		//	Re-Check
+		if (!m_justPrepared)
+		{
+			String status = prepareIt();
+			if (!DocAction.STATUS_InProgress.equals(status))
+				return status;
+		}
+
+		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_COMPLETE);
+		if (m_processMsg != null)
+			return DocAction.STATUS_Invalid;
+		
+		//	Implicit Approval
+		if (!isApproved())
+			approveIt();
+		log.info(toString());
+		//
+		
+		//	User Validation
+		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);
+		if (valid != null)
+		{
+			m_processMsg = valid;
+			return DocAction.STATUS_Invalid;
+		}
+		//	Set Definitive Document No
+		setDefiniteDocumentNo();
+
+		setProcessed(true);
+		setDocAction(DOCACTION_Close);
+		return DocAction.STATUS_Completed;
+	}	//	completeIt
+	
+	/**
+	 * 	Set the definite document number after completed
+	 */
+	private void setDefiniteDocumentNo() {
+		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+		if (dt.isOverwriteDateOnComplete()) {
+			setDateDoc(new Timestamp(System.currentTimeMillis()));
+		}
+		if (dt.isOverwriteSeqOnComplete()) {
+			String value = null;
+			int index = p_info.getColumnIndex("C_DocType_ID");
+			if (index == -1)
+				index = p_info.getColumnIndex("C_DocTypeTarget_ID");
+			if (index != -1)		//	get based on Doc Type (might return null)
+				value = DB.getDocumentNo(get_ValueAsInt(index), get_TrxName(), true);
+			if (value != null) {
+				setDocumentNo(value);
+			}
+		}
 	}
+
+	/**
+	 * 	Void Document.
+	 * 	Same as Close.
+	 * 	@return true if success 
+	 */
+	public boolean voidIt()
+	{
+		log.info("voidIt - " + toString());
+		return closeIt();
+	}	//	voidIt
+	
+	/**
+	 * 	Close Document.
+	 * 	Cancel not delivered Qunatities
+	 * 	@return true if success 
+	 */
+	public boolean closeIt()
+	{
+		log.info("closeIt - " + toString());
+
+		//	Close Not delivered Qty
+		setDocAction(DOCACTION_None);
+		return true;
+	}	//	closeIt
+	
+	/**
+	 * 	Reverse Correction
+	 * 	@return true if success 
+	 */
+	public boolean reverseCorrectIt()
+	{
+		log.info("reverseCorrectIt - " + toString());
+		return false;
+	}	//	reverseCorrectionIt
+	
+	/**
+	 * 	Reverse Accrual - none
+	 * 	@return true if success 
+	 */
+	public boolean reverseAccrualIt()
+	{
+		log.info("reverseAccrualIt - " + toString());
+		return false;
+	}	//	reverseAccrualIt
+	
+	/** 
+	 * 	Re-activate
+	 * 	@return true if success 
+	 */
+	public boolean reActivateIt()
+	{
+		log.info("reActivateIt - " + toString());
+		setProcessed(false);
+		if (reverseCorrectIt())
+			return true;
+		return false;
+	}	//	reActivateIt
+	
+	
+	/*************************************************************************
+	 * 	Get Summary
+	 *	@return Summary of Document
+	 */
+	public String getSummary()
+	{
+		StringBuffer sb = new StringBuffer();
+		sb.append(getDocumentNo());
+	//	sb.append(": ")
+	//		.append(Msg.translate(getCtx(),"TotalLines")).append("=").append(getTotalLines())
+	//		.append(" (#").append(getLines(false).length).append(")");
+		//	 - Description
+		if (getDescription() != null && getDescription().length() > 0)
+			sb.append(" - ").append(getDescription());
+		return sb.toString();
+	}	//	getSummary
+
+	/**
+	 * 	Get Process Message
+	 *	@return clear text error message
+	 */
+	public String getProcessMsg()
+	{
+		return m_processMsg;
+	}	//	getProcessMsg
+	
+	/**
+	 * 	Get Document Owner (Responsible)
+	 *	@return AD_User_ID
+	 */
+	public int getDoc_User_ID()
+	{
+	//	return getSalesRep_ID();
+		return 0;
+	}	//	getDoc_User_ID
+
+	/**
+	 * 	Get Document Approval Amount
+	 *	@return amount
+	 */
+	public BigDecimal getApprovalAmt()
+	{
+		return null;	//getTotalLines();
+	}	//	getApprovalAmt
+	
+	/**
+	 * 	Get Document Currency
+	 *	@return C_Currency_ID
+	 */
+	public int getC_Currency_ID()
+	{
+	//	MPriceList pl = MPriceList.get(getCtx(), getM_PriceList_ID());
+	//	return pl.getC_Currency_ID();
+		return 0;
+	}	//	getC_Currency_ID
+
+    @Override
+    public String toString()
+    {
+      StringBuffer sb = new StringBuffer ("MAMMaintenance[")
+        .append(getSummary()).append("]");
+      return sb.toString();
+    }
 }

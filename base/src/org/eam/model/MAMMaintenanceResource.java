@@ -1,81 +1,62 @@
-/******************************************************************************
- * Product: Adempiere ERP & CRM Smart Business Solution                       *
- * This program is free software; you can redistribute it and/or modify it    *
- * under the terms version 2 of the GNU General Public License as published   *
- * by the Free Software Foundation. This program is distributed in the hope   *
- * that it will be useful, but WITHOUT ANY WARRANTY; without even the implied *
- * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.           *
- * See the GNU General Public License for more details.                       *
- * You should have received a copy of the GNU General Public License along    *
- * with this program; if not, see http://www.gnu.org/licenses or write to the * 
- * Free Software Foundation, Inc.,                                            *
- * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA.                     *
- * For the text or an alternative of this public license, you may reach us    *
- * Copyright (C) 2003-2016                                                    *
- * All Rights Reserved.                                                       *
- *****************************************************************************/
 package org.eam.model;
 
 import java.sql.ResultSet;
-import java.util.List;
+import java.sql.Timestamp;
 import java.util.Properties;
 
-import org.compiere.model.Query;
+import org.compiere.model.MPriceList;
+import org.compiere.model.MPriceListVersion;
+import org.compiere.model.MProduct;
+import org.compiere.model.MProductPrice;
+import org.compiere.util.DB;
 
-/**
- * Maintenance Resource
- * @author OFB Consulting http://www.ofbconsulting.com
- * 	<li> Initial Contributor
- * @contributor Mario Calderon, Systemhaus Westfalia, http://www.westfalia-it.com
- * @contributor Adaxa http://www.adaxa.com
- * @contributor Deepak Pansheriya, Loglite Technologies, http://logilite.com
- * @contributor Victor Perez, victor.perez@e-evolution.com, eEvolution http://www.e-evolution.com
- * @contributor Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
- * @contributor Sachin Bhimani
- */
-public class MAMMaintenanceResource extends X_AM_MaintenanceResource {
+public class MAMMaintenanceResource extends X_AM_Maintenance_Resource{
 
 	/**
 	 * 
 	 */
-	private static final long serialVersionUID = 1978527058177467479L;
-
-	public MAMMaintenanceResource(Properties ctx, int AM_Maintenance_Resource_ID, String trxName) {
-		super(ctx, AM_Maintenance_Resource_ID, trxName);
-	}
+	private static final long serialVersionUID = 1L;
 
 	public MAMMaintenanceResource(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
+		// TODO Auto-generated constructor stub
 	}
 
-	/**
-	 * get the Resources for a given Task
-	 * 
-	 * @param Task
-	 * @return List with Resources
-	 */
-	public static List<MAMMaintenanceResource> getMaintenanceResources(MAMMaintenanceTask task) {
-		String whereClause = MAMMaintenanceTask.COLUMNNAME_AM_MaintenanceTask_ID + "=? ";
-		List<MAMMaintenanceResource> list = new Query(task.getCtx(), Table_Name,
-				whereClause, task.get_TrxName())
-						.setClient_ID()
-						.setParameters(task.getAM_MaintenanceTask_ID())
-						.setOnlyActiveRecords(true)
-						.list();
-		return list;
-	} // getMaintenanceResources
-	
-	/**
-	 * Set Pattern Resource
-	 * @param resource
-	 */
-	public void setPatternResource(MAMPatternResource resource) {
-		setCostAmt(resource.getCostAmt());
-		setM_BOM_ID(resource.getM_BOM_ID());
-		setM_Product_ID(resource.getM_Product_ID());
-		setResourceQuantity(resource.getResourceQuantity());
-		setResourceType(resource.getResourceType());
-		setS_Resource_ID(resource.getS_Resource_ID());
-		setC_UOM_ID(resource.getC_UOM_ID());
+	public MAMMaintenanceResource(Properties ctx, int AM_Maintenance_Resource_ID, String trxName) {
+		super(ctx, AM_Maintenance_Resource_ID, trxName);
+		// TODO Auto-generated constructor stub
 	}
+	
+	protected boolean beforeSave (boolean newRecord){
+		
+		//setting up the price based on the price list
+		MAMMaintenance mm = (MAMMaintenance) getAM_Maintenance();
+		MProduct product = (MProduct) getM_Product();
+		
+		MPriceList pl = (MPriceList) mm.getM_PriceList();
+		MPriceListVersion plv = pl.getPriceListVersion(new Timestamp(System.currentTimeMillis()));
+		
+		if(plv != null){ //is no prices are available
+			MProductPrice[] prices  = plv.getProductPrice(" AND M_Product_ID="+product.get_ID());
+			if(prices == null || prices.length == 0){
+				//no prices
+			}else{
+				MProductPrice price  = prices[prices.length - 1];
+				this.setPrice(price.getPriceList());
+				this.setCostAmt(price.getPriceList().multiply(this.getQtyRequired()));
+			}
+		}
+		
+		if (getLine() == 0)
+		{
+			String sql = "SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM AM_Maintenance_Resource WHERE AM_Maintenance_Task_ID=?";
+			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_Maintenance_Task_ID());
+			setLine (ii);
+		}
+		
+		return true;
+	}
+	
+	
+
 }
