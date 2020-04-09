@@ -33,7 +33,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200403L;
+	private static final long serialVersionUID = 20200407L;
 
     /** Standard Constructor */
     public X_AM_Maintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
@@ -42,7 +42,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
       /** if (AM_Maintenance_ID == 0)
         {
 			setAM_Maintenance_ID (0);
-			setAM_ProgrammingType (null);
 			setC_DocType_ID (0);
 // 1000060
 			setDateDoc (new Timestamp( System.currentTimeMillis() ));
@@ -61,6 +60,8 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 // N
 			setProcessing (false);
 // N
+			setValidFrom (new Timestamp( System.currentTimeMillis() ));
+			setValidTo (new Timestamp( System.currentTimeMillis() ));
         } */
     }
 
@@ -176,33 +177,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
-	/** AM_CalendarType AD_Reference_ID=53823 */
-	public static final int AM_CALENDARTYPE_AD_Reference_ID=53823;
-	/** Daily = D */
-	public static final String AM_CALENDARTYPE_Daily = "D";
-	/** MonthlyFixed = M */
-	public static final String AM_CALENDARTYPE_MonthlyFixed = "M";
-	/** MonthlyRepetitive = R */
-	public static final String AM_CALENDARTYPE_MonthlyRepetitive = "R";
-	/** Weekly = W */
-	public static final String AM_CALENDARTYPE_Weekly = "W";
-	/** Yearly = Y */
-	public static final String AM_CALENDARTYPE_Yearly = "Y";
-	/** Set AM Calendar Type.
-		@param AM_CalendarType AM Calendar Type	  */
-	public void setAM_CalendarType (String AM_CalendarType)
-	{
-
-		set_Value (COLUMNNAME_AM_CalendarType, AM_CalendarType);
-	}
-
-	/** Get AM Calendar Type.
-		@return AM Calendar Type	  */
-	public String getAM_CalendarType () 
-	{
-		return (String)get_Value(COLUMNNAME_AM_CalendarType);
-	}
-
 	/** Set AM Maintenance.
 		@param AM_Maintenance_ID AM Maintenance	  */
 	public void setAM_Maintenance_ID (int AM_Maintenance_ID)
@@ -296,69 +270,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException
-    {
-		return (org.eam.model.I_AM_Meter)MTable.get(getCtx(), org.eam.model.I_AM_Meter.Table_Name)
-			.getPO(getAM_Meter_ID(), get_TrxName());	}
-
-	/** Set AM Meter.
-		@param AM_Meter_ID AM Meter	  */
-	public void setAM_Meter_ID (int AM_Meter_ID)
-	{
-		if (AM_Meter_ID < 1) 
-			set_Value (COLUMNNAME_AM_Meter_ID, null);
-		else 
-			set_Value (COLUMNNAME_AM_Meter_ID, Integer.valueOf(AM_Meter_ID));
-	}
-
-	/** Get AM Meter.
-		@return AM Meter	  */
-	public int getAM_Meter_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Meter_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** AM_ProgrammingType AD_Reference_ID=53827 */
-	public static final int AM_PROGRAMMINGTYPE_AD_Reference_ID=53827;
-	/** Calendar = C */
-	public static final String AM_PROGRAMMINGTYPE_Calendar = "C";
-	/** Meter = M */
-	public static final String AM_PROGRAMMINGTYPE_Meter = "M";
-	/** Set AM Programming Type.
-		@param AM_ProgrammingType AM Programming Type	  */
-	public void setAM_ProgrammingType (String AM_ProgrammingType)
-	{
-
-		set_Value (COLUMNNAME_AM_ProgrammingType, AM_ProgrammingType);
-	}
-
-	/** Get AM Programming Type.
-		@return AM Programming Type	  */
-	public String getAM_ProgrammingType () 
-	{
-		return (String)get_Value(COLUMNNAME_AM_ProgrammingType);
-	}
-
-	/** Set Average Use.
-		@param AverageUse Average Use	  */
-	public void setAverageUse (BigDecimal AverageUse)
-	{
-		set_Value (COLUMNNAME_AverageUse, AverageUse);
-	}
-
-	/** Get Average Use.
-		@return Average Use	  */
-	public BigDecimal getAverageUse () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_AverageUse);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException
@@ -647,23 +558,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return (String)get_Value(COLUMNNAME_DocumentNo);
 	}
 
-	/** Set Interval.
-		@param Interval Interval	  */
-	public void setInterval (BigDecimal Interval)
-	{
-		set_Value (COLUMNNAME_Interval, Interval);
-	}
-
-	/** Get Interval.
-		@return Interval	  */
-	public BigDecimal getInterval () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Interval);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
 	/** Set Approved.
 		@param IsApproved 
 		Indicates if this document requires approval
@@ -700,153 +594,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public boolean isChild () 
 	{
 		Object oo = get_Value(COLUMNNAME_IsChild);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Friday.
-		@param IsFriday Friday	  */
-	public void setIsFriday (boolean IsFriday)
-	{
-		set_Value (COLUMNNAME_IsFriday, Boolean.valueOf(IsFriday));
-	}
-
-	/** Get Friday.
-		@return Friday	  */
-	public boolean isFriday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsFriday);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Monday.
-		@param IsMonday Monday	  */
-	public void setIsMonday (boolean IsMonday)
-	{
-		set_Value (COLUMNNAME_IsMonday, Boolean.valueOf(IsMonday));
-	}
-
-	/** Get Monday.
-		@return Monday	  */
-	public boolean isMonday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsMonday);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Saturday.
-		@param IsSaturday Saturday	  */
-	public void setIsSaturday (boolean IsSaturday)
-	{
-		set_Value (COLUMNNAME_IsSaturday, Boolean.valueOf(IsSaturday));
-	}
-
-	/** Get Saturday.
-		@return Saturday	  */
-	public boolean isSaturday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsSaturday);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Sunday.
-		@param IsSunday Sunday	  */
-	public void setIsSunday (boolean IsSunday)
-	{
-		set_Value (COLUMNNAME_IsSunday, Boolean.valueOf(IsSunday));
-	}
-
-	/** Get Sunday.
-		@return Sunday	  */
-	public boolean isSunday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsSunday);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Thursday.
-		@param IsThursday Thursday	  */
-	public void setIsThursday (boolean IsThursday)
-	{
-		set_Value (COLUMNNAME_IsThursday, Boolean.valueOf(IsThursday));
-	}
-
-	/** Get Thursday.
-		@return Thursday	  */
-	public boolean isThursday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsThursday);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Tuesday.
-		@param IsTuesday Tuesday	  */
-	public void setIsTuesday (boolean IsTuesday)
-	{
-		set_Value (COLUMNNAME_IsTuesday, Boolean.valueOf(IsTuesday));
-	}
-
-	/** Get Tuesday.
-		@return Tuesday	  */
-	public boolean isTuesday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsTuesday);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Wednesday.
-		@param IsWednesday Wednesday	  */
-	public void setIsWednesday (boolean IsWednesday)
-	{
-		set_Value (COLUMNNAME_IsWednesday, Boolean.valueOf(IsWednesday));
-	}
-
-	/** Get Wednesday.
-		@return Wednesday	  */
-	public boolean isWednesday () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsWednesday);
 		if (oo != null) 
 		{
 			 if (oo instanceof Boolean) 
@@ -916,23 +663,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set NextAM.
-		@param NextAM NextAM	  */
-	public void setNextAM (BigDecimal NextAM)
-	{
-		set_Value (COLUMNNAME_NextAM, NextAM);
-	}
-
-	/** Get NextAM.
-		@return NextAM	  */
-	public BigDecimal getNextAM () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_NextAM);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	/** PriorityRule AD_Reference_ID=154 */
@@ -1010,23 +740,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return false;
 	}
 
-	/** Set Range.
-		@param Range Range	  */
-	public void setRange (BigDecimal Range)
-	{
-		set_Value (COLUMNNAME_Range, Range);
-	}
-
-	/** Get Range.
-		@return Range	  */
-	public BigDecimal getRange () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Range);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
 	/** Set Immutable Universally Unique Identifier.
 		@param UUID 
 		Immutable Universally Unique Identifier
@@ -1042,5 +755,39 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
+	}
+
+	/** Set Valid from.
+		@param ValidFrom 
+		Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom)
+	{
+		set_Value (COLUMNNAME_ValidFrom, ValidFrom);
+	}
+
+	/** Get Valid from.
+		@return Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidFrom);
+	}
+
+	/** Set Valid to.
+		@param ValidTo 
+		Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo)
+	{
+		set_Value (COLUMNNAME_ValidTo, ValidTo);
+	}
+
+	/** Get Valid to.
+		@return Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_ValidTo);
 	}
 }

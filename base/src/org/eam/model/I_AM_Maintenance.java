@@ -108,15 +108,6 @@ public interface I_AM_Maintenance
 
 	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException;
 
-    /** Column name AM_CalendarType */
-    public static final String COLUMNNAME_AM_CalendarType = "AM_CalendarType";
-
-	/** Set AM Calendar Type	  */
-	public void setAM_CalendarType (String AM_CalendarType);
-
-	/** Get AM Calendar Type	  */
-	public String getAM_CalendarType();
-
     /** Column name AM_Maintenance_ID */
     public static final String COLUMNNAME_AM_Maintenance_ID = "AM_Maintenance_ID";
 
@@ -158,35 +149,6 @@ public interface I_AM_Maintenance
 	public int getAM_MaintenancePatern_ID();
 
 	public org.eam.model.I_AM_MaintenancePattern getAM_MaintenancePatern() throws RuntimeException;
-
-    /** Column name AM_Meter_ID */
-    public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
-
-	/** Set AM Meter	  */
-	public void setAM_Meter_ID (int AM_Meter_ID);
-
-	/** Get AM Meter	  */
-	public int getAM_Meter_ID();
-
-	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException;
-
-    /** Column name AM_ProgrammingType */
-    public static final String COLUMNNAME_AM_ProgrammingType = "AM_ProgrammingType";
-
-	/** Set AM Programming Type	  */
-	public void setAM_ProgrammingType (String AM_ProgrammingType);
-
-	/** Get AM Programming Type	  */
-	public String getAM_ProgrammingType();
-
-    /** Column name AverageUse */
-    public static final String COLUMNNAME_AverageUse = "AverageUse";
-
-	/** Set Average Use	  */
-	public void setAverageUse (BigDecimal AverageUse);
-
-	/** Get Average Use	  */
-	public BigDecimal getAverageUse();
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -363,15 +325,6 @@ public interface I_AM_Maintenance
 	  */
 	public String getDocumentNo();
 
-    /** Column name Interval */
-    public static final String COLUMNNAME_Interval = "Interval";
-
-	/** Set Interval	  */
-	public void setInterval (BigDecimal Interval);
-
-	/** Get Interval	  */
-	public BigDecimal getInterval();
-
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
 
@@ -407,69 +360,6 @@ public interface I_AM_Maintenance
 	/** Get Child	  */
 	public boolean isChild();
 
-    /** Column name IsFriday */
-    public static final String COLUMNNAME_IsFriday = "IsFriday";
-
-	/** Set Friday	  */
-	public void setIsFriday (boolean IsFriday);
-
-	/** Get Friday	  */
-	public boolean isFriday();
-
-    /** Column name IsMonday */
-    public static final String COLUMNNAME_IsMonday = "IsMonday";
-
-	/** Set Monday	  */
-	public void setIsMonday (boolean IsMonday);
-
-	/** Get Monday	  */
-	public boolean isMonday();
-
-    /** Column name IsSaturday */
-    public static final String COLUMNNAME_IsSaturday = "IsSaturday";
-
-	/** Set Saturday	  */
-	public void setIsSaturday (boolean IsSaturday);
-
-	/** Get Saturday	  */
-	public boolean isSaturday();
-
-    /** Column name IsSunday */
-    public static final String COLUMNNAME_IsSunday = "IsSunday";
-
-	/** Set Sunday	  */
-	public void setIsSunday (boolean IsSunday);
-
-	/** Get Sunday	  */
-	public boolean isSunday();
-
-    /** Column name IsThursday */
-    public static final String COLUMNNAME_IsThursday = "IsThursday";
-
-	/** Set Thursday	  */
-	public void setIsThursday (boolean IsThursday);
-
-	/** Get Thursday	  */
-	public boolean isThursday();
-
-    /** Column name IsTuesday */
-    public static final String COLUMNNAME_IsTuesday = "IsTuesday";
-
-	/** Set Tuesday	  */
-	public void setIsTuesday (boolean IsTuesday);
-
-	/** Get Tuesday	  */
-	public boolean isTuesday();
-
-    /** Column name IsWednesday */
-    public static final String COLUMNNAME_IsWednesday = "IsWednesday";
-
-	/** Set Wednesday	  */
-	public void setIsWednesday (boolean IsWednesday);
-
-	/** Get Wednesday	  */
-	public boolean isWednesday();
-
     /** Column name LastAM */
     public static final String COLUMNNAME_LastAM = "LastAM";
 
@@ -502,15 +392,6 @@ public interface I_AM_Maintenance
 	public int getM_PriceList_ID();
 
 	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException;
-
-    /** Column name NextAM */
-    public static final String COLUMNNAME_NextAM = "NextAM";
-
-	/** Set NextAM	  */
-	public void setNextAM (BigDecimal NextAM);
-
-	/** Get NextAM	  */
-	public BigDecimal getNextAM();
 
     /** Column name PriorityRule */
     public static final String COLUMNNAME_PriorityRule = "PriorityRule";
@@ -547,15 +428,6 @@ public interface I_AM_Maintenance
 	/** Get Process Now	  */
 	public boolean isProcessing();
 
-    /** Column name Range */
-    public static final String COLUMNNAME_Range = "Range";
-
-	/** Set Range	  */
-	public void setRange (BigDecimal Range);
-
-	/** Get Range	  */
-	public BigDecimal getRange();
-
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
@@ -584,4 +456,30 @@ public interface I_AM_Maintenance
 	  * Immutable Universally Unique Identifier
 	  */
 	public String getUUID();
+
+    /** Column name ValidFrom */
+    public static final String COLUMNNAME_ValidFrom = "ValidFrom";
+
+	/** Set Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public void setValidFrom (Timestamp ValidFrom);
+
+	/** Get Valid from.
+	  * Valid from including this date (first day)
+	  */
+	public Timestamp getValidFrom();
+
+    /** Column name ValidTo */
+    public static final String COLUMNNAME_ValidTo = "ValidTo";
+
+	/** Set Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public void setValidTo (Timestamp ValidTo);
+
+	/** Get Valid to.
+	  * Valid to including this date (last day)
+	  */
+	public Timestamp getValidTo();
 }

@@ -35,7 +35,7 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction {
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200403L;
+	private static final long serialVersionUID = 20200407L;
 
     /** Standard Constructor */
     public MAMMaintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
