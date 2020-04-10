@@ -1,8 +1,10 @@
 package org.eam.model;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
 
+import org.compiere.model.Query;
 import org.compiere.util.DB;
 
 public class MAMMaintenanceTask extends X_AM_Maintenance_Task{
@@ -19,7 +21,7 @@ public class MAMMaintenanceTask extends X_AM_Maintenance_Task{
 	
 	protected boolean beforeSave (boolean newRecord){
 		
-		//Get Line No
+		//set Line No
 		if (getLine() == 0){
 			String sql = "SELECT COALESCE(MAX(Line),0)+10 AS DefaultValue FROM AM_Maintenance_Task WHERE AM_Maintenance_ID=?";
 			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_Maintenance_ID());
@@ -29,10 +31,16 @@ public class MAMMaintenanceTask extends X_AM_Maintenance_Task{
 	}
 	
 	 protected boolean beforeDelete (){
-			
 		 String sql = "DELETE FROM AM_Maintenance_Resource WHERE AM_Maintenance_Task_ID=?";
 		 DB.executeUpdate(sql, this.get_ID(), null);
-	
 		return true;
 	}
+	 
+	 public static int getTaskCount(Properties ctx,int AM_Maintenance_ID , String trxName){
+		List<MAMMaintenancePatternTask> list = new Query(ctx, Table_Name, "AM_Maintenance_ID=?", trxName)
+			.setParameters(AM_Maintenance_ID)
+			.setOnlyActiveRecords(true)
+		.list();
+		return list.size();
+    }
 }

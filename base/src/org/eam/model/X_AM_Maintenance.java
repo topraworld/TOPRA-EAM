@@ -33,7 +33,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200407L;
+	private static final long serialVersionUID = 20200409L;
 
     /** Standard Constructor */
     public X_AM_Maintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
@@ -272,6 +272,31 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
+	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_Meter)MTable.get(getCtx(), org.eam.model.I_AM_Meter.Table_Name)
+			.getPO(getAM_Meter_ID(), get_TrxName());	}
+
+	/** Set Meter.
+		@param AM_Meter_ID Meter	  */
+	public void setAM_Meter_ID (int AM_Meter_ID)
+	{
+		if (AM_Meter_ID < 1) 
+			set_Value (COLUMNNAME_AM_Meter_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_Meter_ID, Integer.valueOf(AM_Meter_ID));
+	}
+
+	/** Get Meter.
+		@return Meter	  */
+	public int getAM_Meter_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Meter_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException
     {
 		return (org.compiere.model.I_C_DocType)MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
@@ -298,6 +323,57 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Interval.
+		@param CBInterval Interval	  */
+	public void setCBInterval (BigDecimal CBInterval)
+	{
+		set_Value (COLUMNNAME_CBInterval, CBInterval);
+	}
+
+	/** Get Interval.
+		@return Interval	  */
+	public BigDecimal getCBInterval () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CBInterval);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** CBTimeUnit AD_Reference_ID=53376 */
+	public static final int CBTIMEUNIT_AD_Reference_ID=53376;
+	/** Day = D */
+	public static final String CBTIMEUNIT_Day = "D";
+	/** Week = W */
+	public static final String CBTIMEUNIT_Week = "W";
+	/** Month = M */
+	public static final String CBTIMEUNIT_Month = "M";
+	/** Quarter = Q */
+	public static final String CBTIMEUNIT_Quarter = "Q";
+	/** Year = Y */
+	public static final String CBTIMEUNIT_Year = "Y";
+	/** Hour = H */
+	public static final String CBTIMEUNIT_Hour = "H";
+	/** Minute = I */
+	public static final String CBTIMEUNIT_Minute = "I";
+	/** Set Time Unit.
+		@param CBTimeUnit 
+		The unit of time for grouping chart data.
+	  */
+	public void setCBTimeUnit (String CBTimeUnit)
+	{
+
+		set_Value (COLUMNNAME_CBTimeUnit, CBTimeUnit);
+	}
+
+	/** Get Time Unit.
+		@return The unit of time for grouping chart data.
+	  */
+	public String getCBTimeUnit () 
+	{
+		return (String)get_Value(COLUMNNAME_CBTimeUnit);
 	}
 
 	/** Set Copy From.
@@ -663,6 +739,82 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Interval.
+		@param MBInterval Interval	  */
+	public void setMBInterval (BigDecimal MBInterval)
+	{
+		set_Value (COLUMNNAME_MBInterval, MBInterval);
+	}
+
+	/** Get Interval.
+		@return Interval	  */
+	public BigDecimal getMBInterval () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_MBInterval);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Start Value.
+		@param MBStartValue Start Value	  */
+	public void setMBStartValue (int MBStartValue)
+	{
+		set_Value (COLUMNNAME_MBStartValue, Integer.valueOf(MBStartValue));
+	}
+
+	/** Get Start Value.
+		@return Start Value	  */
+	public int getMBStartValue () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_MBStartValue);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Perform Date Base.
+		@param PerformDateBase Perform Date Base	  */
+	public void setPerformDateBase (boolean PerformDateBase)
+	{
+		set_Value (COLUMNNAME_PerformDateBase, Boolean.valueOf(PerformDateBase));
+	}
+
+	/** Get Perform Date Base.
+		@return Perform Date Base	  */
+	public boolean isPerformDateBase () 
+	{
+		Object oo = get_Value(COLUMNNAME_PerformDateBase);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
+	}
+
+	/** Set Perform Value Base.
+		@param PerformValueBase Perform Value Base	  */
+	public void setPerformValueBase (boolean PerformValueBase)
+	{
+		set_Value (COLUMNNAME_PerformValueBase, Boolean.valueOf(PerformValueBase));
+	}
+
+	/** Get Perform Value Base.
+		@return Perform Value Base	  */
+	public boolean isPerformValueBase () 
+	{
+		Object oo = get_Value(COLUMNNAME_PerformValueBase);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** PriorityRule AD_Reference_ID=154 */

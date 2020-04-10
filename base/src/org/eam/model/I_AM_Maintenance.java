@@ -150,6 +150,17 @@ public interface I_AM_Maintenance
 
 	public org.eam.model.I_AM_MaintenancePattern getAM_MaintenancePatern() throws RuntimeException;
 
+    /** Column name AM_Meter_ID */
+    public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
+
+	/** Set Meter	  */
+	public void setAM_Meter_ID (int AM_Meter_ID);
+
+	/** Get Meter	  */
+	public int getAM_Meter_ID();
+
+	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException;
+
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
 
@@ -164,6 +175,28 @@ public interface I_AM_Maintenance
 	public int getC_DocType_ID();
 
 	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
+
+    /** Column name CBInterval */
+    public static final String COLUMNNAME_CBInterval = "CBInterval";
+
+	/** Set Interval	  */
+	public void setCBInterval (BigDecimal CBInterval);
+
+	/** Get Interval	  */
+	public BigDecimal getCBInterval();
+
+    /** Column name CBTimeUnit */
+    public static final String COLUMNNAME_CBTimeUnit = "CBTimeUnit";
+
+	/** Set Time Unit.
+	  * The unit of time for grouping chart data.
+	  */
+	public void setCBTimeUnit (String CBTimeUnit);
+
+	/** Get Time Unit.
+	  * The unit of time for grouping chart data.
+	  */
+	public String getCBTimeUnit();
 
     /** Column name CopyFrom */
     public static final String COLUMNNAME_CopyFrom = "CopyFrom";
@@ -392,6 +425,42 @@ public interface I_AM_Maintenance
 	public int getM_PriceList_ID();
 
 	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException;
+
+    /** Column name MBInterval */
+    public static final String COLUMNNAME_MBInterval = "MBInterval";
+
+	/** Set Interval	  */
+	public void setMBInterval (BigDecimal MBInterval);
+
+	/** Get Interval	  */
+	public BigDecimal getMBInterval();
+
+    /** Column name MBStartValue */
+    public static final String COLUMNNAME_MBStartValue = "MBStartValue";
+
+	/** Set Start Value	  */
+	public void setMBStartValue (int MBStartValue);
+
+	/** Get Start Value	  */
+	public int getMBStartValue();
+
+    /** Column name PerformDateBase */
+    public static final String COLUMNNAME_PerformDateBase = "PerformDateBase";
+
+	/** Set Perform Date Base	  */
+	public void setPerformDateBase (boolean PerformDateBase);
+
+	/** Get Perform Date Base	  */
+	public boolean isPerformDateBase();
+
+    /** Column name PerformValueBase */
+    public static final String COLUMNNAME_PerformValueBase = "PerformValueBase";
+
+	/** Set Perform Value Base	  */
+	public void setPerformValueBase (boolean PerformValueBase);
+
+	/** Get Perform Value Base	  */
+	public boolean isPerformValueBase();
 
     /** Column name PriorityRule */
     public static final String COLUMNNAME_PriorityRule = "PriorityRule";

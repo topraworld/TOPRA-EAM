@@ -84,7 +84,6 @@ public class GenerateWorkDayForYear extends SvrProcess{
 				cal.add(Calendar.DATE, 1);
 				count++;
 			}
-			break;
 		}
 		return "Created days : " + count;
 	}
