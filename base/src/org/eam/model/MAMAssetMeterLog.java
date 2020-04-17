@@ -20,6 +20,7 @@ import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.util.Properties;
 
+import org.compiere.util.DB;
 import org.compiere.util.Env;
 
 
@@ -31,7 +32,7 @@ import org.compiere.util.Env;
  * @contributor Victor Perez, victor.perez@e-evolution.com, eEvolution http://www.e-evolution.com
  * @contributor Yamel Senih, ysenih@erpcya.com, ERPCyA http://www.erpcya.com
  */
-public class MAMAssetMeterLog extends X_AM_AssetMeterLog {
+public class MAMAssetMeterLog extends X_AM_AssetMeter_Log {
 
 	/**
 	 * 
@@ -48,19 +49,21 @@ public class MAMAssetMeterLog extends X_AM_AssetMeterLog {
 	
 	@Override
 	protected boolean beforeSave(boolean newRecord) {
-		MAMAssetMeter assetMeter = new MAMAssetMeter(getCtx(), getAM_AssetMeter_ID(), get_TrxName());
-		BigDecimal currentMeasuring = assetMeter.getAmt();
-		if(currentMeasuring == null) {
-			currentMeasuring = Env.ZERO;
+		
+		//update header information
+		MAMAssetMeter meter = new MAMAssetMeter(getCtx(), getAM_AssetMeter_ID(), null);
+		meter.setAmt(this.getAmt());
+		meter.setDateTrx(getDateTrx());
+		
+		//based on the meter type, calculate the accumulate
+		if(meter.getAM_Meter().getType().equalsIgnoreCase("AC")){
+			String sql = "SELECT SUM(amt) FROM AM_AssetMeter_Log WHERE AM_AssetMeter_ID=? AND IsActive = 'Y'";
+			BigDecimal accumulated =  DB.getSQLValueBD(null, sql, meter.get_ID());
+			meter.setAccumilated(accumulated);
 		}
-		//	Set new current amount
-		currentMeasuring = currentMeasuring.add(getMeasuringLog());
-		//	set to asset meter
-		assetMeter.setAmt(currentMeasuring);
-		assetMeter.setDateTrx(getDateTrx());
-		assetMeter.saveEx();
-		//	Set to current record
-		setCurrentMeasuring(currentMeasuring);
-		return super.beforeSave(newRecord);
+		
+		meter.save();
+		
+		return true;
 	}
 }

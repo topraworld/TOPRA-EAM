@@ -17,8 +17,11 @@
 package org.eam.model;
 
 import java.sql.ResultSet;
+import java.util.List;
 import java.util.Properties;
 
+import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.Query;
 import org.compiere.util.CCache;
 
 /**
@@ -46,6 +49,20 @@ public class MAMAssetMeter extends X_AM_AssetMeter {
 	
 	/**	Cache						*/
 	private static CCache<Integer, MAMAssetMeter> cache = new CCache<Integer, MAMAssetMeter>(Table_Name, 40, 5);	//	5 minutes
+	
+	//avoid adding duplicates
+	protected boolean beforeSave (boolean newRecord){
+		//avoid adding duplicates
+		int count = new Query(getCtx(), Table_Name, "A_Asset_ID = ? AND AM_Meter_ID = ? AND AM_AssetMeter_ID <> ? ", null)
+			.setParameters(getA_Asset_ID() , getAM_Meter_ID() , get_ID())
+			.setOnlyActiveRecords(true)
+		.list().size();
+		
+		if(count >=1)
+			throw new AdempiereException("Difinitaion of duplicate meter - " + getAM_Meter().getName());
+		
+		return true;
+	}
 	
 	/**
 	 * Get from cache

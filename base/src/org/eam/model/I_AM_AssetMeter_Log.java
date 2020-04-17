@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for AM_Meter
+/** Generated Interface for AM_AssetMeter_Log
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3
  */
-public interface I_AM_Meter 
+public interface I_AM_AssetMeter_Log 
 {
 
-    /** TableName=AM_Meter */
-    public static final String Table_Name = "AM_Meter";
+    /** TableName=AM_AssetMeter_Log */
+    public static final String Table_Name = "AM_AssetMeter_Log";
 
-    /** AD_Table_ID=54103 */
+    /** AD_Table_ID=54105 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -63,14 +63,51 @@ public interface I_AM_Meter
 	  */
 	public int getAD_Org_ID();
 
-    /** Column name AM_Meter_ID */
-    public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
+    /** Column name AD_User_ID */
+    public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
 
-	/** Set AM Meter	  */
-	public void setAM_Meter_ID (int AM_Meter_ID);
+	/** Set User/Contact.
+	  * User within the system - Internal or Business Partner Contact
+	  */
+	public void setAD_User_ID (int AD_User_ID);
 
-	/** Get AM Meter	  */
-	public int getAM_Meter_ID();
+	/** Get User/Contact.
+	  * User within the system - Internal or Business Partner Contact
+	  */
+	public int getAD_User_ID();
+
+	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException;
+
+    /** Column name AM_AssetMeter_ID */
+    public static final String COLUMNNAME_AM_AssetMeter_ID = "AM_AssetMeter_ID";
+
+	/** Set AM Asset Meter	  */
+	public void setAM_AssetMeter_ID (int AM_AssetMeter_ID);
+
+	/** Get AM Asset Meter	  */
+	public int getAM_AssetMeter_ID();
+
+    /** Column name AM_AssetMeter_Log_ID */
+    public static final String COLUMNNAME_AM_AssetMeter_Log_ID = "AM_AssetMeter_Log_ID";
+
+	/** Set AM Asset Meter Log	  */
+	public void setAM_AssetMeter_Log_ID (int AM_AssetMeter_Log_ID);
+
+	/** Get AM Asset Meter Log	  */
+	public int getAM_AssetMeter_Log_ID();
+
+    /** Column name Amt */
+    public static final String COLUMNNAME_Amt = "Amt";
+
+	/** Set Amount.
+	  * Amount
+	  */
+	public void setAmt (BigDecimal Amt);
+
+	/** Get Amount.
+	  * Amount
+	  */
+	public BigDecimal getAmt();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -87,6 +124,28 @@ public interface I_AM_Meter
 	  * User who created this records
 	  */
 	public int getCreatedBy();
+
+    /** Column name CurrentAmt */
+    public static final String COLUMNNAME_CurrentAmt = "CurrentAmt";
+
+	/** Set Current Amt	  */
+	public void setCurrentAmt (BigDecimal CurrentAmt);
+
+	/** Get Current Amt	  */
+	public BigDecimal getCurrentAmt();
+
+    /** Column name DateTrx */
+    public static final String COLUMNNAME_DateTrx = "DateTrx";
+
+	/** Set Transaction Date.
+	  * Transaction Date
+	  */
+	public void setDateTrx (Timestamp DateTrx);
+
+	/** Get Transaction Date.
+	  * Transaction Date
+	  */
+	public Timestamp getDateTrx();
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -113,41 +172,6 @@ public interface I_AM_Meter
 	  * The record is active in the system
 	  */
 	public boolean isActive();
-
-    /** Column name MaxDay */
-    public static final String COLUMNNAME_MaxDay = "MaxDay";
-
-	/** Set Max Day	  */
-	public void setMaxDay (int MaxDay);
-
-	/** Get Max Day	  */
-	public int getMaxDay();
-
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
-
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
-	  */
-	public void setName (String Name);
-
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
-	  */
-	public String getName();
-
-    /** Column name Type */
-    public static final String COLUMNNAME_Type = "Type";
-
-	/** Set Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public void setType (String Type);
-
-	/** Get Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public String getType();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

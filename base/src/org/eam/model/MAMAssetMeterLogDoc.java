@@ -18,41 +18,37 @@ package org.eam.model;
 
 import java.io.File;
 import java.math.BigDecimal;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Locale;
+import java.util.List;
 import java.util.Properties;
-
-import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
-import org.compiere.util.Env;
-import org.compiere.util.Language;
-import org.compiere.util.Trx;
+import org.compiere.util.KeyNamePair;
 
-/** Generated Model for AM_Maintenance
+/** Generated Model for AM_AssetMeterLogDoc
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3 - $Id$ */
-public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocOptions{
+public class MAMAssetMeterLogDoc extends X_AM_AssetMeterLogDoc implements DocAction , DocOptions {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200409L;
+	private static final long serialVersionUID = 20200417L;
 
     /** Standard Constructor */
-    public MAMMaintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
+    public MAMAssetMeterLogDoc (Properties ctx, int AM_AssetMeterLogDoc_ID, String trxName)
     {
-      super (ctx, AM_Maintenance_ID, trxName);
+      super (ctx, AM_AssetMeterLogDoc_ID, trxName);
     }
 
     /** Load Constructor */
-    public MAMMaintenance (Properties ctx, ResultSet rs, String trxName)
+    public MAMAssetMeterLogDoc (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -144,32 +140,61 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	 */
 	public String prepareIt()
 	{
+		if(getDocStatus().equalsIgnoreCase("DR")){
 		
-		log.info(toString());
+			//delete existing lines
+			String sql = "DELETE FROM AM_AssetMeterLogDocLine WHERE AM_AssetMeterLogDoc_ID = ?";
+			DB.executeUpdate(sql, get_ID(), null);
+			
+			sql = "SELECT am.AM_Meter_ID , a.A_Asset_ID , am.AM_AssetMeter_ID FROM "
+				+ "AM_AssetMeter am INNER JOIN A_Asset a ON a.A_Asset_ID = am.A_Asset_ID "
+				+ "WHERE am.IsActive='Y' "
+				+ "AND a.IsActive='Y' ";
+			
+			if(getAM_Meter_ID()>0)
+				sql+=" AND am.AM_Meter_ID = " + getAM_Meter_ID();
+			if(getA_Asset_Group_ID()>0)
+				sql+=" AND a.A_Asset_Group_ID = " + getA_Asset_Group_ID();
+			if(getA_Asset_ID()>0)
+				sql+=" AND am.A_Asset_ID = " + getA_Asset_ID();
+			
+			PreparedStatement ps = null; ResultSet rs = null;
+			
+			ps = DB.prepareStatement(sql, null);
+			try {
+				rs = ps.executeQuery();
+				
+				MAMAssetMeterLogDocLine logLine = null;
+				
+				while(rs.next()){
+					logLine = new MAMAssetMeterLogDocLine(getCtx(), 0, null);
+					logLine.setAM_AssetMeterLogDoc_ID(this.get_ID());
+					logLine.setA_Asset_ID(rs.getInt("A_Asset_ID"));
+					logLine.setAM_Meter_ID(rs.getInt("AM_Meter_ID"));
+					logLine.setAM_AssetMeter_ID(rs.getInt("AM_AssetMeter_ID"));
+					logLine.save();
+				}
+				
+			}catch (SQLException e) { e.printStackTrace(); }
+			finally{
+				DB.close(rs, ps);
+				ps = null;
+				rs = null;
+			}
+		}
+		
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
 		if (m_processMsg != null)
 			return DocAction.STATUS_Invalid;
 		
-		//validation on PM action has task and resources
-		int count = MAMMaintenanceTask.getTaskCount(getCtx(), this.get_ID(), null);
-		if(count == 0)
-			throw new AdempiereException("Error - PM Action has no tasks!");
-		
-		//validation on PM action has no time based and meter based selection
-		if(this.getAM_Meter_ID() == 0 && this.getCBTimeUnit() == null)
-			throw new AdempiereException("Error - No Time Unit or Meter is selected!");
-		
-		//delete existing schedule
-		String sql = "DELETE FROM AM_CalenderSchedule WHERE AM_Maintenance_ID = ?";
-		DB.executeUpdate(sql,this.get_ID() , get_TrxName());
-		
-		//CALENDAR BASED MAINTAINCE IS AVAILABLE
-		if(this.getCBTimeUnit() != null || this.getCBTimeUnit().length() == 0)
-			this.createCalendarBasedSchedule();
-		//METER BASED MAINTAINCE IS AVAILABLE
-		if(this.getAM_Meter_ID() > 0) // there are
-			this.createMeterBasedSchedule();
-		
+		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
+
+		//	Std Period open?
+		if (!MPeriod.isOpen(getCtx(), getDateDoc(), dt.getDocBaseType(), getAD_Org_ID()))
+		{
+			m_processMsg = "@PeriodClosed@";
+			return DocAction.STATUS_Invalid;
+		}
 		//	Add up Amounts
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
@@ -179,76 +204,6 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 			setDocAction(DOCACTION_Complete);
 		return DocAction.STATUS_InProgress;
 	}	//	prepareIt
-	
-	private void createMeterBasedSchedule(){
-		
-		//Start value
-		if(this.getMBStartValue() == 0)
-			throw new AdempiereException("Please specify a Start Value for Meter based maintaince!");
-		if(this.getMBInterval().intValue() == 0)
-			throw new AdempiereException("Please specify a interval for Meter based maintaince!");
-		
-		//CREATE START METER BASED SCHEDULE
-		MAMCalenderSchedule sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
-		sc.setAM_Maintenance_ID(this.get_ID());
-		//sc.setSeqNo(MAMMaintenanceTask.getTaskCount(getCtx(), this.get_ID(), get_TrxName()) + 1);
-		sc.setStatus(MAMCalenderSchedule.STATUS_Open);
-		sc.setType(MAMCalenderSchedule.TYPE_Meter);
-		sc.setIsWOGeneratable(true);
-		sc.setDuePercentage(new BigDecimal(0));
-		sc.setDateScheduled(this.getValidFrom());
-		sc.save();
-	}
-	
-	//create calendar based maintains schedule
-	private void createCalendarBasedSchedule(){
-		
-		//Time Unit
-		if(this.getCBInterval().intValue() == 0)
-			throw new AdempiereException("Please specify a interval for Calendar based maintaince!");
-		
-		//create schedule
-		MClient client = MClient.get(getCtx());
-		Locale locale = client.getLocale();
-		
-		if (locale == null && Language.getLoginLanguage() != null)
-			locale = Language.getLoginLanguage().getLocale();
-		if (locale == null)
-			locale = Env.getLanguage(getCtx()).getLocale();
-		
-		GregorianCalendar cal = new GregorianCalendar(locale);
-		int count = 1 , timeUnit = 1;
-		cal.setTimeInMillis(this.getValidFrom().getTime());
-		
-		MAMCalenderSchedule sc = null;
-		while(cal.getTimeInMillis() <= this.getValidTo().getTime()){
-			sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
-			sc.setAM_Maintenance_ID(this.get_ID());
-			sc.setSeqNo(count);
-			sc.setStatus(MAMCalenderSchedule.STATUS_Open);
-			sc.setType(MAMCalenderSchedule.TYPE_Calander);
-			sc.setIsWOGeneratable(true);
-			sc.setDuePercentage(new BigDecimal(0));
-			sc.setDateScheduled(new Timestamp(cal.getTimeInMillis()));
-			sc.save(get_TrxName());
-			
-			if(this.getCBTimeUnit().equalsIgnoreCase("I")) 
-				timeUnit = Calendar.MINUTE;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("H"))
-				timeUnit = Calendar.HOUR;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("D"))
-				timeUnit = Calendar.DATE;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("W"))
-				timeUnit = Calendar.WEEK_OF_YEAR;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("M"))
-				timeUnit = Calendar.MONTH;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("Y"))
-				timeUnit = Calendar.YEAR;
-			cal.add(timeUnit, this.getCBInterval().intValue());
-			
-			count++;
-		}
-	}
 	
 	/**
 	 * 	Approve Document
@@ -278,13 +233,27 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	 */
 	public String completeIt()
 	{
-		//	Re-Check
-		if (!m_justPrepared)
-		{
-			String status = prepareIt();
-			if (!DocAction.STATUS_InProgress.equals(status))
-				return status;
+		//copy records to the asset meter log
+		//AM_AssetMeter_Log
+		List<MAMAssetMeterLogDocLine> list = new Query(getCtx(), MAMAssetMeterLogDocLine.Table_Name, "AM_AssetMeterLogDoc_ID=?", null)
+			.setParameters(get_ID())
+			.setOnlyActiveRecords(true)
+			.list();
+		
+		MAMAssetMeterLog log = null;
+		
+		for(MAMAssetMeterLogDocLine line :  list){
+			
+			log = new MAMAssetMeterLog(getCtx(), 0, null);
+			log.setAM_AssetMeter_ID(line.getAM_AssetMeter_ID());
+			log.setDateTrx(this.getDateDoc());
+			log.setAmt(line.getReading());
+			log.save();
+			
+			line.setAM_AssetMeter_Log_ID(log.get_ID());
+			line.save();
 		}
+		
 
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_COMPLETE);
 		if (m_processMsg != null)
@@ -293,7 +262,6 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		//	Implicit Approval
 		if (!isApproved())
 			approveIt();
-		log.info(toString());
 		//
 		
 		//	User Validation
@@ -385,8 +353,9 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	{
 		log.info("reActivateIt - " + toString());
 		setProcessed(false);
-		
-		return true;
+		if (reverseCorrectIt())
+			return true;
+		return false;
 	}	//	reActivateIt
 	
 	
@@ -449,15 +418,16 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
     @Override
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("MAMMaintenance[")
+      StringBuffer sb = new StringBuffer ("MAMAssetMeterLogDoc[")
         .append(getSummary()).append("]");
       return sb.toString();
     }
 
-    @Override
-  	public int customizeValidActions(String docStatus, Object processing, String orderType, String isSOTrx,
-  			int AD_Table_ID, String[] docAction, String[] options, int index) {
-  		if (docStatus.equals(DocumentEngine.STATUS_Drafted)
+	@Override
+	public int customizeValidActions(String docStatus, Object processing, String orderType, String isSOTrx,
+			int AD_Table_ID, String[] docAction, String[] options, int index) {
+		// TODO Auto-generated method stub
+		if (docStatus.equals(DocumentEngine.STATUS_Drafted)
       			|| docStatus.equals(DocumentEngine.STATUS_Invalid)) {
       		options[index++] = DocumentEngine.ACTION_Prepare;
       	}
@@ -468,5 +438,6 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
       		options[index++] = DocumentEngine.ACTION_ReActivate;
       	}
   		return index;
-  	}
+	}
+    
 }

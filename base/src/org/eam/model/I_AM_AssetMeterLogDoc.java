@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for AM_Meter
+/** Generated Interface for AM_AssetMeterLogDoc
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3
  */
-public interface I_AM_Meter 
+public interface I_AM_AssetMeterLogDoc 
 {
 
-    /** TableName=AM_Meter */
-    public static final String Table_Name = "AM_Meter";
+    /** TableName=AM_AssetMeterLogDoc */
+    public static final String Table_Name = "AM_AssetMeterLogDoc";
 
-    /** AD_Table_ID=54103 */
+    /** AD_Table_ID=1000023 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -41,6 +41,36 @@ public interface I_AM_Meter
     BigDecimal accessLevel = BigDecimal.valueOf(3);
 
     /** Load Meta Data */
+
+    /** Column name A_Asset_Group_ID */
+    public static final String COLUMNNAME_A_Asset_Group_ID = "A_Asset_Group_ID";
+
+	/** Set Asset Group.
+	  * Group of Assets
+	  */
+	public void setA_Asset_Group_ID (int A_Asset_Group_ID);
+
+	/** Get Asset Group.
+	  * Group of Assets
+	  */
+	public int getA_Asset_Group_ID();
+
+	public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException;
+
+    /** Column name A_Asset_ID */
+    public static final String COLUMNNAME_A_Asset_ID = "A_Asset_ID";
+
+	/** Set Fixed Asset.
+	  * Fixed Asset used internally or by customers
+	  */
+	public void setA_Asset_ID (int A_Asset_ID);
+
+	/** Get Fixed Asset.
+	  * Fixed Asset used internally or by customers
+	  */
+	public int getA_Asset_ID();
+
+	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -63,6 +93,15 @@ public interface I_AM_Meter
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AM_AssetMeterLogDoc_ID */
+    public static final String COLUMNNAME_AM_AssetMeterLogDoc_ID = "AM_AssetMeterLogDoc_ID";
+
+	/** Set AM_AssetMeterLogDoc ID	  */
+	public void setAM_AssetMeterLogDoc_ID (int AM_AssetMeterLogDoc_ID);
+
+	/** Get AM_AssetMeterLogDoc ID	  */
+	public int getAM_AssetMeterLogDoc_ID();
+
     /** Column name AM_Meter_ID */
     public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
 
@@ -71,6 +110,23 @@ public interface I_AM_Meter
 
 	/** Get AM Meter	  */
 	public int getAM_Meter_ID();
+
+	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException;
+
+    /** Column name C_DocType_ID */
+    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
+
+	/** Set Document Type.
+	  * Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID);
+
+	/** Get Document Type.
+	  * Document type or rules
+	  */
+	public int getC_DocType_ID();
+
+	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -88,6 +144,19 @@ public interface I_AM_Meter
 	  */
 	public int getCreatedBy();
 
+    /** Column name DateDoc */
+    public static final String COLUMNNAME_DateDoc = "DateDoc";
+
+	/** Set Document Date.
+	  * Date of the Document
+	  */
+	public void setDateDoc (Timestamp DateDoc);
+
+	/** Get Document Date.
+	  * Date of the Document
+	  */
+	public Timestamp getDateDoc();
+
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
 
@@ -100,6 +169,45 @@ public interface I_AM_Meter
 	  * Optional short description of the record
 	  */
 	public String getDescription();
+
+    /** Column name DocAction */
+    public static final String COLUMNNAME_DocAction = "DocAction";
+
+	/** Set Document Action.
+	  * The targeted status of the document
+	  */
+	public void setDocAction (String DocAction);
+
+	/** Get Document Action.
+	  * The targeted status of the document
+	  */
+	public String getDocAction();
+
+    /** Column name DocStatus */
+    public static final String COLUMNNAME_DocStatus = "DocStatus";
+
+	/** Set Document Status.
+	  * The current status of the document
+	  */
+	public void setDocStatus (String DocStatus);
+
+	/** Get Document Status.
+	  * The current status of the document
+	  */
+	public String getDocStatus();
+
+    /** Column name DocumentNo */
+    public static final String COLUMNNAME_DocumentNo = "DocumentNo";
+
+	/** Set Document No.
+	  * Document sequence number of the document
+	  */
+	public void setDocumentNo (String DocumentNo);
+
+	/** Get Document No.
+	  * Document sequence number of the document
+	  */
+	public String getDocumentNo();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -114,40 +222,40 @@ public interface I_AM_Meter
 	  */
 	public boolean isActive();
 
-    /** Column name MaxDay */
-    public static final String COLUMNNAME_MaxDay = "MaxDay";
+    /** Column name IsApproved */
+    public static final String COLUMNNAME_IsApproved = "IsApproved";
 
-	/** Set Max Day	  */
-	public void setMaxDay (int MaxDay);
-
-	/** Get Max Day	  */
-	public int getMaxDay();
-
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
-
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+	/** Set Approved.
+	  * Indicates if this document requires approval
 	  */
-	public void setName (String Name);
+	public void setIsApproved (boolean IsApproved);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Approved.
+	  * Indicates if this document requires approval
 	  */
-	public String getName();
+	public boolean isApproved();
 
-    /** Column name Type */
-    public static final String COLUMNNAME_Type = "Type";
+    /** Column name Processed */
+    public static final String COLUMNNAME_Processed = "Processed";
 
-	/** Set Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
+	/** Set Processed.
+	  * The document has been processed
 	  */
-	public void setType (String Type);
+	public void setProcessed (boolean Processed);
 
-	/** Get Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
+	/** Get Processed.
+	  * The document has been processed
 	  */
-	public String getType();
+	public boolean isProcessed();
+
+    /** Column name Processing */
+    public static final String COLUMNNAME_Processing = "Processing";
+
+	/** Set Process Now	  */
+	public void setProcessing (boolean Processing);
+
+	/** Get Process Now	  */
+	public boolean isProcessing();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

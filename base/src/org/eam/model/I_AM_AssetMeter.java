@@ -57,6 +57,15 @@ public interface I_AM_AssetMeter
 
 	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException;
 
+    /** Column name Accumilated */
+    public static final String COLUMNNAME_Accumilated = "Accumilated";
+
+	/** Set Accumilated Amt	  */
+	public void setAccumilated (BigDecimal Accumilated);
+
+	/** Get Accumilated Amt	  */
+	public BigDecimal getAccumilated();
+
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
 
@@ -81,27 +90,19 @@ public interface I_AM_AssetMeter
     /** Column name AM_AssetMeter_ID */
     public static final String COLUMNNAME_AM_AssetMeter_ID = "AM_AssetMeter_ID";
 
-	/** Set Asset Meter.
-	  * Asset Meter
-	  */
+	/** Set AM Asset Meter	  */
 	public void setAM_AssetMeter_ID (int AM_AssetMeter_ID);
 
-	/** Get Asset Meter.
-	  * Asset Meter
-	  */
+	/** Get AM Asset Meter	  */
 	public int getAM_AssetMeter_ID();
 
     /** Column name AM_Meter_ID */
     public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
 
-	/** Set Meter.
-	  * Asset meter master
-	  */
+	/** Set AM Meter	  */
 	public void setAM_Meter_ID (int AM_Meter_ID);
 
-	/** Get Meter.
-	  * Asset meter master
-	  */
+	/** Get AM Meter	  */
 	public int getAM_Meter_ID();
 
 	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException;

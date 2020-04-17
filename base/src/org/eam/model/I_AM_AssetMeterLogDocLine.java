@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for AM_Meter
+/** Generated Interface for AM_AssetMeterLogDocLine
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3
  */
-public interface I_AM_Meter 
+public interface I_AM_AssetMeterLogDocLine 
 {
 
-    /** TableName=AM_Meter */
-    public static final String Table_Name = "AM_Meter";
+    /** TableName=AM_AssetMeterLogDocLine */
+    public static final String Table_Name = "AM_AssetMeterLogDocLine";
 
-    /** AD_Table_ID=54103 */
+    /** AD_Table_ID=1000024 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -41,6 +41,21 @@ public interface I_AM_Meter
     BigDecimal accessLevel = BigDecimal.valueOf(3);
 
     /** Load Meta Data */
+
+    /** Column name A_Asset_ID */
+    public static final String COLUMNNAME_A_Asset_ID = "A_Asset_ID";
+
+	/** Set Fixed Asset.
+	  * Fixed Asset used internally or by customers
+	  */
+	public void setA_Asset_ID (int A_Asset_ID);
+
+	/** Get Fixed Asset.
+	  * Fixed Asset used internally or by customers
+	  */
+	public int getA_Asset_ID();
+
+	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException;
 
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
@@ -63,6 +78,44 @@ public interface I_AM_Meter
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AM_AssetMeter_ID */
+    public static final String COLUMNNAME_AM_AssetMeter_ID = "AM_AssetMeter_ID";
+
+	/** Set AM Asset Meter	  */
+	public void setAM_AssetMeter_ID (int AM_AssetMeter_ID);
+
+	/** Get AM Asset Meter	  */
+	public int getAM_AssetMeter_ID();
+
+	public org.eam.model.I_AM_AssetMeter getAM_AssetMeter() throws RuntimeException;
+
+    /** Column name AM_AssetMeter_Log_ID */
+    public static final String COLUMNNAME_AM_AssetMeter_Log_ID = "AM_AssetMeter_Log_ID";
+
+	/** Set AM Asset Meter Log	  */
+	public void setAM_AssetMeter_Log_ID (int AM_AssetMeter_Log_ID);
+
+	/** Get AM Asset Meter Log	  */
+	public int getAM_AssetMeter_Log_ID();
+
+    /** Column name AM_AssetMeterLogDoc_ID */
+    public static final String COLUMNNAME_AM_AssetMeterLogDoc_ID = "AM_AssetMeterLogDoc_ID";
+
+	/** Set AM_AssetMeterLogDoc ID	  */
+	public void setAM_AssetMeterLogDoc_ID (int AM_AssetMeterLogDoc_ID);
+
+	/** Get AM_AssetMeterLogDoc ID	  */
+	public int getAM_AssetMeterLogDoc_ID();
+
+    /** Column name AM_AssetMeterLogDocLine_ID */
+    public static final String COLUMNNAME_AM_AssetMeterLogDocLine_ID = "AM_AssetMeterLogDocLine_ID";
+
+	/** Set AM_AssetMeterLogDocLine ID	  */
+	public void setAM_AssetMeterLogDocLine_ID (int AM_AssetMeterLogDocLine_ID);
+
+	/** Get AM_AssetMeterLogDocLine ID	  */
+	public int getAM_AssetMeterLogDocLine_ID();
+
     /** Column name AM_Meter_ID */
     public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
 
@@ -71,6 +124,8 @@ public interface I_AM_Meter
 
 	/** Get AM Meter	  */
 	public int getAM_Meter_ID();
+
+	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException;
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -114,40 +169,27 @@ public interface I_AM_Meter
 	  */
 	public boolean isActive();
 
-    /** Column name MaxDay */
-    public static final String COLUMNNAME_MaxDay = "MaxDay";
+    /** Column name Line */
+    public static final String COLUMNNAME_Line = "Line";
 
-	/** Set Max Day	  */
-	public void setMaxDay (int MaxDay);
-
-	/** Get Max Day	  */
-	public int getMaxDay();
-
-    /** Column name Name */
-    public static final String COLUMNNAME_Name = "Name";
-
-	/** Set Name.
-	  * Alphanumeric identifier of the entity
+	/** Set Line No.
+	  * Unique line for this document
 	  */
-	public void setName (String Name);
+	public void setLine (int Line);
 
-	/** Get Name.
-	  * Alphanumeric identifier of the entity
+	/** Get Line No.
+	  * Unique line for this document
 	  */
-	public String getName();
+	public int getLine();
 
-    /** Column name Type */
-    public static final String COLUMNNAME_Type = "Type";
+    /** Column name Reading */
+    public static final String COLUMNNAME_Reading = "Reading";
 
-	/** Set Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public void setType (String Type);
+	/** Set Reading	  */
+	public void setReading (BigDecimal Reading);
 
-	/** Get Type.
-	  * Type of Validation (SQL, Java Script, Java Language)
-	  */
-	public String getType();
+	/** Get Reading	  */
+	public BigDecimal getReading();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";

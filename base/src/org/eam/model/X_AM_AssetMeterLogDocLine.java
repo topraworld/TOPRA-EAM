@@ -19,16 +19,14 @@ package org.eam.model;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
-import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.Env;
-import org.compiere.util.KeyNamePair;
 
-/** Generated Model for AM_AssetMeter
+/** Generated Model for AM_AssetMeterLogDocLine
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3 - $Id$ */
-public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent 
+public class X_AM_AssetMeterLogDocLine extends PO implements I_AM_AssetMeterLogDocLine, I_Persistent 
 {
 
 	/**
@@ -37,21 +35,20 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 	private static final long serialVersionUID = 20200417L;
 
     /** Standard Constructor */
-    public X_AM_AssetMeter (Properties ctx, int AM_AssetMeter_ID, String trxName)
+    public X_AM_AssetMeterLogDocLine (Properties ctx, int AM_AssetMeterLogDocLine_ID, String trxName)
     {
-      super (ctx, AM_AssetMeter_ID, trxName);
-      /** if (AM_AssetMeter_ID == 0)
+      super (ctx, AM_AssetMeterLogDocLine_ID, trxName);
+      /** if (AM_AssetMeterLogDocLine_ID == 0)
         {
-			setAM_AssetMeter_ID (0);
+			setA_Asset_ID (0);
+			setAM_AssetMeterLogDocLine_ID (0);
 			setAM_Meter_ID (0);
-			setAmt (Env.ZERO);
-			setName (null);
-			setValue (null);
+			setReading (Env.ZERO);
         } */
     }
 
     /** Load Constructor */
-    public X_AM_AssetMeter (Properties ctx, ResultSet rs, String trxName)
+    public X_AM_AssetMeterLogDocLine (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -73,7 +70,7 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_AM_AssetMeter[")
+      StringBuffer sb = new StringBuffer ("X_AM_AssetMeterLogDocLine[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
@@ -90,9 +87,9 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 	public void setA_Asset_ID (int A_Asset_ID)
 	{
 		if (A_Asset_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_A_Asset_ID, null);
+			set_Value (COLUMNNAME_A_Asset_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
+			set_Value (COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
 	}
 
 	/** Get Fixed Asset.
@@ -106,31 +103,19 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Accumilated Amt.
-		@param Accumilated Accumilated Amt	  */
-	public void setAccumilated (BigDecimal Accumilated)
-	{
-		set_Value (COLUMNNAME_Accumilated, Accumilated);
-	}
-
-	/** Get Accumilated Amt.
-		@return Accumilated Amt	  */
-	public BigDecimal getAccumilated () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Accumilated);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
+	public org.eam.model.I_AM_AssetMeter getAM_AssetMeter() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_AssetMeter)MTable.get(getCtx(), org.eam.model.I_AM_AssetMeter.Table_Name)
+			.getPO(getAM_AssetMeter_ID(), get_TrxName());	}
 
 	/** Set AM Asset Meter.
 		@param AM_AssetMeter_ID AM Asset Meter	  */
 	public void setAM_AssetMeter_ID (int AM_AssetMeter_ID)
 	{
 		if (AM_AssetMeter_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_AM_AssetMeter_ID, null);
+			set_Value (COLUMNNAME_AM_AssetMeter_ID, null);
 		else 
-			set_ValueNoCheck (COLUMNNAME_AM_AssetMeter_ID, Integer.valueOf(AM_AssetMeter_ID));
+			set_Value (COLUMNNAME_AM_AssetMeter_ID, Integer.valueOf(AM_AssetMeter_ID));
 	}
 
 	/** Get AM Asset Meter.
@@ -138,6 +123,66 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 	public int getAM_AssetMeter_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_AssetMeter_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set AM Asset Meter Log.
+		@param AM_AssetMeter_Log_ID AM Asset Meter Log	  */
+	public void setAM_AssetMeter_Log_ID (int AM_AssetMeter_Log_ID)
+	{
+		if (AM_AssetMeter_Log_ID < 1) 
+			set_Value (COLUMNNAME_AM_AssetMeter_Log_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_AssetMeter_Log_ID, Integer.valueOf(AM_AssetMeter_Log_ID));
+	}
+
+	/** Get AM Asset Meter Log.
+		@return AM Asset Meter Log	  */
+	public int getAM_AssetMeter_Log_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_AssetMeter_Log_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set AM_AssetMeterLogDoc ID.
+		@param AM_AssetMeterLogDoc_ID AM_AssetMeterLogDoc ID	  */
+	public void setAM_AssetMeterLogDoc_ID (int AM_AssetMeterLogDoc_ID)
+	{
+		if (AM_AssetMeterLogDoc_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AM_AssetMeterLogDoc_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_AM_AssetMeterLogDoc_ID, Integer.valueOf(AM_AssetMeterLogDoc_ID));
+	}
+
+	/** Get AM_AssetMeterLogDoc ID.
+		@return AM_AssetMeterLogDoc ID	  */
+	public int getAM_AssetMeterLogDoc_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_AssetMeterLogDoc_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set AM_AssetMeterLogDocLine ID.
+		@param AM_AssetMeterLogDocLine_ID AM_AssetMeterLogDocLine ID	  */
+	public void setAM_AssetMeterLogDocLine_ID (int AM_AssetMeterLogDocLine_ID)
+	{
+		if (AM_AssetMeterLogDocLine_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AM_AssetMeterLogDocLine_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_AM_AssetMeterLogDocLine_ID, Integer.valueOf(AM_AssetMeterLogDocLine_ID));
+	}
+
+	/** Get AM_AssetMeterLogDocLine ID.
+		@return AM_AssetMeterLogDocLine ID	  */
+	public int getAM_AssetMeterLogDocLine_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_AssetMeterLogDocLine_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -168,43 +213,6 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 		return ii.intValue();
 	}
 
-	/** Set Amount.
-		@param Amt 
-		Amount
-	  */
-	public void setAmt (BigDecimal Amt)
-	{
-		set_Value (COLUMNNAME_Amt, Amt);
-	}
-
-	/** Get Amount.
-		@return Amount
-	  */
-	public BigDecimal getAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Amt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Transaction Date.
-		@param DateTrx 
-		Transaction Date
-	  */
-	public void setDateTrx (Timestamp DateTrx)
-	{
-		set_Value (COLUMNNAME_DateTrx, DateTrx);
-	}
-
-	/** Get Transaction Date.
-		@return Transaction Date
-	  */
-	public Timestamp getDateTrx () 
-	{
-		return (Timestamp)get_Value(COLUMNNAME_DateTrx);
-	}
-
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -222,30 +230,42 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	/** Set Name.
-		@param Name 
-		Alphanumeric identifier of the entity
+	/** Set Line No.
+		@param Line 
+		Unique line for this document
 	  */
-	public void setName (String Name)
+	public void setLine (int Line)
 	{
-		set_Value (COLUMNNAME_Name, Name);
+		set_Value (COLUMNNAME_Line, Integer.valueOf(Line));
 	}
 
-	/** Get Name.
-		@return Alphanumeric identifier of the entity
+	/** Get Line No.
+		@return Unique line for this document
 	  */
-	public String getName () 
+	public int getLine () 
 	{
-		return (String)get_Value(COLUMNNAME_Name);
+		Integer ii = (Integer)get_Value(COLUMNNAME_Line);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
-    {
-        return new KeyNamePair(get_ID(), getName());
-    }
+	/** Set Reading.
+		@param Reading Reading	  */
+	public void setReading (BigDecimal Reading)
+	{
+		set_Value (COLUMNNAME_Reading, Reading);
+	}
+
+	/** Get Reading.
+		@return Reading	  */
+	public BigDecimal getReading () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Reading);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
 
 	/** Set Immutable Universally Unique Identifier.
 		@param UUID 
@@ -262,22 +282,5 @@ public class X_AM_AssetMeter extends PO implements I_AM_AssetMeter, I_Persistent
 	public String getUUID () 
 	{
 		return (String)get_Value(COLUMNNAME_UUID);
-	}
-
-	/** Set Search Key.
-		@param Value 
-		Search key for the record in the format required - must be unique
-	  */
-	public void setValue (String Value)
-	{
-		set_Value (COLUMNNAME_Value, Value);
-	}
-
-	/** Get Search Key.
-		@return Search key for the record in the format required - must be unique
-	  */
-	public String getValue () 
-	{
-		return (String)get_Value(COLUMNNAME_Value);
 	}
 }
