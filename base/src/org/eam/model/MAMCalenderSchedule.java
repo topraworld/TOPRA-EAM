@@ -22,7 +22,7 @@ public class MAMCalenderSchedule extends X_AM_CalenderSchedule{
 		
 		if (getSeqNo() == 0){
 			String sql = "SELECT COALESCE(MAX(SeqNo),0)+1 AS DefaultValue FROM AM_CalenderSchedule WHERE AM_Maintenance_ID=?";
-			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_Maintenance_ID());
+			int ii = DB.getSQLValue (null, sql, getAM_Maintenance_ID());
 			setSeqNo (ii);
 		}
 		return true;

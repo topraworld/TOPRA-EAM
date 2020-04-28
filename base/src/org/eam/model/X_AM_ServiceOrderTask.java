@@ -32,7 +32,7 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200320L;
+	private static final long serialVersionUID = 20200421L;
 
     /** Standard Constructor */
     public X_AM_ServiceOrderTask (Properties ctx, int AM_ServiceOrderTask_ID, String trxName)
@@ -40,13 +40,7 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
       super (ctx, AM_ServiceOrderTask_ID, trxName);
       /** if (AM_ServiceOrderTask_ID == 0)
         {
-			setAM_ServiceOrder_ID (0);
 			setAM_ServiceOrderTask_ID (0);
-			setC_UOM_ID (0);
-			setName (null);
-			setProcessed (false);
-			setStatus (null);
-// 'NS'
         } */
     }
 
@@ -83,10 +77,8 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 		return (org.eam.model.I_AM_Maintenance)MTable.get(getCtx(), org.eam.model.I_AM_Maintenance.Table_Name)
 			.getPO(getAM_Maintenance_ID(), get_TrxName());	}
 
-	/** Set Asset Maintenance.
-		@param AM_Maintenance_ID 
-		Define a maintenance program assigned to Asset
-	  */
+	/** Set AM Maintenance.
+		@param AM_Maintenance_ID AM Maintenance	  */
 	public void setAM_Maintenance_ID (int AM_Maintenance_ID)
 	{
 		if (AM_Maintenance_ID < 1) 
@@ -95,12 +87,31 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 			set_Value (COLUMNNAME_AM_Maintenance_ID, Integer.valueOf(AM_Maintenance_ID));
 	}
 
-	/** Get Asset Maintenance.
-		@return Define a maintenance program assigned to Asset
-	  */
+	/** Get AM Maintenance.
+		@return AM Maintenance	  */
 	public int getAM_Maintenance_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set AM Maintenance Task.
+		@param AM_Maintenance_Task_ID AM Maintenance Task	  */
+	public void setAM_Maintenance_Task_ID (int AM_Maintenance_Task_ID)
+	{
+		if (AM_Maintenance_Task_ID < 1) 
+			set_Value (COLUMNNAME_AM_Maintenance_Task_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_Maintenance_Task_ID, Integer.valueOf(AM_Maintenance_Task_ID));
+	}
+
+	/** Get AM Maintenance Task.
+		@return AM Maintenance Task	  */
+	public int getAM_Maintenance_Task_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_Task_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -111,10 +122,8 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 		return (org.eam.model.I_AM_ServiceOrder)MTable.get(getCtx(), org.eam.model.I_AM_ServiceOrder.Table_Name)
 			.getPO(getAM_ServiceOrder_ID(), get_TrxName());	}
 
-	/** Set Service Order.
-		@param AM_ServiceOrder_ID 
-		Service Order for maintenance
-	  */
+	/** Set AM ServiceOrder.
+		@param AM_ServiceOrder_ID AM ServiceOrder	  */
 	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID)
 	{
 		if (AM_ServiceOrder_ID < 1) 
@@ -123,9 +132,8 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_ID, Integer.valueOf(AM_ServiceOrder_ID));
 	}
 
-	/** Get Service Order.
-		@return Service Order for maintenance
-	  */
+	/** Get AM ServiceOrder.
+		@return AM ServiceOrder	  */
 	public int getAM_ServiceOrder_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrder_ID);
@@ -134,10 +142,28 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 		return ii.intValue();
 	}
 
-	/** Set Service Order Task.
-		@param AM_ServiceOrderTask_ID 
-		Task for a service order of maintenance
-	  */
+	/** Set AM Service Order Request.
+		@param AM_ServiceOrder_Request_ID AM Service Order Request	  */
+	public void setAM_ServiceOrder_Request_ID (int AM_ServiceOrder_Request_ID)
+	{
+		if (AM_ServiceOrder_Request_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_Request_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_Request_ID, Integer.valueOf(AM_ServiceOrder_Request_ID));
+	}
+
+	/** Get AM Service Order Request.
+		@return AM Service Order Request	  */
+	public int getAM_ServiceOrder_Request_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrder_Request_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set AM_ServiceOrderTask ID.
+		@param AM_ServiceOrderTask_ID AM_ServiceOrderTask ID	  */
 	public void setAM_ServiceOrderTask_ID (int AM_ServiceOrderTask_ID)
 	{
 		if (AM_ServiceOrderTask_ID < 1) 
@@ -146,35 +172,14 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrderTask_ID, Integer.valueOf(AM_ServiceOrderTask_ID));
 	}
 
-	/** Get Service Order Task.
-		@return Task for a service order of maintenance
-	  */
+	/** Get AM_ServiceOrderTask ID.
+		@return AM_ServiceOrderTask ID	  */
 	public int getAM_ServiceOrderTask_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrderTask_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Cost Value.
-		@param CostAmt 
-		Value with Cost
-	  */
-	public void setCostAmt (BigDecimal CostAmt)
-	{
-		set_Value (COLUMNNAME_CostAmt, CostAmt);
-	}
-
-	/** Get Cost Value.
-		@return Value with Cost
-	  */
-	public BigDecimal getCostAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException
@@ -205,6 +210,43 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 		return ii.intValue();
 	}
 
+	/** Set Cost Value.
+		@param CostAmt 
+		Value with Cost
+	  */
+	public void setCostAmt (BigDecimal CostAmt)
+	{
+		set_Value (COLUMNNAME_CostAmt, CostAmt);
+	}
+
+	/** Get Cost Value.
+		@return Value with Cost
+	  */
+	public BigDecimal getCostAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Amt Plan.
+		@param CostAmtPlan Cost Amt Plan	  */
+	public void setCostAmtPlan (BigDecimal CostAmtPlan)
+	{
+		set_Value (COLUMNNAME_CostAmtPlan, CostAmtPlan);
+	}
+
+	/** Get Cost Amt Plan.
+		@return Cost Amt Plan	  */
+	public BigDecimal getCostAmtPlan () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmtPlan);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Description.
 		@param Description 
 		Optional short description of the record
@@ -226,37 +268,37 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 		@param Duration 
 		Normal Duration in Duration Unit
 	  */
-	public void setDuration (BigDecimal Duration)
+	public void setDuration (int Duration)
 	{
-		set_Value (COLUMNNAME_Duration, Duration);
+		set_Value (COLUMNNAME_Duration, Integer.valueOf(Duration));
 	}
 
 	/** Get Duration.
 		@return Normal Duration in Duration Unit
 	  */
-	public BigDecimal getDuration () 
+	public int getDuration () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Duration);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		Integer ii = (Integer)get_Value(COLUMNNAME_Duration);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Duration Real.
 		@param DurationReal Duration Real	  */
-	public void setDurationReal (BigDecimal DurationReal)
+	public void setDurationReal (int DurationReal)
 	{
-		set_Value (COLUMNNAME_DurationReal, DurationReal);
+		set_Value (COLUMNNAME_DurationReal, Integer.valueOf(DurationReal));
 	}
 
 	/** Get Duration Real.
 		@return Duration Real	  */
-	public BigDecimal getDurationReal () 
+	public int getDurationReal () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_DurationReal);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		Integer ii = (Integer)get_Value(COLUMNNAME_DurationReal);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Line No.
@@ -320,23 +362,12 @@ public class X_AM_ServiceOrderTask extends PO implements I_AM_ServiceOrderTask, 
 		return false;
 	}
 
-	/** Status AD_Reference_ID=53833 */
-	public static final int STATUS_AD_Reference_ID=53833;
-	/** Completed = CO */
-	public static final String STATUS_Completed = "CO";
-	/** In Progress = IP */
-	public static final String STATUS_InProgress = "IP";
-	/** Not Started = NS */
-	public static final String STATUS_NotStarted = "NS";
-	/** Stop = ST */
-	public static final String STATUS_Stop = "ST";
 	/** Set Status.
 		@param Status 
 		Status of the currently running check
 	  */
 	public void setStatus (String Status)
 	{
-
 		set_Value (COLUMNNAME_Status, Status);
 	}
 

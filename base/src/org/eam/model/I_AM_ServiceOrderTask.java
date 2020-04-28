@@ -31,7 +31,7 @@ public interface I_AM_ServiceOrderTask
     /** TableName=AM_ServiceOrderTask */
     public static final String Table_Name = "AM_ServiceOrderTask";
 
-    /** AD_Table_ID=54116 */
+    /** AD_Table_ID=1000009 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -66,45 +66,66 @@ public interface I_AM_ServiceOrderTask
     /** Column name AM_Maintenance_ID */
     public static final String COLUMNNAME_AM_Maintenance_ID = "AM_Maintenance_ID";
 
-	/** Set Asset Maintenance.
-	  * Define a maintenance program assigned to Asset
-	  */
+	/** Set AM Maintenance	  */
 	public void setAM_Maintenance_ID (int AM_Maintenance_ID);
 
-	/** Get Asset Maintenance.
-	  * Define a maintenance program assigned to Asset
-	  */
+	/** Get AM Maintenance	  */
 	public int getAM_Maintenance_ID();
 
 	public org.eam.model.I_AM_Maintenance getAM_Maintenance() throws RuntimeException;
 
+    /** Column name AM_Maintenance_Task_ID */
+    public static final String COLUMNNAME_AM_Maintenance_Task_ID = "AM_Maintenance_Task_ID";
+
+	/** Set AM Maintenance Task	  */
+	public void setAM_Maintenance_Task_ID (int AM_Maintenance_Task_ID);
+
+	/** Get AM Maintenance Task	  */
+	public int getAM_Maintenance_Task_ID();
+
     /** Column name AM_ServiceOrder_ID */
     public static final String COLUMNNAME_AM_ServiceOrder_ID = "AM_ServiceOrder_ID";
 
-	/** Set Service Order.
-	  * Service Order for maintenance
-	  */
+	/** Set AM ServiceOrder	  */
 	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID);
 
-	/** Get Service Order.
-	  * Service Order for maintenance
-	  */
+	/** Get AM ServiceOrder	  */
 	public int getAM_ServiceOrder_ID();
 
 	public org.eam.model.I_AM_ServiceOrder getAM_ServiceOrder() throws RuntimeException;
 
+    /** Column name AM_ServiceOrder_Request_ID */
+    public static final String COLUMNNAME_AM_ServiceOrder_Request_ID = "AM_ServiceOrder_Request_ID";
+
+	/** Set AM Service Order Request	  */
+	public void setAM_ServiceOrder_Request_ID (int AM_ServiceOrder_Request_ID);
+
+	/** Get AM Service Order Request	  */
+	public int getAM_ServiceOrder_Request_ID();
+
     /** Column name AM_ServiceOrderTask_ID */
     public static final String COLUMNNAME_AM_ServiceOrderTask_ID = "AM_ServiceOrderTask_ID";
 
-	/** Set Service Order Task.
-	  * Task for a service order of maintenance
-	  */
+	/** Set AM_ServiceOrderTask ID	  */
 	public void setAM_ServiceOrderTask_ID (int AM_ServiceOrderTask_ID);
 
-	/** Get Service Order Task.
-	  * Task for a service order of maintenance
-	  */
+	/** Get AM_ServiceOrderTask ID	  */
 	public int getAM_ServiceOrderTask_ID();
+
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name CostAmt */
     public static final String COLUMNNAME_CostAmt = "CostAmt";
@@ -118,6 +139,15 @@ public interface I_AM_ServiceOrderTask
 	  * Value with Cost
 	  */
 	public BigDecimal getCostAmt();
+
+    /** Column name CostAmtPlan */
+    public static final String COLUMNNAME_CostAmtPlan = "CostAmtPlan";
+
+	/** Set Cost Amt Plan	  */
+	public void setCostAmtPlan (BigDecimal CostAmtPlan);
+
+	/** Get Cost Amt Plan	  */
+	public BigDecimal getCostAmtPlan();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -134,21 +164,6 @@ public interface I_AM_ServiceOrderTask
 	  * User who created this records
 	  */
 	public int getCreatedBy();
-
-    /** Column name C_UOM_ID */
-    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
-
-	/** Set UOM.
-	  * Unit of Measure
-	  */
-	public void setC_UOM_ID (int C_UOM_ID);
-
-	/** Get UOM.
-	  * Unit of Measure
-	  */
-	public int getC_UOM_ID();
-
-	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -169,21 +184,21 @@ public interface I_AM_ServiceOrderTask
 	/** Set Duration.
 	  * Normal Duration in Duration Unit
 	  */
-	public void setDuration (BigDecimal Duration);
+	public void setDuration (int Duration);
 
 	/** Get Duration.
 	  * Normal Duration in Duration Unit
 	  */
-	public BigDecimal getDuration();
+	public int getDuration();
 
     /** Column name DurationReal */
     public static final String COLUMNNAME_DurationReal = "DurationReal";
 
 	/** Set Duration Real	  */
-	public void setDurationReal (BigDecimal DurationReal);
+	public void setDurationReal (int DurationReal);
 
 	/** Get Duration Real	  */
-	public BigDecimal getDurationReal();
+	public int getDurationReal();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";

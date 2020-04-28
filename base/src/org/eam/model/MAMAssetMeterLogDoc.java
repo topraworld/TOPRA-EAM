@@ -24,6 +24,8 @@ import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Properties;
+
+import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
@@ -141,7 +143,7 @@ public class MAMAssetMeterLogDoc extends X_AM_AssetMeterLogDoc implements DocAct
 	public String prepareIt()
 	{
 		if(getDocStatus().equalsIgnoreCase("DR")){
-		
+			
 			//delete existing lines
 			String sql = "DELETE FROM AM_AssetMeterLogDocLine WHERE AM_AssetMeterLogDoc_ID = ?";
 			DB.executeUpdate(sql, get_ID(), null);
@@ -239,6 +241,10 @@ public class MAMAssetMeterLogDoc extends X_AM_AssetMeterLogDoc implements DocAct
 			.setParameters(get_ID())
 			.setOnlyActiveRecords(true)
 			.list();
+
+		//validate line count
+		if(list.size() == 0)
+			throw new AdempiereException("The document has no lines!");
 		
 		MAMAssetMeterLog log = null;
 		
@@ -306,10 +312,31 @@ public class MAMAssetMeterLogDoc extends X_AM_AssetMeterLogDoc implements DocAct
 	 * 	@return true if success 
 	 */
 	public boolean voidIt()
-	{
-		log.info("voidIt - " + toString());
+	{	
+		//void effects to log
+		List<MAMAssetMeterLogDocLine> list = new Query(getCtx(), MAMAssetMeterLogDocLine.Table_Name, "AM_AssetMeterLogDoc_ID=?", null)
+			.setParameters(get_ID())
+			.setOnlyActiveRecords(true)
+			.list();
+		
+		//validate line count
+		if(list.size() == 0)
+			throw new AdempiereException("The document has no lines!");
+		
+		MAMAssetMeterLog log = null;
+		
+		for(MAMAssetMeterLogDocLine line :  list){
+			log = new MAMAssetMeterLog(getCtx(), line.getAM_AssetMeter_Log_ID(), null);
+			log.delete(true);
+		}
+		
+		//Update lines as voided
+		String sql = "UPDATE AM_AssetMeterLogDocLine SET DESCRIPTION = '**Voided**' "
+			+ "WHERE AM_AssetMeterLogDoc_ID=?";
+		DB.executeUpdate(sql,get_ID() , null);
+		
 		return closeIt();
-	}	//	voidIt
+	}//	voidIt
 	
 	/**
 	 * 	Close Document.

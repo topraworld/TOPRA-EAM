@@ -30,17 +30,26 @@ public class MAMMaintenanceTask extends X_AM_Maintenance_Task{
 		return true;
 	}
 	
-	 protected boolean beforeDelete (){
+	protected boolean beforeDelete (){
 		 String sql = "DELETE FROM AM_Maintenance_Resource WHERE AM_Maintenance_Task_ID=?";
 		 DB.executeUpdate(sql, this.get_ID(), null);
 		return true;
 	}
 	 
-	 public static int getTaskCount(Properties ctx,int AM_Maintenance_ID , String trxName){
-		List<MAMMaintenancePatternTask> list = new Query(ctx, Table_Name, "AM_Maintenance_ID=?", trxName)
+	protected static int getTaskCount(Properties ctx,int AM_Maintenance_ID , String trxName){
+		List<MAMMaintenanceTask> list = new Query(ctx, Table_Name, "AM_Maintenance_ID=?", trxName)
 			.setParameters(AM_Maintenance_ID)
 			.setOnlyActiveRecords(true)
 		.list();
 		return list.size();
     }
+	 
+	protected MAMMaintenanceResource [] getResources(){
+		
+		List<MAMMaintenanceResource> list = new Query(getCtx(), MAMMaintenanceResource.Table_Name, "AM_Maintenance_Task_ID=?", null)
+			.setParameters(get_ID())
+			.setOnlyActiveRecords(true)
+			.list();
+		return list.toArray(new MAMMaintenanceResource[list.size()]);
+	}
 }

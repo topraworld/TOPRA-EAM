@@ -114,6 +114,15 @@ public interface I_AM_Meter
 	  */
 	public boolean isActive();
 
+    /** Column name LastRecordCount */
+    public static final String COLUMNNAME_LastRecordCount = "LastRecordCount";
+
+	/** Set Last Record Count	  */
+	public void setLastRecordCount (int LastRecordCount);
+
+	/** Get Last Record Count	  */
+	public int getLastRecordCount();
+
     /** Column name MaxDay */
     public static final String COLUMNNAME_MaxDay = "MaxDay";
 

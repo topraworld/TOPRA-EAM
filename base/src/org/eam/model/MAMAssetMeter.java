@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Properties;
 
 import org.adempiere.exceptions.AdempiereException;
+import org.compiere.model.MInvoice;
 import org.compiere.model.Query;
 import org.compiere.util.CCache;
 
@@ -63,6 +64,29 @@ public class MAMAssetMeter extends X_AM_AssetMeter {
 		
 		return true;
 	}
+	
+	protected MAMAssetMeterLog [] getLines(int limit){
+	 
+		List<MAMAssetMeterLog> list = new Query(getCtx(), "AM_AssetMeter_Log","AM_AssetMeter_ID = ? ", null)
+			.setParameters(get_ID())
+			.setOnlyActiveRecords(true)
+			.setLimit(limit)
+			.list();
+		
+		return list.toArray(new MAMAssetMeterLog[list.size()]);
+	}
+	
+	
+	protected int getLineCount(boolean newRecord){
+		
+		int count = new Query(getCtx(), "AM_AssetMeter_Log", "AM_AssetMeter_ID = ? ", get_TrxName())
+			.setParameters(get_ID())
+			.setOnlyActiveRecords(true)
+			.list().size();
+		count = newRecord ? ++count: count;
+		return count;
+	}
+	
 	
 	/**
 	 * Get from cache

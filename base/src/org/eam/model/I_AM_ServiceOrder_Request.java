@@ -21,17 +21,17 @@ import java.sql.Timestamp;
 import org.compiere.model.*;
 import org.compiere.util.KeyNamePair;
 
-/** Generated Interface for AM_ServiceOrder
+/** Generated Interface for AM_ServiceOrder_Request
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3
  */
-public interface I_AM_ServiceOrder 
+public interface I_AM_ServiceOrder_Request 
 {
 
-    /** TableName=AM_ServiceOrder */
-    public static final String Table_Name = "AM_ServiceOrder";
+    /** TableName=AM_ServiceOrder_Request */
+    public static final String Table_Name = "AM_ServiceOrder_Request";
 
-    /** AD_Table_ID=54115 */
+    /** AD_Table_ID=54114 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -104,17 +104,6 @@ public interface I_AM_ServiceOrder
 
 	public org.eam.model.I_AM_Maintenance getAM_Maintenance() throws RuntimeException;
 
-    /** Column name AM_MaintenanceArea_ID */
-    public static final String COLUMNNAME_AM_MaintenanceArea_ID = "AM_MaintenanceArea_ID";
-
-	/** Set AM_MaintenanceArea ID	  */
-	public void setAM_MaintenanceArea_ID (int AM_MaintenanceArea_ID);
-
-	/** Get AM_MaintenanceArea ID	  */
-	public int getAM_MaintenanceArea_ID();
-
-	public org.eam.model.I_AM_MaintenanceArea getAM_MaintenanceArea() throws RuntimeException;
-
     /** Column name AM_MaintenancePattern_ID */
     public static final String COLUMNNAME_AM_MaintenancePattern_ID = "AM_MaintenancePattern_ID";
 
@@ -126,15 +115,6 @@ public interface I_AM_ServiceOrder
 
 	public org.eam.model.I_AM_MaintenancePattern getAM_MaintenancePattern() throws RuntimeException;
 
-    /** Column name AM_ServiceOrder_ID */
-    public static final String COLUMNNAME_AM_ServiceOrder_ID = "AM_ServiceOrder_ID";
-
-	/** Set AM ServiceOrder	  */
-	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID);
-
-	/** Get AM ServiceOrder	  */
-	public int getAM_ServiceOrder_ID();
-
     /** Column name AM_ServiceOrder_Request_ID */
     public static final String COLUMNNAME_AM_ServiceOrder_Request_ID = "AM_ServiceOrder_Request_ID";
 
@@ -144,22 +124,20 @@ public interface I_AM_ServiceOrder
 	/** Get AM Service Order Request	  */
 	public int getAM_ServiceOrder_Request_ID();
 
-	public org.eam.model.I_AM_ServiceOrder_Request getAM_ServiceOrder_Request() throws RuntimeException;
+    /** Column name C_Currency_ID */
+    public static final String COLUMNNAME_C_Currency_ID = "C_Currency_ID";
 
-    /** Column name C_Activity_ID */
-    public static final String COLUMNNAME_C_Activity_ID = "C_Activity_ID";
-
-	/** Set Activity.
-	  * Business Activity
+	/** Set Currency.
+	  * The Currency for this record
 	  */
-	public void setC_Activity_ID (int C_Activity_ID);
+	public void setC_Currency_ID (int C_Currency_ID);
 
-	/** Get Activity.
-	  * Business Activity
+	/** Get Currency.
+	  * The Currency for this record
 	  */
-	public int getC_Activity_ID();
+	public int getC_Currency_ID();
 
-	public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException;
+	public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException;
 
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
@@ -176,27 +154,27 @@ public interface I_AM_ServiceOrder
 
 	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
 
-    /** Column name CostAmt */
-    public static final String COLUMNNAME_CostAmt = "CostAmt";
+    /** Column name CompletedDate */
+    public static final String COLUMNNAME_CompletedDate = "CompletedDate";
 
-	/** Set Cost Value.
-	  * Value with Cost
+	/** Set Completed Date	  */
+	public void setCompletedDate (Timestamp CompletedDate);
+
+	/** Get Completed Date	  */
+	public Timestamp getCompletedDate();
+
+    /** Column name ContactDescription */
+    public static final String COLUMNNAME_ContactDescription = "ContactDescription";
+
+	/** Set Contact Description.
+	  * Description of Contact
 	  */
-	public void setCostAmt (BigDecimal CostAmt);
+	public void setContactDescription (String ContactDescription);
 
-	/** Get Cost Value.
-	  * Value with Cost
+	/** Get Contact Description.
+	  * Description of Contact
 	  */
-	public BigDecimal getCostAmt();
-
-    /** Column name CostAmtPlan */
-    public static final String COLUMNNAME_CostAmtPlan = "CostAmtPlan";
-
-	/** Set Cost Amt Plan	  */
-	public void setCostAmtPlan (BigDecimal CostAmtPlan);
-
-	/** Get Cost Amt Plan	  */
-	public BigDecimal getCostAmtPlan();
+	public String getContactDescription();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -227,44 +205,18 @@ public interface I_AM_ServiceOrder
 	  */
 	public Timestamp getDateDoc();
 
-    /** Column name DateFinish */
-    public static final String COLUMNNAME_DateFinish = "DateFinish";
+    /** Column name DateRequired */
+    public static final String COLUMNNAME_DateRequired = "DateRequired";
 
-	/** Set Finish Date.
-	  * Finish or (planned) completion date
+	/** Set Date Required.
+	  * Date when required
 	  */
-	public void setDateFinish (Timestamp DateFinish);
+	public void setDateRequired (Timestamp DateRequired);
 
-	/** Get Finish Date.
-	  * Finish or (planned) completion date
+	/** Get Date Required.
+	  * Date when required
 	  */
-	public Timestamp getDateFinish();
-
-    /** Column name DateStartPlan */
-    public static final String COLUMNNAME_DateStartPlan = "DateStartPlan";
-
-	/** Set Start Plan.
-	  * Planned Start Date
-	  */
-	public void setDateStartPlan (Timestamp DateStartPlan);
-
-	/** Get Start Plan.
-	  * Planned Start Date
-	  */
-	public Timestamp getDateStartPlan();
-
-    /** Column name DateTrx */
-    public static final String COLUMNNAME_DateTrx = "DateTrx";
-
-	/** Set Transaction Date.
-	  * Transaction Date
-	  */
-	public void setDateTrx (Timestamp DateTrx);
-
-	/** Get Transaction Date.
-	  * Transaction Date
-	  */
-	public Timestamp getDateTrx();
+	public Timestamp getDateRequired();
 
     /** Column name Description */
     public static final String COLUMNNAME_Description = "Description";
@@ -318,31 +270,18 @@ public interface I_AM_ServiceOrder
 	  */
 	public String getDocumentNo();
 
-    /** Column name Help */
-    public static final String COLUMNNAME_Help = "Help";
+    /** Column name GrandTotal */
+    public static final String COLUMNNAME_GrandTotal = "GrandTotal";
 
-	/** Set Comment/Help.
-	  * Comment or Hint
+	/** Set Grand Total.
+	  * Total amount of document
 	  */
-	public void setHelp (String Help);
+	public void setGrandTotal (BigDecimal GrandTotal);
 
-	/** Get Comment/Help.
-	  * Comment or Hint
+	/** Get Grand Total.
+	  * Total amount of document
 	  */
-	public String getHelp();
-
-    /** Column name Info */
-    public static final String COLUMNNAME_Info = "Info";
-
-	/** Set Info.
-	  * Information
-	  */
-	public void setInfo (String Info);
-
-	/** Get Info.
-	  * Information
-	  */
-	public String getInfo();
+	public BigDecimal getGrandTotal();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -370,53 +309,18 @@ public interface I_AM_ServiceOrder
 	  */
 	public boolean isApproved();
 
-    /** Column name IsServiceOrderVoided */
-    public static final String COLUMNNAME_IsServiceOrderVoided = "IsServiceOrderVoided";
+    /** Column name PriorityRule */
+    public static final String COLUMNNAME_PriorityRule = "PriorityRule";
 
-	/** Set Service Order Voided	  */
-	public void setIsServiceOrderVoided (boolean IsServiceOrderVoided);
-
-	/** Get Service Order Voided	  */
-	public boolean isServiceOrderVoided();
-
-    /** Column name IsTimeReal */
-    public static final String COLUMNNAME_IsTimeReal = "IsTimeReal";
-
-	/** Set Time Real	  */
-	public void setIsTimeReal (boolean IsTimeReal);
-
-	/** Get Time Real	  */
-	public boolean isTimeReal();
-
-    /** Column name M_PriceList_ID */
-    public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
-
-	/** Set Price List.
-	  * Unique identifier of a Price List
+	/** Set Priority.
+	  * Priority of a document
 	  */
-	public void setM_PriceList_ID (int M_PriceList_ID);
+	public void setPriorityRule (String PriorityRule);
 
-	/** Get Price List.
-	  * Unique identifier of a Price List
+	/** Get Priority.
+	  * Priority of a document
 	  */
-	public int getM_PriceList_ID();
-
-	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException;
-
-    /** Column name M_Warehouse_ID */
-    public static final String COLUMNNAME_M_Warehouse_ID = "M_Warehouse_ID";
-
-	/** Set Warehouse.
-	  * Storage Warehouse and Service Point
-	  */
-	public void setM_Warehouse_ID (int M_Warehouse_ID);
-
-	/** Get Warehouse.
-	  * Storage Warehouse and Service Point
-	  */
-	public int getM_Warehouse_ID();
-
-	public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException;
+	public String getPriorityRule();
 
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
@@ -440,36 +344,14 @@ public interface I_AM_ServiceOrder
 	/** Get Process Now	  */
 	public boolean isProcessing();
 
-    /** Column name QtyPlan */
-    public static final String COLUMNNAME_QtyPlan = "QtyPlan";
+    /** Column name ServiceOrder_Request_Type */
+    public static final String COLUMNNAME_ServiceOrder_Request_Type = "ServiceOrder_Request_Type";
 
-	/** Set Quantity Plan.
-	  * Planned Quantity
-	  */
-	public void setQtyPlan (BigDecimal QtyPlan);
+	/** Set SO Request Type	  */
+	public void setServiceOrder_Request_Type (String ServiceOrder_Request_Type);
 
-	/** Get Quantity Plan.
-	  * Planned Quantity
-	  */
-	public BigDecimal getQtyPlan();
-
-    /** Column name ServiceOrderJustification */
-    public static final String COLUMNNAME_ServiceOrderJustification = "ServiceOrderJustification";
-
-	/** Set Service Order Justification	  */
-	public void setServiceOrderJustification (String ServiceOrderJustification);
-
-	/** Get Service Order Justification	  */
-	public String getServiceOrderJustification();
-
-    /** Column name ServiceOrderVoidingCause */
-    public static final String COLUMNNAME_ServiceOrderVoidingCause = "ServiceOrderVoidingCause";
-
-	/** Set Service Order Voiding Cause 	  */
-	public void setServiceOrderVoidingCause (String ServiceOrderVoidingCause);
-
-	/** Get Service Order Voiding Cause 	  */
-	public String getServiceOrderVoidingCause();
+	/** Get SO Request Type	  */
+	public String getServiceOrder_Request_Type();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
@@ -486,21 +368,6 @@ public interface I_AM_ServiceOrder
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
-
-    /** Column name User1_ID */
-    public static final String COLUMNNAME_User1_ID = "User1_ID";
-
-	/** Set User List 1.
-	  * User defined list element #1
-	  */
-	public void setUser1_ID (int User1_ID);
-
-	/** Get User List 1.
-	  * User defined list element #1
-	  */
-	public int getUser1_ID();
-
-	public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException;
 
     /** Column name UUID */
     public static final String COLUMNNAME_UUID = "UUID";

@@ -161,6 +161,17 @@ public interface I_AM_Maintenance
 
 	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException;
 
+    /** Column name AM_PatternType_ID */
+    public static final String COLUMNNAME_AM_PatternType_ID = "AM_PatternType_ID";
+
+	/** Set AM_PatternType ID	  */
+	public void setAM_PatternType_ID (int AM_PatternType_ID);
+
+	/** Get AM_PatternType ID	  */
+	public int getAM_PatternType_ID();
+
+	public org.eam.model.I_AM_PatternType getAM_PatternType() throws RuntimeException;
+
     /** Column name C_DocType_ID */
     public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
 
@@ -443,6 +454,19 @@ public interface I_AM_Maintenance
 
 	/** Get Start Value	  */
 	public int getMBStartValue();
+
+    /** Column name Name */
+    public static final String COLUMNNAME_Name = "Name";
+
+	/** Set Name.
+	  * Alphanumeric identifier of the entity
+	  */
+	public void setName (String Name);
+
+	/** Get Name.
+	  * Alphanumeric identifier of the entity
+	  */
+	public String getName();
 
     /** Column name PerformDateBase */
     public static final String COLUMNNAME_PerformDateBase = "PerformDateBase";

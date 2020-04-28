@@ -20,43 +20,48 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 import java.util.List;
-import java.util.Locale;
 import java.util.Properties;
-
-import org.adempiere.exceptions.AdempiereException;
 import org.compiere.model.*;
 import org.compiere.process.DocAction;
 import org.compiere.process.DocOptions;
 import org.compiere.process.DocumentEngine;
 import org.compiere.util.DB;
 import org.compiere.util.Env;
-import org.compiere.util.Language;
-import org.compiere.util.Trx;
+import org.compiere.util.KeyNamePair;
+import org.jruby.RubyBoolean.True;
 
-/** Generated Model for AM_Maintenance
+/** Generated Model for AM_ServiceOrder
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3 - $Id$ */
-public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocOptions{
+public class MAMServiceOrder extends X_AM_ServiceOrder implements DocAction , DocOptions {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200409L;
+	private static final long serialVersionUID = 20200421L;
 
     /** Standard Constructor */
-    public MAMMaintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
+    public MAMServiceOrder (Properties ctx, int AM_ServiceOrder_ID, String trxName)
     {
-      super (ctx, AM_Maintenance_ID, trxName);
+      super (ctx, AM_ServiceOrder_ID, trxName);
     }
 
     /** Load Constructor */
-    public MAMMaintenance (Properties ctx, ResultSet rs, String trxName)
+    public MAMServiceOrder (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
+    
+    protected boolean beforeSave (boolean newRecord){
+    	
+		return true;
+	}
+    
+    protected boolean afterSave (boolean newRecord, boolean success) {
+    	//coping PM action task list
+		return success;
+	}	//	afterSave
 
 	/**
 	 * 	Get Document Info
@@ -145,59 +150,69 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	 */
 	public String prepareIt()
 	{
-		
 		log.info(toString());
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_BEFORE_PREPARE);
 		if (m_processMsg != null)
 			return DocAction.STATUS_Invalid;
 		
-		//validation on PM action has task and resources
-		int count = MAMMaintenanceTask.getTaskCount(getCtx(), this.get_ID(), null);
-		if(count == 0)
-			throw new AdempiereException("Error - PM Action has no tasks!");
-		
-		//validation on PM action has no time based and meter based selection
-		if(this.getAM_Meter_ID() == 0 && this.getCBTimeUnit() == null)
-			throw new AdempiereException("Error - No Time Unit or Meter is selected!");
-		
-		//validation or Fixed asset or asset group
-		if(getA_Asset_ID() == 0 && getA_Asset_Group_ID() == 0)
-			throw new AdempiereException("Error - Asset or Asset group is selected!");
-		
-		//delete existing schedule
-		String sql = "DELETE FROM AM_CalenderSchedule WHERE AM_Maintenance_ID = ?";
-		DB.executeUpdate(sql,this.get_ID() , get_TrxName());
-		
-		//If the PM Action is selected a asset group, Then it is needed to create a row for each fixed asset.
-		if(getA_Asset_Group_ID() > 0){
-			List<MAsset> assets = new Query(getCtx(),MAsset.Table_Name,MAsset.COLUMNNAME_A_Asset_Group_ID + " = ?" ,null)
-			.setOnlyActiveRecords(true)
-			.setParameters(getA_Asset_Group_ID())
-			.list();
+		String sql = "";
+		//coping PM action task list
+		if(getAM_Maintenance_ID() > 0){
 			
-			assets.forEach(asset ->{
-				//CALENDAR BASED MAINTAINCE IS AVAILABLE
-				if(this.getCBTimeUnit() != null && this.getCBTimeUnit().length() != 0)
-					this.createCalendarBasedSchedule(asset.getA_Asset_ID());
-				//METER BASED MAINTAINCE IS AVAILABLE
-				if(this.getAM_Meter_ID() > 0) // there are
-					this.createMeterBasedSchedule(asset.getA_Asset_ID());
-			});
+			//set Maintenance area
+			setAM_MaintenanceArea_ID(getAM_Maintenance().getAM_MaintenanceArea_ID());
 			
-		}else if(getA_Asset_ID() > 0){
-			//CALENDAR BASED MAINTAINCE IS AVAILABLE
-			if(this.getCBTimeUnit() != null && this.getCBTimeUnit().length() != 0)
-				this.createCalendarBasedSchedule(getA_Asset_ID());
-			//METER BASED MAINTAINCE IS AVAILABLE
-			if(this.getAM_Meter_ID() > 0) // there are
-				this.createMeterBasedSchedule(getA_Asset_ID());
+			//delete existing task list
+			sql = "DELETE FROM AM_ServiceOrderTask where AM_ServiceOrder_ID = ? AND AM_Maintenance_ID = ?";
+			DB.executeUpdate(sql,new Object[]{get_ID(),getAM_Maintenance_ID()},true,null);
+			
+			List<MAMMaintenanceTask> list = new Query(getCtx(), MAMMaintenanceTask.Table_Name, "AM_Maintenance_ID=?", null)
+				.setParameters(getAM_Maintenance_ID())
+				.setOnlyActiveRecords(true)
+				.list();
+			
+			MAMServiceOrderTask orderTask = null;
+			MAMMaintenanceResource [] maintenanceResources = null;
+			MAMServiceOrderResource serviceRes = null;
+			
+			//Coping each task from PM Action
+			for (MAMMaintenanceTask mTask : list) {
+				
+				orderTask = new MAMServiceOrderTask(getCtx(), 0, null);
+				orderTask.setAM_ServiceOrder_ID(get_ID());
+				orderTask.setAM_Maintenance_ID(getAM_Maintenance_ID());
+				orderTask.setName(mTask.getName());
+				orderTask.setC_UOM_ID(mTask.getC_UOM_ID());
+				orderTask.setDuration(mTask.getDuration());
+				orderTask.setDescription(mTask.getDescription());
+				orderTask.setAM_Maintenance_Task_ID(mTask.get_ID());
+				orderTask.save();
+				
+				maintenanceResources = mTask.getResources();
+				//Coping each task wise resources from PM Action
+				for(MAMMaintenanceResource mres :maintenanceResources){
+					serviceRes = new MAMServiceOrderResource(getCtx(), 0, null);
+					serviceRes.setAM_ServiceOrderTask_ID(orderTask.get_ID());
+					serviceRes.setAM_ServiceOrder_ID(get_ID());
+					serviceRes.setM_Product_ID(mres.getM_Product_ID());
+					serviceRes.setC_UOM_ID(mres.getC_UOM_ID());
+					serviceRes.setProductType(mres.getProductType());
+					serviceRes.setQtyPlan(mres.getQtyRequired());
+					serviceRes.setPrice(mres.getPrice());
+					serviceRes.setCostAmtPlan(mres.getCostAmt());
+					serviceRes.save();
+				}
+			}
 		}
 		
-		//Copy from Work task template
-		/*if(getAM_MaintenancePatern_ID() > 0){
-			
-		}*/
+		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
 		
+		//	Std Period open?
+		if (!MPeriod.isOpen(getCtx(), getDateDoc(), dt.getDocBaseType(), getAD_Org_ID()))
+		{
+			m_processMsg = "@PeriodClosed@";
+			return DocAction.STATUS_Invalid;
+		}
 		//	Add up Amounts
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
@@ -207,78 +222,6 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 			setDocAction(DOCACTION_Complete);
 		return DocAction.STATUS_InProgress;
 	}	//	prepareIt
-	
-	private void createMeterBasedSchedule(int A_Asset_ID){
-		
-		//Start value
-		if(this.getMBStartValue() == 0)
-			throw new AdempiereException("Please specify a Start Value for Meter based maintaince!");
-		if(this.getMBInterval().intValue() == 0)
-			throw new AdempiereException("Please specify a interval for Meter based maintaince!");
-		
-		//CREATE START METER BASED SCHEDULE
-		MAMCalenderSchedule sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
-		sc.setAM_Maintenance_ID(this.get_ID());
-		//sc.setSeqNo(MAMMaintenanceTask.getTaskCount(getCtx(), this.get_ID(), get_TrxName()) + 1);
-		sc.setStatus(MAMCalenderSchedule.STATUS_Open);
-		sc.setType(MAMCalenderSchedule.TYPE_Meter);
-		sc.setIsWOGeneratable(true);
-		sc.setDuePercentage(new BigDecimal(0));
-		sc.setA_Asset_ID(A_Asset_ID);
-		//sc.setDateScheduled(this.getValidFrom());
-		sc.save();
-	}
-	
-	//create calendar based maintains schedule
-	private void createCalendarBasedSchedule(int A_Asset_ID){
-		
-		//Time Unit
-		if(this.getCBInterval().intValue() == 0)
-			throw new AdempiereException("Please specify a interval for Calendar based maintaince!");
-		
-		//create schedule
-		MClient client = MClient.get(getCtx());
-		Locale locale = client.getLocale();
-		
-		if (locale == null && Language.getLoginLanguage() != null)
-			locale = Language.getLoginLanguage().getLocale();
-		if (locale == null)
-			locale = Env.getLanguage(getCtx()).getLocale();
-		
-		GregorianCalendar cal = new GregorianCalendar(locale);
-		int count = 1 , timeUnit = 1;
-		cal.setTimeInMillis(this.getValidFrom().getTime());
-		
-		MAMCalenderSchedule sc = null;
-		while(cal.getTimeInMillis() <= this.getValidTo().getTime()){
-			sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
-			sc.setAM_Maintenance_ID(this.get_ID());
-			sc.setSeqNo(count);
-			sc.setStatus(MAMCalenderSchedule.STATUS_Open);
-			sc.setType(MAMCalenderSchedule.TYPE_Calander);
-			sc.setIsWOGeneratable(true);
-			sc.setDuePercentage(new BigDecimal(0));
-			sc.setDateScheduled(new Timestamp(cal.getTimeInMillis()));
-			sc.setA_Asset_ID(A_Asset_ID);
-			sc.save();
-			
-			if(this.getCBTimeUnit().equalsIgnoreCase("I")) 
-				timeUnit = Calendar.MINUTE;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("H"))
-				timeUnit = Calendar.HOUR;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("D"))
-				timeUnit = Calendar.DATE;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("W"))
-				timeUnit = Calendar.WEEK_OF_YEAR;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("M"))
-				timeUnit = Calendar.MONTH;
-			else if(this.getCBTimeUnit().equalsIgnoreCase("Y"))
-				timeUnit = Calendar.YEAR;
-			cal.add(timeUnit, this.getCBInterval().intValue());
-			
-			count++;
-		}
-	}
 	
 	/**
 	 * 	Approve Document
@@ -384,6 +327,7 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 
 		//	Close Not delivered Qty
 		setDocAction(DOCACTION_None);
+		setProcessed(true);
 		return true;
 	}	//	closeIt
 	
@@ -414,8 +358,8 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	public boolean reActivateIt()
 	{
 		log.info("reActivateIt - " + toString());
+		setDocAction(DOCACTION_Complete);
 		setProcessed(false);
-		
 		return true;
 	}	//	reActivateIt
 	
@@ -479,10 +423,22 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
     @Override
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("MAMMaintenance[")
+      StringBuffer sb = new StringBuffer ("MAMServiceOrder[")
         .append(getSummary()).append("]");
       return sb.toString();
     }
+    
+    public void setProcessed (boolean Processed) {
+    	
+		set_Value (COLUMNNAME_Processed, Boolean.valueOf(Processed));
+		
+		//set Task & Resources as processed
+		String sql = "UPDATE AM_ServiceOrderTask SET Processed = '"+ (Processed?'Y': 'N')+"' WHERE AM_ServiceOrder_ID = ?";
+		DB.executeUpdate(sql, get_ID(), null);
+		
+		sql = "UPDATE AM_ServiceOrderResource SET Processed = '"+ (Processed?'Y': 'N')+"' WHERE AM_ServiceOrder_ID = ?";
+		DB.executeUpdate(sql, get_ID(), null);
+	}
 
     @Override
   	public int customizeValidActions(String docStatus, Object processing, String orderType, String isSOTrx,
@@ -493,11 +449,10 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
       	}
       	// If status = Completed, add "Reactivate" in the list
       	if (docStatus.equals(DocumentEngine.STATUS_Completed)) {
-      		options[index++] = DocumentEngine.ACTION_ReActivate;
+      		//options[index++] = DocumentEngine.ACTION_ReActivate;
       		options[index++] = DocumentEngine.ACTION_Void;
+      		options[index++] = DocumentEngine.ACTION_ReActivate;
       	}
   		return index;
   	}
-    
-    
 }

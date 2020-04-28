@@ -23,45 +23,47 @@ import java.sql.Timestamp;
 import java.util.Properties;
 import org.compiere.model.*;
 import org.compiere.util.Env;
-import org.compiere.util.KeyNamePair;
 
-/** Generated Model for AM_ServiceOrder
+/** Generated Model for AM_ServiceOrder_Request
  *  @author Adempiere (generated) 
  *  @version Release 3.9.3 - $Id$ */
-public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persistent 
+public class X_AM_ServiceOrder_Request extends PO implements I_AM_ServiceOrder_Request, I_Persistent 
 {
 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200424L;
+	private static final long serialVersionUID = 20200420L;
 
     /** Standard Constructor */
-    public X_AM_ServiceOrder (Properties ctx, int AM_ServiceOrder_ID, String trxName)
+    public X_AM_ServiceOrder_Request (Properties ctx, int AM_ServiceOrder_Request_ID, String trxName)
     {
-      super (ctx, AM_ServiceOrder_ID, trxName);
-      /** if (AM_ServiceOrder_ID == 0)
+      super (ctx, AM_ServiceOrder_Request_ID, trxName);
+      /** if (AM_ServiceOrder_Request_ID == 0)
         {
 			setA_Asset_ID (0);
-			setAM_ServiceOrder_ID (0);
+			setAM_ServiceOrder_Request_ID (0);
+			setC_Currency_ID (0);
+// 100
+			setC_DocType_ID (0);
 			setDateDoc (new Timestamp( System.currentTimeMillis() ));
-// @#Date@
-			setDateStartPlan (new Timestamp( System.currentTimeMillis() ));
+			setDateRequired (new Timestamp( System.currentTimeMillis() ));
 			setDocAction (null);
-// PR
+// CO
 			setDocStatus (null);
 // DR
 			setDocumentNo (null);
+			setGrandTotal (Env.ZERO);
 			setIsApproved (false);
 // N
-			setM_PriceList_ID (0);
-// 1000001
+			setPriorityRule (null);
 			setProcessed (false);
+			setServiceOrder_Request_Type (null);
         } */
     }
 
     /** Load Constructor */
-    public X_AM_ServiceOrder (Properties ctx, ResultSet rs, String trxName)
+    public X_AM_ServiceOrder_Request (Properties ctx, ResultSet rs, String trxName)
     {
       super (ctx, rs, trxName);
     }
@@ -83,7 +85,7 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 
     public String toString()
     {
-      StringBuffer sb = new StringBuffer ("X_AM_ServiceOrder[")
+      StringBuffer sb = new StringBuffer ("X_AM_ServiceOrder_Request[")
         .append(get_ID()).append("]");
       return sb.toString();
     }
@@ -169,31 +171,6 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return ii.intValue();
 	}
 
-	public org.eam.model.I_AM_MaintenanceArea getAM_MaintenanceArea() throws RuntimeException
-    {
-		return (org.eam.model.I_AM_MaintenanceArea)MTable.get(getCtx(), org.eam.model.I_AM_MaintenanceArea.Table_Name)
-			.getPO(getAM_MaintenanceArea_ID(), get_TrxName());	}
-
-	/** Set AM_MaintenanceArea ID.
-		@param AM_MaintenanceArea_ID AM_MaintenanceArea ID	  */
-	public void setAM_MaintenanceArea_ID (int AM_MaintenanceArea_ID)
-	{
-		if (AM_MaintenanceArea_ID < 1) 
-			set_Value (COLUMNNAME_AM_MaintenanceArea_ID, null);
-		else 
-			set_Value (COLUMNNAME_AM_MaintenanceArea_ID, Integer.valueOf(AM_MaintenanceArea_ID));
-	}
-
-	/** Get AM_MaintenanceArea ID.
-		@return AM_MaintenanceArea ID	  */
-	public int getAM_MaintenanceArea_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_MaintenanceArea_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	public org.eam.model.I_AM_MaintenancePattern getAM_MaintenancePattern() throws RuntimeException
     {
 		return (org.eam.model.I_AM_MaintenancePattern)MTable.get(getCtx(), org.eam.model.I_AM_MaintenancePattern.Table_Name)
@@ -219,39 +196,14 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return ii.intValue();
 	}
 
-	/** Set AM ServiceOrder.
-		@param AM_ServiceOrder_ID AM ServiceOrder	  */
-	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID)
-	{
-		if (AM_ServiceOrder_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_ID, Integer.valueOf(AM_ServiceOrder_ID));
-	}
-
-	/** Get AM ServiceOrder.
-		@return AM ServiceOrder	  */
-	public int getAM_ServiceOrder_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrder_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.eam.model.I_AM_ServiceOrder_Request getAM_ServiceOrder_Request() throws RuntimeException
-    {
-		return (org.eam.model.I_AM_ServiceOrder_Request)MTable.get(getCtx(), org.eam.model.I_AM_ServiceOrder_Request.Table_Name)
-			.getPO(getAM_ServiceOrder_Request_ID(), get_TrxName());	}
-
 	/** Set AM Service Order Request.
 		@param AM_ServiceOrder_Request_ID AM Service Order Request	  */
 	public void setAM_ServiceOrder_Request_ID (int AM_ServiceOrder_Request_ID)
 	{
 		if (AM_ServiceOrder_Request_ID < 1) 
-			set_Value (COLUMNNAME_AM_ServiceOrder_Request_ID, null);
+			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_Request_ID, null);
 		else 
-			set_Value (COLUMNNAME_AM_ServiceOrder_Request_ID, Integer.valueOf(AM_ServiceOrder_Request_ID));
+			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_Request_ID, Integer.valueOf(AM_ServiceOrder_Request_ID));
 	}
 
 	/** Get AM Service Order Request.
@@ -264,29 +216,29 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return ii.intValue();
 	}
 
-	public org.compiere.model.I_C_Activity getC_Activity() throws RuntimeException
+	public org.compiere.model.I_C_Currency getC_Currency() throws RuntimeException
     {
-		return (org.compiere.model.I_C_Activity)MTable.get(getCtx(), org.compiere.model.I_C_Activity.Table_Name)
-			.getPO(getC_Activity_ID(), get_TrxName());	}
+		return (org.compiere.model.I_C_Currency)MTable.get(getCtx(), org.compiere.model.I_C_Currency.Table_Name)
+			.getPO(getC_Currency_ID(), get_TrxName());	}
 
-	/** Set Activity.
-		@param C_Activity_ID 
-		Business Activity
+	/** Set Currency.
+		@param C_Currency_ID 
+		The Currency for this record
 	  */
-	public void setC_Activity_ID (int C_Activity_ID)
+	public void setC_Currency_ID (int C_Currency_ID)
 	{
-		if (C_Activity_ID < 1) 
-			set_Value (COLUMNNAME_C_Activity_ID, null);
+		if (C_Currency_ID < 1) 
+			set_Value (COLUMNNAME_C_Currency_ID, null);
 		else 
-			set_Value (COLUMNNAME_C_Activity_ID, Integer.valueOf(C_Activity_ID));
+			set_Value (COLUMNNAME_C_Currency_ID, Integer.valueOf(C_Currency_ID));
 	}
 
-	/** Get Activity.
-		@return Business Activity
+	/** Get Currency.
+		@return The Currency for this record
 	  */
-	public int getC_Activity_ID () 
+	public int getC_Currency_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_Activity_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_Currency_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -320,39 +272,35 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return ii.intValue();
 	}
 
-	/** Set Cost Value.
-		@param CostAmt 
-		Value with Cost
-	  */
-	public void setCostAmt (BigDecimal CostAmt)
+	/** Set Completed Date.
+		@param CompletedDate Completed Date	  */
+	public void setCompletedDate (Timestamp CompletedDate)
 	{
-		throw new IllegalArgumentException ("CostAmt is virtual column");	}
-
-	/** Get Cost Value.
-		@return Value with Cost
-	  */
-	public BigDecimal getCostAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		set_Value (COLUMNNAME_CompletedDate, CompletedDate);
 	}
 
-	/** Set Cost Amt Plan.
-		@param CostAmtPlan Cost Amt Plan	  */
-	public void setCostAmtPlan (BigDecimal CostAmtPlan)
+	/** Get Completed Date.
+		@return Completed Date	  */
+	public Timestamp getCompletedDate () 
 	{
-		throw new IllegalArgumentException ("CostAmtPlan is virtual column");	}
+		return (Timestamp)get_Value(COLUMNNAME_CompletedDate);
+	}
 
-	/** Get Cost Amt Plan.
-		@return Cost Amt Plan	  */
-	public BigDecimal getCostAmtPlan () 
+	/** Set Contact Description.
+		@param ContactDescription 
+		Description of Contact
+	  */
+	public void setContactDescription (String ContactDescription)
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmtPlan);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
+		set_Value (COLUMNNAME_ContactDescription, ContactDescription);
+	}
+
+	/** Get Contact Description.
+		@return Description of Contact
+	  */
+	public String getContactDescription () 
+	{
+		return (String)get_Value(COLUMNNAME_ContactDescription);
 	}
 
 	/** Set Document Date.
@@ -372,55 +320,21 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return (Timestamp)get_Value(COLUMNNAME_DateDoc);
 	}
 
-	/** Set Finish Date.
-		@param DateFinish 
-		Finish or (planned) completion date
+	/** Set Date Required.
+		@param DateRequired 
+		Date when required
 	  */
-	public void setDateFinish (Timestamp DateFinish)
+	public void setDateRequired (Timestamp DateRequired)
 	{
-		set_Value (COLUMNNAME_DateFinish, DateFinish);
+		set_Value (COLUMNNAME_DateRequired, DateRequired);
 	}
 
-	/** Get Finish Date.
-		@return Finish or (planned) completion date
+	/** Get Date Required.
+		@return Date when required
 	  */
-	public Timestamp getDateFinish () 
+	public Timestamp getDateRequired () 
 	{
-		return (Timestamp)get_Value(COLUMNNAME_DateFinish);
-	}
-
-	/** Set Start Plan.
-		@param DateStartPlan 
-		Planned Start Date
-	  */
-	public void setDateStartPlan (Timestamp DateStartPlan)
-	{
-		set_Value (COLUMNNAME_DateStartPlan, DateStartPlan);
-	}
-
-	/** Get Start Plan.
-		@return Planned Start Date
-	  */
-	public Timestamp getDateStartPlan () 
-	{
-		return (Timestamp)get_Value(COLUMNNAME_DateStartPlan);
-	}
-
-	/** Set Transaction Date.
-		@param DateTrx 
-		Transaction Date
-	  */
-	public void setDateTrx (Timestamp DateTrx)
-	{
-		set_Value (COLUMNNAME_DateTrx, DateTrx);
-	}
-
-	/** Get Transaction Date.
-		@return Transaction Date
-	  */
-	public Timestamp getDateTrx () 
-	{
-		return (Timestamp)get_Value(COLUMNNAME_DateTrx);
+		return (Timestamp)get_Value(COLUMNNAME_DateRequired);
 	}
 
 	/** Set Description.
@@ -549,46 +463,24 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return (String)get_Value(COLUMNNAME_DocumentNo);
 	}
 
-    /** Get Record ID/ColumnName
-        @return ID/ColumnName pair
-      */
-    public KeyNamePair getKeyNamePair() 
-    {
-        return new KeyNamePair(get_ID(), getDocumentNo());
-    }
-
-	/** Set Comment/Help.
-		@param Help 
-		Comment or Hint
+	/** Set Grand Total.
+		@param GrandTotal 
+		Total amount of document
 	  */
-	public void setHelp (String Help)
+	public void setGrandTotal (BigDecimal GrandTotal)
 	{
-		set_Value (COLUMNNAME_Help, Help);
+		set_Value (COLUMNNAME_GrandTotal, GrandTotal);
 	}
 
-	/** Get Comment/Help.
-		@return Comment or Hint
+	/** Get Grand Total.
+		@return Total amount of document
 	  */
-	public String getHelp () 
+	public BigDecimal getGrandTotal () 
 	{
-		return (String)get_Value(COLUMNNAME_Help);
-	}
-
-	/** Set Info.
-		@param Info 
-		Information
-	  */
-	public void setInfo (String Info)
-	{
-		set_Value (COLUMNNAME_Info, Info);
-	}
-
-	/** Get Info.
-		@return Information
-	  */
-	public String getInfo () 
-	{
-		return (String)get_Value(COLUMNNAME_Info);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_GrandTotal);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	/** Set Approved.
@@ -615,102 +507,34 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return false;
 	}
 
-	/** Set Service Order Voided.
-		@param IsServiceOrderVoided Service Order Voided	  */
-	public void setIsServiceOrderVoided (boolean IsServiceOrderVoided)
-	{
-		set_Value (COLUMNNAME_IsServiceOrderVoided, Boolean.valueOf(IsServiceOrderVoided));
-	}
-
-	/** Get Service Order Voided.
-		@return Service Order Voided	  */
-	public boolean isServiceOrderVoided () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsServiceOrderVoided);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	/** Set Time Real.
-		@param IsTimeReal Time Real	  */
-	public void setIsTimeReal (boolean IsTimeReal)
-	{
-		set_Value (COLUMNNAME_IsTimeReal, Boolean.valueOf(IsTimeReal));
-	}
-
-	/** Get Time Real.
-		@return Time Real	  */
-	public boolean isTimeReal () 
-	{
-		Object oo = get_Value(COLUMNNAME_IsTimeReal);
-		if (oo != null) 
-		{
-			 if (oo instanceof Boolean) 
-				 return ((Boolean)oo).booleanValue(); 
-			return "Y".equals(oo);
-		}
-		return false;
-	}
-
-	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException
-    {
-		return (org.compiere.model.I_M_PriceList)MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-			.getPO(getM_PriceList_ID(), get_TrxName());	}
-
-	/** Set Price List.
-		@param M_PriceList_ID 
-		Unique identifier of a Price List
+	/** PriorityRule AD_Reference_ID=154 */
+	public static final int PRIORITYRULE_AD_Reference_ID=154;
+	/** High = 3 */
+	public static final String PRIORITYRULE_High = "3";
+	/** Medium = 5 */
+	public static final String PRIORITYRULE_Medium = "5";
+	/** Low = 7 */
+	public static final String PRIORITYRULE_Low = "7";
+	/** Urgent = 1 */
+	public static final String PRIORITYRULE_Urgent = "1";
+	/** Minor = 9 */
+	public static final String PRIORITYRULE_Minor = "9";
+	/** Set Priority.
+		@param PriorityRule 
+		Priority of a document
 	  */
-	public void setM_PriceList_ID (int M_PriceList_ID)
+	public void setPriorityRule (String PriorityRule)
 	{
-		if (M_PriceList_ID < 1) 
-			set_Value (COLUMNNAME_M_PriceList_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
+
+		set_Value (COLUMNNAME_PriorityRule, PriorityRule);
 	}
 
-	/** Get Price List.
-		@return Unique identifier of a Price List
+	/** Get Priority.
+		@return Priority of a document
 	  */
-	public int getM_PriceList_ID () 
+	public String getPriorityRule () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_PriceList_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.compiere.model.I_M_Warehouse getM_Warehouse() throws RuntimeException
-    {
-		return (org.compiere.model.I_M_Warehouse)MTable.get(getCtx(), org.compiere.model.I_M_Warehouse.Table_Name)
-			.getPO(getM_Warehouse_ID(), get_TrxName());	}
-
-	/** Set Warehouse.
-		@param M_Warehouse_ID 
-		Storage Warehouse and Service Point
-	  */
-	public void setM_Warehouse_ID (int M_Warehouse_ID)
-	{
-		if (M_Warehouse_ID < 0) 
-			set_Value (COLUMNNAME_M_Warehouse_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_Warehouse_ID, Integer.valueOf(M_Warehouse_ID));
-	}
-
-	/** Get Warehouse.
-		@return Storage Warehouse and Service Point
-	  */
-	public int getM_Warehouse_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_Warehouse_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		return (String)get_Value(COLUMNNAME_PriorityRule);
 	}
 
 	/** Set Processed.
@@ -758,93 +582,29 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 		return false;
 	}
 
-	/** Set Quantity Plan.
-		@param QtyPlan 
-		Planned Quantity
-	  */
-	public void setQtyPlan (BigDecimal QtyPlan)
+	/** ServiceOrder_Request_Type AD_Reference_ID=53829 */
+	public static final int SERVICEORDER_REQUEST_TYPE_AD_Reference_ID=53829;
+	/** New = FA */
+	public static final String SERVICEORDER_REQUEST_TYPE_New = "FA";
+	/** Modification = MD */
+	public static final String SERVICEORDER_REQUEST_TYPE_Modification = "MD";
+	/** Repair = RP */
+	public static final String SERVICEORDER_REQUEST_TYPE_Repair = "RP";
+	/** Checkup = RV */
+	public static final String SERVICEORDER_REQUEST_TYPE_Checkup = "RV";
+	/** Set SO Request Type.
+		@param ServiceOrder_Request_Type SO Request Type	  */
+	public void setServiceOrder_Request_Type (String ServiceOrder_Request_Type)
 	{
-		set_Value (COLUMNNAME_QtyPlan, QtyPlan);
+
+		set_Value (COLUMNNAME_ServiceOrder_Request_Type, ServiceOrder_Request_Type);
 	}
 
-	/** Get Quantity Plan.
-		@return Planned Quantity
-	  */
-	public BigDecimal getQtyPlan () 
+	/** Get SO Request Type.
+		@return SO Request Type	  */
+	public String getServiceOrder_Request_Type () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_QtyPlan);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
-	}
-
-	/** Set Service Order Justification.
-		@param ServiceOrderJustification Service Order Justification	  */
-	public void setServiceOrderJustification (String ServiceOrderJustification)
-	{
-		set_Value (COLUMNNAME_ServiceOrderJustification, ServiceOrderJustification);
-	}
-
-	/** Get Service Order Justification.
-		@return Service Order Justification	  */
-	public String getServiceOrderJustification () 
-	{
-		return (String)get_Value(COLUMNNAME_ServiceOrderJustification);
-	}
-
-	/** ServiceOrderVoidingCause AD_Reference_ID=53831 */
-	public static final int SERVICEORDERVOIDINGCAUSE_AD_Reference_ID=53831;
-	/** By Production = 1 */
-	public static final String SERVICEORDERVOIDINGCAUSE_ByProduction = "1";
-	/** Lack of person available = 2 */
-	public static final String SERVICEORDERVOIDINGCAUSE_LackOfPersonAvailable = "2";
-	/** Machine out of service = 3 */
-	public static final String SERVICEORDERVOIDINGCAUSE_MachineOutOfService = "3";
-	/** Lack of spare = 4 */
-	public static final String SERVICEORDERVOIDINGCAUSE_LackOfSpare = "4";
-	/** Other = 5 */
-	public static final String SERVICEORDERVOIDINGCAUSE_Other = "5";
-	/** Set Service Order Voiding Cause .
-		@param ServiceOrderVoidingCause Service Order Voiding Cause 	  */
-	public void setServiceOrderVoidingCause (String ServiceOrderVoidingCause)
-	{
-
-		set_Value (COLUMNNAME_ServiceOrderVoidingCause, ServiceOrderVoidingCause);
-	}
-
-	/** Get Service Order Voiding Cause .
-		@return Service Order Voiding Cause 	  */
-	public String getServiceOrderVoidingCause () 
-	{
-		return (String)get_Value(COLUMNNAME_ServiceOrderVoidingCause);
-	}
-
-	public org.compiere.model.I_C_ElementValue getUser1() throws RuntimeException
-    {
-		return (org.compiere.model.I_C_ElementValue)MTable.get(getCtx(), org.compiere.model.I_C_ElementValue.Table_Name)
-			.getPO(getUser1_ID(), get_TrxName());	}
-
-	/** Set User List 1.
-		@param User1_ID 
-		User defined list element #1
-	  */
-	public void setUser1_ID (int User1_ID)
-	{
-		if (User1_ID < 1) 
-			set_Value (COLUMNNAME_User1_ID, null);
-		else 
-			set_Value (COLUMNNAME_User1_ID, Integer.valueOf(User1_ID));
-	}
-
-	/** Get User List 1.
-		@return User defined list element #1
-	  */
-	public int getUser1_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_User1_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		return (String)get_Value(COLUMNNAME_ServiceOrder_Request_Type);
 	}
 
 	/** Set Immutable Universally Unique Identifier.

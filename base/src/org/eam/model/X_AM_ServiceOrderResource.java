@@ -32,7 +32,7 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200320L;
+	private static final long serialVersionUID = 20200422L;
 
     /** Standard Constructor */
     public X_AM_ServiceOrderResource (Properties ctx, int AM_ServiceOrderResource_ID, String trxName)
@@ -41,9 +41,11 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
       /** if (AM_ServiceOrderResource_ID == 0)
         {
 			setAM_ServiceOrderResource_ID (0);
-			setAM_ServiceOrderTask_ID (0);
-			setProcessed (false);
-			setResourceType (null);
+			setC_UOM_ID (0);
+			setCostAmtPlan (Env.ZERO);
+			setM_Product_ID (0);
+			setProductType (null);
+			setQtyPlan (Env.ZERO);
         } */
     }
 
@@ -75,10 +77,33 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
       return sb.toString();
     }
 
-	/** Set Service Order Resource.
-		@param AM_ServiceOrderResource_ID 
-		Resource of service order
-	  */
+	public org.eam.model.I_AM_ServiceOrder getAM_ServiceOrder() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_ServiceOrder)MTable.get(getCtx(), org.eam.model.I_AM_ServiceOrder.Table_Name)
+			.getPO(getAM_ServiceOrder_ID(), get_TrxName());	}
+
+	/** Set AM ServiceOrder.
+		@param AM_ServiceOrder_ID AM ServiceOrder	  */
+	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID)
+	{
+		if (AM_ServiceOrder_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrder_ID, Integer.valueOf(AM_ServiceOrder_ID));
+	}
+
+	/** Get AM ServiceOrder.
+		@return AM ServiceOrder	  */
+	public int getAM_ServiceOrder_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrder_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set AM_ServiceOrderResource ID.
+		@param AM_ServiceOrderResource_ID AM_ServiceOrderResource ID	  */
 	public void setAM_ServiceOrderResource_ID (int AM_ServiceOrderResource_ID)
 	{
 		if (AM_ServiceOrderResource_ID < 1) 
@@ -87,9 +112,8 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrderResource_ID, Integer.valueOf(AM_ServiceOrderResource_ID));
 	}
 
-	/** Get Service Order Resource.
-		@return Resource of service order
-	  */
+	/** Get AM_ServiceOrderResource ID.
+		@return AM_ServiceOrderResource ID	  */
 	public int getAM_ServiceOrderResource_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrderResource_ID);
@@ -103,10 +127,8 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 		return (org.eam.model.I_AM_ServiceOrderTask)MTable.get(getCtx(), org.eam.model.I_AM_ServiceOrderTask.Table_Name)
 			.getPO(getAM_ServiceOrderTask_ID(), get_TrxName());	}
 
-	/** Set Service Order Task.
-		@param AM_ServiceOrderTask_ID 
-		Task for a service order of maintenance
-	  */
+	/** Set AM_ServiceOrderTask ID.
+		@param AM_ServiceOrderTask_ID AM_ServiceOrderTask ID	  */
 	public void setAM_ServiceOrderTask_ID (int AM_ServiceOrderTask_ID)
 	{
 		if (AM_ServiceOrderTask_ID < 1) 
@@ -115,35 +137,14 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 			set_ValueNoCheck (COLUMNNAME_AM_ServiceOrderTask_ID, Integer.valueOf(AM_ServiceOrderTask_ID));
 	}
 
-	/** Get Service Order Task.
-		@return Task for a service order of maintenance
-	  */
+	/** Get AM_ServiceOrderTask ID.
+		@return AM_ServiceOrderTask ID	  */
 	public int getAM_ServiceOrderTask_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrderTask_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
-	}
-
-	/** Set Cost Value.
-		@param CostAmt 
-		Value with Cost
-	  */
-	public void setCostAmt (BigDecimal CostAmt)
-	{
-		set_Value (COLUMNNAME_CostAmt, CostAmt);
-	}
-
-	/** Get Cost Value.
-		@return Value with Cost
-	  */
-	public BigDecimal getCostAmt () 
-	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
-		if (bd == null)
-			 return Env.ZERO;
-		return bd;
 	}
 
 	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException
@@ -169,6 +170,80 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 	public int getC_UOM_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_C_UOM_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Cost Value.
+		@param CostAmt 
+		Value with Cost
+	  */
+	public void setCostAmt (BigDecimal CostAmt)
+	{
+		set_Value (COLUMNNAME_CostAmt, CostAmt);
+	}
+
+	/** Get Cost Value.
+		@return Value with Cost
+	  */
+	public BigDecimal getCostAmt () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmt);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Cost Amt Plan.
+		@param CostAmtPlan Cost Amt Plan	  */
+	public void setCostAmtPlan (BigDecimal CostAmtPlan)
+	{
+		set_Value (COLUMNNAME_CostAmtPlan, CostAmtPlan);
+	}
+
+	/** Get Cost Amt Plan.
+		@return Cost Amt Plan	  */
+	public BigDecimal getCostAmtPlan () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_CostAmtPlan);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
+	/** Set Description.
+		@param Description 
+		Optional short description of the record
+	  */
+	public void setDescription (String Description)
+	{
+		set_Value (COLUMNNAME_Description, Description);
+	}
+
+	/** Get Description.
+		@return Optional short description of the record
+	  */
+	public String getDescription () 
+	{
+		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Line No.
+		@param Line 
+		Unique line for this document
+	  */
+	public void setLine (int Line)
+	{
+		set_Value (COLUMNNAME_Line, Integer.valueOf(Line));
+	}
+
+	/** Get Line No.
+		@return Unique line for this document
+	  */
+	public int getLine () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_Line);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -230,6 +305,26 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 		return ii.intValue();
 	}
 
+	/** Set Price.
+		@param Price 
+		Price
+	  */
+	public void setPrice (BigDecimal Price)
+	{
+		set_Value (COLUMNNAME_Price, Price);
+	}
+
+	/** Get Price.
+		@return Price
+	  */
+	public BigDecimal getPrice () 
+	{
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_Price);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
+	}
+
 	/** Set Processed.
 		@param Processed 
 		The document has been processed
@@ -252,6 +347,36 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** ProductType AD_Reference_ID=270 */
+	public static final int PRODUCTTYPE_AD_Reference_ID=270;
+	/** Item = I */
+	public static final String PRODUCTTYPE_Item = "I";
+	/** Service = S */
+	public static final String PRODUCTTYPE_Service = "S";
+	/** Resource = R */
+	public static final String PRODUCTTYPE_Resource = "R";
+	/** Expense type = E */
+	public static final String PRODUCTTYPE_ExpenseType = "E";
+	/** Online = O */
+	public static final String PRODUCTTYPE_Online = "O";
+	/** Set Product Type.
+		@param ProductType 
+		Type of product
+	  */
+	public void setProductType (String ProductType)
+	{
+
+		set_Value (COLUMNNAME_ProductType, ProductType);
+	}
+
+	/** Get Product Type.
+		@return Type of product
+	  */
+	public String getProductType () 
+	{
+		return (String)get_Value(COLUMNNAME_ProductType);
 	}
 
 	/** Set Delivered Quantity.
@@ -314,76 +439,38 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 		return bd;
 	}
 
-	/** Set Resource Quantity.
-		@param ResourceQuantity 
-		Resource Quantity used for Maintenance
-	  */
-	public void setResourceQuantity (BigDecimal ResourceQuantity)
+	/** Set Resource Qty.
+		@param ResourceQty Resource Qty	  */
+	public void setResourceQty (BigDecimal ResourceQty)
 	{
-		set_Value (COLUMNNAME_ResourceQuantity, ResourceQuantity);
+		set_Value (COLUMNNAME_ResourceQty, ResourceQty);
 	}
 
-	/** Get Resource Quantity.
-		@return Resource Quantity used for Maintenance
-	  */
-	public BigDecimal getResourceQuantity () 
+	/** Get Resource Qty.
+		@return Resource Qty	  */
+	public BigDecimal getResourceQty () 
 	{
-		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ResourceQuantity);
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ResourceQty);
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
 	}
 
-	/** ResourceType AD_Reference_ID=53821 */
-	public static final int RESOURCETYPE_AD_Reference_ID=53821;
-	/** Bom Parts = BP */
-	public static final String RESOURCETYPE_BomParts = "BP";
-	/** BOM Tools = BT */
-	public static final String RESOURCETYPE_BOMTools = "BT";
-	/** Consumption = CO */
-	public static final String RESOURCETYPE_Consumption = "CO";
-	/** Human Resource = HH */
-	public static final String RESOURCETYPE_HumanResource = "HH";
-	/** Part = RR */
-	public static final String RESOURCETYPE_Part = "RR";
-	/** Tool = TT */
-	public static final String RESOURCETYPE_Tool = "TT";
-	/** Set Resource Type.
-		@param ResourceType Resource Type	  */
-	public void setResourceType (String ResourceType)
+	/** Set Resource Qty Extra.
+		@param ResourceQtyExtra Resource Qty Extra	  */
+	public void setResourceQtyExtra (BigDecimal ResourceQtyExtra)
 	{
-
-		set_Value (COLUMNNAME_ResourceType, ResourceType);
+		set_Value (COLUMNNAME_ResourceQtyExtra, ResourceQtyExtra);
 	}
 
-	/** Get Resource Type.
-		@return Resource Type	  */
-	public String getResourceType () 
+	/** Get Resource Qty Extra.
+		@return Resource Qty Extra	  */
+	public BigDecimal getResourceQtyExtra () 
 	{
-		return (String)get_Value(COLUMNNAME_ResourceType);
-	}
-
-	/** Set Resource Assignment.
-		@param S_ResourceAssignment_ID 
-		Resource Assignment
-	  */
-	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID)
-	{
-		if (S_ResourceAssignment_ID < 1) 
-			set_Value (COLUMNNAME_S_ResourceAssignment_ID, null);
-		else 
-			set_Value (COLUMNNAME_S_ResourceAssignment_ID, Integer.valueOf(S_ResourceAssignment_ID));
-	}
-
-	/** Get Resource Assignment.
-		@return Resource Assignment
-	  */
-	public int getS_ResourceAssignment_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceAssignment_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
+		BigDecimal bd = (BigDecimal)get_Value(COLUMNNAME_ResourceQtyExtra);
+		if (bd == null)
+			 return Env.ZERO;
+		return bd;
 	}
 
 	public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException
@@ -409,6 +496,29 @@ public class X_AM_ServiceOrderResource extends PO implements I_AM_ServiceOrderRe
 	public int getS_Resource_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_S_Resource_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Resource Assignment.
+		@param S_ResourceAssignment_ID 
+		Resource Assignment
+	  */
+	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID)
+	{
+		if (S_ResourceAssignment_ID < 1) 
+			set_Value (COLUMNNAME_S_ResourceAssignment_ID, null);
+		else 
+			set_Value (COLUMNNAME_S_ResourceAssignment_ID, Integer.valueOf(S_ResourceAssignment_ID));
+	}
+
+	/** Get Resource Assignment.
+		@return Resource Assignment
+	  */
+	public int getS_ResourceAssignment_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_S_ResourceAssignment_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

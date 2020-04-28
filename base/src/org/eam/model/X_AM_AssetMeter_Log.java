@@ -33,7 +33,7 @@ public class X_AM_AssetMeter_Log extends PO implements I_AM_AssetMeter_Log, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200417L;
+	private static final long serialVersionUID = 20200428L;
 
     /** Standard Constructor */
     public X_AM_AssetMeter_Log (Properties ctx, int AM_AssetMeter_Log_ID, String trxName)

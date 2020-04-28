@@ -11,34 +11,37 @@ import org.compiere.model.MProduct;
 import org.compiere.model.MProductPrice;
 import org.compiere.util.DB;
 
-public class MAMMaintenanceResource extends X_AM_Maintenance_Resource{
+public class MAMServiceOrderResource extends X_AM_ServiceOrderResource{
 
-	/**
-	 * 
-	 */
-	private static final long serialVersionUID = 1L;
-
-	public MAMMaintenanceResource(Properties ctx, ResultSet rs, String trxName) {
+	public MAMServiceOrderResource(Properties ctx, ResultSet rs, String trxName) {
 		super(ctx, rs, trxName);
 		// TODO Auto-generated constructor stub
 	}
 
-	public MAMMaintenanceResource(Properties ctx, int AM_Maintenance_Resource_ID, String trxName) {
-		super(ctx, AM_Maintenance_Resource_ID, trxName);
+	public MAMServiceOrderResource(Properties ctx, int AM_ServiceOrderResource_ID, String trxName) {
+		super(ctx, AM_ServiceOrderResource_ID, trxName);
 		// TODO Auto-generated constructor stub
 	}
 	
 	protected boolean beforeSave (boolean newRecord){
+
+		//set Line No
+		if (getLine() == 0){
+			String sql = "SELECT NVL(MAX(Line),0)+1 AS DefaultValue FROM AM_ServiceOrderResource WHERE AM_ServiceOrderTask_ID=?";
+			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_ServiceOrderTask_ID());
+			setLine (ii);
+		}
 		
 		//setting up the price based on the price list
-		MAMMaintenance mm = (MAMMaintenance) getAM_Maintenance();
+		MAMServiceOrder wo = (MAMServiceOrder) getAM_ServiceOrder();
 		MProduct product = (MProduct) getM_Product();
 		
-		MPriceList pl = (MPriceList) mm.getM_PriceList();
+		MPriceList pl = (MPriceList) wo.getM_PriceList();
 		MPriceListVersion plv = pl.getPriceListVersion(new Timestamp(System.currentTimeMillis()));
 		
 		//MAKE PRICE ZERO
 		setPrice(new BigDecimal(0));
+		setCostAmtPlan(getPrice());
 		setCostAmt(getPrice());
 		
 		if(plv != null){ //is no prices are available
@@ -48,20 +51,15 @@ public class MAMMaintenanceResource extends X_AM_Maintenance_Resource{
 			}else{
 				MProductPrice price  = prices[prices.length - 1];
 				setPrice(price.getPriceList());
-				setCostAmt(price.getPriceList().multiply(this.getQtyRequired()));
+				setCostAmtPlan(price.getPriceList().multiply(this.getQtyPlan()));
 			}
 		}
-		
-		if (getLine() == 0)
-		{
-			String sql = "SELECT NVL(MAX(Line),0)+10 AS DefaultValue FROM AM_Maintenance_Resource WHERE AM_Maintenance_Task_ID=?";
-			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_Maintenance_Task_ID());
-			setLine (ii);
-		}
+		//SET ACTUAL COST
+		setCostAmt(getPrice().multiply(getQtyDelivered()));
+		//SET UOM
+		setC_UOM_ID(product.getC_UOM_ID());		
 		
 		return true;
 	}
-	
-	
 
 }

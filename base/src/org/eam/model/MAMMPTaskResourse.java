@@ -1,5 +1,6 @@
 package org.eam.model;
 
+import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
 import java.util.Properties;
@@ -31,14 +32,18 @@ public class MAMMPTaskResourse extends X_AM_MPTaskResourse{
 		MPriceList pl = (MPriceList) mp.getM_PriceList();
 		MPriceListVersion plv = pl.getPriceListVersion(new Timestamp(System.currentTimeMillis()));
 		
+		//MAKE PRICE ZERO
+		setPrice(new BigDecimal(0));
+		setCost(getPrice());
+		
 		if(plv != null){ //is no prices are available
 			MProductPrice[] prices  = plv.getProductPrice(" AND M_Product_ID="+product.get_ID());
 			if(prices == null || prices.length == 0){
 				//no prices
 			}else{
 				MProductPrice price  = prices[prices.length - 1];
-				this.setPrice(price.getPriceList());
-				this.setCost(price.getPriceList().multiply(this.getQtyRequired()));
+				setPrice(price.getPriceList());
+				setCost(price.getPriceList().multiply(this.getQtyRequired()));
 			}
 		}
 		return true;

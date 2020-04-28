@@ -33,7 +33,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200409L;
+	private static final long serialVersionUID = 20200428L;
 
     /** Standard Constructor */
     public X_AM_Maintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
@@ -42,12 +42,13 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
       /** if (AM_Maintenance_ID == 0)
         {
 			setAM_Maintenance_ID (0);
+			setAM_PatternType_ID (0);
 			setC_DocType_ID (0);
 // 1000060
 			setDateDoc (new Timestamp( System.currentTimeMillis() ));
 // @#Date@
 			setDocAction (null);
-// CO
+// PR
 			setDocStatus (null);
 // DR
 			setDocumentNo (null);
@@ -292,6 +293,31 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public int getAM_Meter_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Meter_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.eam.model.I_AM_PatternType getAM_PatternType() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_PatternType)MTable.get(getCtx(), org.eam.model.I_AM_PatternType.Table_Name)
+			.getPO(getAM_PatternType_ID(), get_TrxName());	}
+
+	/** Set AM_PatternType ID.
+		@param AM_PatternType_ID AM_PatternType ID	  */
+	public void setAM_PatternType_ID (int AM_PatternType_ID)
+	{
+		if (AM_PatternType_ID < 1) 
+			set_Value (COLUMNNAME_AM_PatternType_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_PatternType_ID, Integer.valueOf(AM_PatternType_ID));
+	}
+
+	/** Get AM_PatternType ID.
+		@return AM_PatternType ID	  */
+	public int getAM_PatternType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_PatternType_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -773,6 +799,23 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
+	}
+
+	/** Set Name.
+		@param Name 
+		Alphanumeric identifier of the entity
+	  */
+	public void setName (String Name)
+	{
+		set_Value (COLUMNNAME_Name, Name);
+	}
+
+	/** Get Name.
+		@return Alphanumeric identifier of the entity
+	  */
+	public String getName () 
+	{
+		return (String)get_Value(COLUMNNAME_Name);
 	}
 
 	/** Set Perform Date Base.

@@ -31,7 +31,7 @@ public interface I_AM_ServiceOrderResource
     /** TableName=AM_ServiceOrderResource */
     public static final String Table_Name = "AM_ServiceOrderResource";
 
-    /** AD_Table_ID=54117 */
+    /** AD_Table_ID=1000010 */
     public static final int Table_ID = MTable.getTable_ID(Table_Name);
 
     KeyNamePair Model = new KeyNamePair(Table_ID, Table_Name);
@@ -63,33 +63,51 @@ public interface I_AM_ServiceOrderResource
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AM_ServiceOrder_ID */
+    public static final String COLUMNNAME_AM_ServiceOrder_ID = "AM_ServiceOrder_ID";
+
+	/** Set AM ServiceOrder	  */
+	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID);
+
+	/** Get AM ServiceOrder	  */
+	public int getAM_ServiceOrder_ID();
+
+	public org.eam.model.I_AM_ServiceOrder getAM_ServiceOrder() throws RuntimeException;
+
     /** Column name AM_ServiceOrderResource_ID */
     public static final String COLUMNNAME_AM_ServiceOrderResource_ID = "AM_ServiceOrderResource_ID";
 
-	/** Set Service Order Resource.
-	  * Resource of service order
-	  */
+	/** Set AM_ServiceOrderResource ID	  */
 	public void setAM_ServiceOrderResource_ID (int AM_ServiceOrderResource_ID);
 
-	/** Get Service Order Resource.
-	  * Resource of service order
-	  */
+	/** Get AM_ServiceOrderResource ID	  */
 	public int getAM_ServiceOrderResource_ID();
 
     /** Column name AM_ServiceOrderTask_ID */
     public static final String COLUMNNAME_AM_ServiceOrderTask_ID = "AM_ServiceOrderTask_ID";
 
-	/** Set Service Order Task.
-	  * Task for a service order of maintenance
-	  */
+	/** Set AM_ServiceOrderTask ID	  */
 	public void setAM_ServiceOrderTask_ID (int AM_ServiceOrderTask_ID);
 
-	/** Get Service Order Task.
-	  * Task for a service order of maintenance
-	  */
+	/** Get AM_ServiceOrderTask ID	  */
 	public int getAM_ServiceOrderTask_ID();
 
 	public org.eam.model.I_AM_ServiceOrderTask getAM_ServiceOrderTask() throws RuntimeException;
+
+    /** Column name C_UOM_ID */
+    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+
+	/** Set UOM.
+	  * Unit of Measure
+	  */
+	public void setC_UOM_ID (int C_UOM_ID);
+
+	/** Get UOM.
+	  * Unit of Measure
+	  */
+	public int getC_UOM_ID();
+
+	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException;
 
     /** Column name CostAmt */
     public static final String COLUMNNAME_CostAmt = "CostAmt";
@@ -103,6 +121,15 @@ public interface I_AM_ServiceOrderResource
 	  * Value with Cost
 	  */
 	public BigDecimal getCostAmt();
+
+    /** Column name CostAmtPlan */
+    public static final String COLUMNNAME_CostAmtPlan = "CostAmtPlan";
+
+	/** Set Cost Amt Plan	  */
+	public void setCostAmtPlan (BigDecimal CostAmtPlan);
+
+	/** Get Cost Amt Plan	  */
+	public BigDecimal getCostAmtPlan();
 
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
@@ -120,20 +147,18 @@ public interface I_AM_ServiceOrderResource
 	  */
 	public int getCreatedBy();
 
-    /** Column name C_UOM_ID */
-    public static final String COLUMNNAME_C_UOM_ID = "C_UOM_ID";
+    /** Column name Description */
+    public static final String COLUMNNAME_Description = "Description";
 
-	/** Set UOM.
-	  * Unit of Measure
+	/** Set Description.
+	  * Optional short description of the record
 	  */
-	public void setC_UOM_ID (int C_UOM_ID);
+	public void setDescription (String Description);
 
-	/** Get UOM.
-	  * Unit of Measure
+	/** Get Description.
+	  * Optional short description of the record
 	  */
-	public int getC_UOM_ID();
-
-	public org.compiere.model.I_C_UOM getC_UOM() throws RuntimeException;
+	public String getDescription();
 
     /** Column name IsActive */
     public static final String COLUMNNAME_IsActive = "IsActive";
@@ -147,6 +172,19 @@ public interface I_AM_ServiceOrderResource
 	  * The record is active in the system
 	  */
 	public boolean isActive();
+
+    /** Column name Line */
+    public static final String COLUMNNAME_Line = "Line";
+
+	/** Set Line No.
+	  * Unique line for this document
+	  */
+	public void setLine (int Line);
+
+	/** Get Line No.
+	  * Unique line for this document
+	  */
+	public int getLine();
 
     /** Column name M_BOM_ID */
     public static final String COLUMNNAME_M_BOM_ID = "M_BOM_ID";
@@ -178,6 +216,19 @@ public interface I_AM_ServiceOrderResource
 
 	public org.compiere.model.I_M_Product getM_Product() throws RuntimeException;
 
+    /** Column name Price */
+    public static final String COLUMNNAME_Price = "Price";
+
+	/** Set Price.
+	  * Price
+	  */
+	public void setPrice (BigDecimal Price);
+
+	/** Get Price.
+	  * Price
+	  */
+	public BigDecimal getPrice();
+
     /** Column name Processed */
     public static final String COLUMNNAME_Processed = "Processed";
 
@@ -190,6 +241,19 @@ public interface I_AM_ServiceOrderResource
 	  * The document has been processed
 	  */
 	public boolean isProcessed();
+
+    /** Column name ProductType */
+    public static final String COLUMNNAME_ProductType = "ProductType";
+
+	/** Set Product Type.
+	  * Type of product
+	  */
+	public void setProductType (String ProductType);
+
+	/** Get Product Type.
+	  * Type of product
+	  */
+	public String getProductType();
 
     /** Column name QtyDelivered */
     public static final String COLUMNNAME_QtyDelivered = "QtyDelivered";
@@ -230,40 +294,23 @@ public interface I_AM_ServiceOrderResource
 	  */
 	public BigDecimal getQtyReserved();
 
-    /** Column name ResourceQuantity */
-    public static final String COLUMNNAME_ResourceQuantity = "ResourceQuantity";
+    /** Column name ResourceQty */
+    public static final String COLUMNNAME_ResourceQty = "ResourceQty";
 
-	/** Set Resource Quantity.
-	  * Resource Quantity used for Maintenance
-	  */
-	public void setResourceQuantity (BigDecimal ResourceQuantity);
+	/** Set Resource Qty	  */
+	public void setResourceQty (BigDecimal ResourceQty);
 
-	/** Get Resource Quantity.
-	  * Resource Quantity used for Maintenance
-	  */
-	public BigDecimal getResourceQuantity();
+	/** Get Resource Qty	  */
+	public BigDecimal getResourceQty();
 
-    /** Column name ResourceType */
-    public static final String COLUMNNAME_ResourceType = "ResourceType";
+    /** Column name ResourceQtyExtra */
+    public static final String COLUMNNAME_ResourceQtyExtra = "ResourceQtyExtra";
 
-	/** Set Resource Type	  */
-	public void setResourceType (String ResourceType);
+	/** Set Resource Qty Extra	  */
+	public void setResourceQtyExtra (BigDecimal ResourceQtyExtra);
 
-	/** Get Resource Type	  */
-	public String getResourceType();
-
-    /** Column name S_ResourceAssignment_ID */
-    public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
-
-	/** Set Resource Assignment.
-	  * Resource Assignment
-	  */
-	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID);
-
-	/** Get Resource Assignment.
-	  * Resource Assignment
-	  */
-	public int getS_ResourceAssignment_ID();
+	/** Get Resource Qty Extra	  */
+	public BigDecimal getResourceQtyExtra();
 
     /** Column name S_Resource_ID */
     public static final String COLUMNNAME_S_Resource_ID = "S_Resource_ID";
@@ -279,6 +326,19 @@ public interface I_AM_ServiceOrderResource
 	public int getS_Resource_ID();
 
 	public org.compiere.model.I_S_Resource getS_Resource() throws RuntimeException;
+
+    /** Column name S_ResourceAssignment_ID */
+    public static final String COLUMNNAME_S_ResourceAssignment_ID = "S_ResourceAssignment_ID";
+
+	/** Set Resource Assignment.
+	  * Resource Assignment
+	  */
+	public void setS_ResourceAssignment_ID (int S_ResourceAssignment_ID);
+
+	/** Get Resource Assignment.
+	  * Resource Assignment
+	  */
+	public int getS_ResourceAssignment_ID();
 
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
