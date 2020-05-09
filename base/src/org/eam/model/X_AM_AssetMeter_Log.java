@@ -33,7 +33,7 @@ public class X_AM_AssetMeter_Log extends PO implements I_AM_AssetMeter_Log, I_Pe
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200428L;
+	private static final long serialVersionUID = 20200506L;
 
     /** Standard Constructor */
     public X_AM_AssetMeter_Log (Properties ctx, int AM_AssetMeter_Log_ID, String trxName)
@@ -212,6 +212,30 @@ public class X_AM_AssetMeter_Log extends PO implements I_AM_AssetMeter_Log, I_Pe
 	public String getDescription () 
 	{
 		return (String)get_Value(COLUMNNAME_Description);
+	}
+
+	/** Set Allocated.
+		@param IsAllocated 
+		Indicates if the payment has been allocated
+	  */
+	public void setIsAllocated (boolean IsAllocated)
+	{
+		set_Value (COLUMNNAME_IsAllocated, Boolean.valueOf(IsAllocated));
+	}
+
+	/** Get Allocated.
+		@return Indicates if the payment has been allocated
+	  */
+	public boolean isAllocated () 
+	{
+		Object oo = get_Value(COLUMNNAME_IsAllocated);
+		if (oo != null) 
+		{
+			 if (oo instanceof Boolean) 
+				 return ((Boolean)oo).booleanValue(); 
+			return "Y".equals(oo);
+		}
+		return false;
 	}
 
 	/** Set Immutable Universally Unique Identifier.

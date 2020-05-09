@@ -98,6 +98,17 @@ public interface I_AM_CalenderSchedule
 
 	public org.eam.model.I_AM_Maintenance getAM_Maintenance() throws RuntimeException;
 
+    /** Column name AM_ServiceOrder_ID */
+    public static final String COLUMNNAME_AM_ServiceOrder_ID = "AM_ServiceOrder_ID";
+
+	/** Set AM ServiceOrder	  */
+	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID);
+
+	/** Get AM ServiceOrder	  */
+	public int getAM_ServiceOrder_ID();
+
+	public org.eam.model.I_AM_ServiceOrder getAM_ServiceOrder() throws RuntimeException;
+
     /** Column name Created */
     public static final String COLUMNNAME_Created = "Created";
 
@@ -175,6 +186,24 @@ public interface I_AM_CalenderSchedule
 
 	/** Get Generate Work Order	  */
 	public boolean isWOGeneratable();
+
+    /** Column name PreDateScheduled */
+    public static final String COLUMNNAME_PreDateScheduled = "PreDateScheduled";
+
+	/** Set Pre Date Scheduled	  */
+	public void setPreDateScheduled (Timestamp PreDateScheduled);
+
+	/** Get Pre Date Scheduled	  */
+	public Timestamp getPreDateScheduled();
+
+    /** Column name ScheduledMeterValue */
+    public static final String COLUMNNAME_ScheduledMeterValue = "ScheduledMeterValue";
+
+	/** Set Scheduled Meter Value	  */
+	public void setScheduledMeterValue (int ScheduledMeterValue);
+
+	/** Get Scheduled Meter Value	  */
+	public int getScheduledMeterValue();
 
     /** Column name SeqNo */
     public static final String COLUMNNAME_SeqNo = "SeqNo";

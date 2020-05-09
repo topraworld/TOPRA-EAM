@@ -33,7 +33,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200428L;
+	private static final long serialVersionUID = 20200509L;
 
     /** Standard Constructor */
     public X_AM_Maintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
@@ -54,6 +54,8 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 			setDocumentNo (null);
 			setIsApproved (false);
 // N
+			setLeadTime (0);
+// 14
 			setM_PriceList_ID (0);
 // 1000001
 			setPriorityRule (null);
@@ -737,6 +739,23 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		if (bd == null)
 			 return Env.ZERO;
 		return bd;
+	}
+
+	/** Set LeadTime (Days).
+		@param LeadTime LeadTime (Days)	  */
+	public void setLeadTime (int LeadTime)
+	{
+		set_Value (COLUMNNAME_LeadTime, Integer.valueOf(LeadTime));
+	}
+
+	/** Get LeadTime (Days).
+		@return LeadTime (Days)	  */
+	public int getLeadTime () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_LeadTime);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException

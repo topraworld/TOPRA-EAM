@@ -20,7 +20,9 @@ import java.io.File;
 import java.math.BigDecimal;
 import java.sql.ResultSet;
 import java.sql.Timestamp;
+import java.time.LocalDate;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
 import java.util.Locale;
@@ -166,7 +168,7 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		
 		//delete existing schedule
 		String sql = "DELETE FROM AM_CalenderSchedule WHERE AM_Maintenance_ID = ?";
-		DB.executeUpdate(sql,this.get_ID() , get_TrxName());
+		DB.executeUpdate(sql,this.get_ID() , null);
 		
 		//If the PM Action is selected a asset group, Then it is needed to create a row for each fixed asset.
 		if(getA_Asset_Group_ID() > 0){
@@ -219,13 +221,14 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		//CREATE START METER BASED SCHEDULE
 		MAMCalenderSchedule sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
 		sc.setAM_Maintenance_ID(this.get_ID());
-		//sc.setSeqNo(MAMMaintenanceTask.getTaskCount(getCtx(), this.get_ID(), get_TrxName()) + 1);
+		//sc.setSeqNo(1);
 		sc.setStatus(MAMCalenderSchedule.STATUS_Open);
 		sc.setType(MAMCalenderSchedule.TYPE_Meter);
 		sc.setIsWOGeneratable(true);
 		sc.setDuePercentage(new BigDecimal(0));
 		sc.setA_Asset_ID(A_Asset_ID);
 		//sc.setDateScheduled(this.getValidFrom());
+		sc.setScheduledMeterValue(getMBStartValue());
 		sc.save();
 	}
 	
@@ -245,12 +248,17 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		if (locale == null)
 			locale = Env.getLanguage(getCtx()).getLocale();
 		
-		GregorianCalendar cal = new GregorianCalendar(locale);
+		GregorianCalendar calSceduled = new GregorianCalendar(locale);
+		calSceduled.setTimeInMillis(this.getValidFrom().getTime());
+		
+		GregorianCalendar calPreSceduled = new GregorianCalendar(locale);
+		calPreSceduled.setTimeInMillis(this.getValidFrom().getTime());
+		calPreSceduled.add(Calendar.DATE, this.getLeadTime() * -1);
+		
 		int count = 1 , timeUnit = 1;
-		cal.setTimeInMillis(this.getValidFrom().getTime());
 		
 		MAMCalenderSchedule sc = null;
-		while(cal.getTimeInMillis() <= this.getValidTo().getTime()){
+		while(calSceduled.getTimeInMillis() <= this.getValidTo().getTime()){
 			sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
 			sc.setAM_Maintenance_ID(this.get_ID());
 			sc.setSeqNo(count);
@@ -258,9 +266,10 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 			sc.setType(MAMCalenderSchedule.TYPE_Calander);
 			sc.setIsWOGeneratable(true);
 			sc.setDuePercentage(new BigDecimal(0));
-			sc.setDateScheduled(new Timestamp(cal.getTimeInMillis()));
 			sc.setA_Asset_ID(A_Asset_ID);
-			sc.save();
+			
+			
+			sc.setDateScheduled(new Timestamp(calSceduled.getTimeInMillis()));
 			
 			if(this.getCBTimeUnit().equalsIgnoreCase("I")) 
 				timeUnit = Calendar.MINUTE;
@@ -274,9 +283,22 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 				timeUnit = Calendar.MONTH;
 			else if(this.getCBTimeUnit().equalsIgnoreCase("Y"))
 				timeUnit = Calendar.YEAR;
-			cal.add(timeUnit, this.getCBInterval().intValue());
 			
+			//adding lead time
+			if(
+				this.getCBTimeUnit().equalsIgnoreCase("W") ||
+				this.getCBTimeUnit().equalsIgnoreCase("M") ||
+				this.getCBTimeUnit().equalsIgnoreCase("Y")
+			){	
+				
+				sc.setPreDateScheduled(new Timestamp(calPreSceduled.getTimeInMillis()));
+			}
+			
+			sc.save();
 			count++;
+			
+			calSceduled.add(timeUnit, this.getCBInterval().intValue());
+			calPreSceduled.add(timeUnit, this.getCBInterval().intValue());
 		}
 	}
 	

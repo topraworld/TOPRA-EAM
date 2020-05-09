@@ -31,7 +31,7 @@ public class X_AM_Meter extends PO implements I_AM_Meter, I_Persistent
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200428L;
+	private static final long serialVersionUID = 20200429L;
 
     /** Standard Constructor */
     public X_AM_Meter (Properties ctx, int AM_Meter_ID, String trxName)
@@ -40,8 +40,6 @@ public class X_AM_Meter extends PO implements I_AM_Meter, I_Persistent
       /** if (AM_Meter_ID == 0)
         {
 			setAM_Meter_ID (0);
-			setLastRecordCount (0);
-// 5
 			setName (null);
 			setType (null);
 // AC
@@ -113,23 +111,6 @@ public class X_AM_Meter extends PO implements I_AM_Meter, I_Persistent
 		return (String)get_Value(COLUMNNAME_Description);
 	}
 
-	/** Set Last Record Count.
-		@param LastRecordCount Last Record Count	  */
-	public void setLastRecordCount (int LastRecordCount)
-	{
-		set_Value (COLUMNNAME_LastRecordCount, Integer.valueOf(LastRecordCount));
-	}
-
-	/** Get Last Record Count.
-		@return Last Record Count	  */
-	public int getLastRecordCount () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_LastRecordCount);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** Set Max Day.
 		@param MaxDay Max Day	  */
 	public void setMaxDay (int MaxDay)
@@ -142,6 +123,40 @@ public class X_AM_Meter extends PO implements I_AM_Meter, I_Persistent
 	public int getMaxDay () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_MaxDay);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Max Records.
+		@param MaxRecords Max Records	  */
+	public void setMaxRecords (int MaxRecords)
+	{
+		set_Value (COLUMNNAME_MaxRecords, Integer.valueOf(MaxRecords));
+	}
+
+	/** Get Max Records.
+		@return Max Records	  */
+	public int getMaxRecords () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_MaxRecords);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	/** Set Min Records.
+		@param MinRecords Min Records	  */
+	public void setMinRecords (int MinRecords)
+	{
+		set_Value (COLUMNNAME_MinRecords, Integer.valueOf(MinRecords));
+	}
+
+	/** Get Min Records.
+		@return Min Records	  */
+	public int getMinRecords () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_MinRecords);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

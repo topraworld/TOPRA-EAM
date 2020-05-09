@@ -33,7 +33,7 @@ public class X_AM_CalenderSchedule extends PO implements I_AM_CalenderSchedule, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200428L;
+	private static final long serialVersionUID = 20200509L;
 
     /** Standard Constructor */
     public X_AM_CalenderSchedule (Properties ctx, int AM_CalenderSchedule_ID, String trxName)
@@ -146,6 +146,31 @@ public class X_AM_CalenderSchedule extends PO implements I_AM_CalenderSchedule, 
 		return ii.intValue();
 	}
 
+	public org.eam.model.I_AM_ServiceOrder getAM_ServiceOrder() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_ServiceOrder)MTable.get(getCtx(), org.eam.model.I_AM_ServiceOrder.Table_Name)
+			.getPO(getAM_ServiceOrder_ID(), get_TrxName());	}
+
+	/** Set AM ServiceOrder.
+		@param AM_ServiceOrder_ID AM ServiceOrder	  */
+	public void setAM_ServiceOrder_ID (int AM_ServiceOrder_ID)
+	{
+		if (AM_ServiceOrder_ID < 1) 
+			set_Value (COLUMNNAME_AM_ServiceOrder_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_ServiceOrder_ID, Integer.valueOf(AM_ServiceOrder_ID));
+	}
+
+	/** Get AM ServiceOrder.
+		@return AM ServiceOrder	  */
+	public int getAM_ServiceOrder_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_ServiceOrder_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	/** Set Actual Finish Date.
 		@param DateActualFinished Actual Finish Date	  */
 	public void setDateActualFinished (Timestamp DateActualFinished)
@@ -227,6 +252,37 @@ public class X_AM_CalenderSchedule extends PO implements I_AM_CalenderSchedule, 
 			return "Y".equals(oo);
 		}
 		return false;
+	}
+
+	/** Set Pre Date Scheduled.
+		@param PreDateScheduled Pre Date Scheduled	  */
+	public void setPreDateScheduled (Timestamp PreDateScheduled)
+	{
+		set_Value (COLUMNNAME_PreDateScheduled, PreDateScheduled);
+	}
+
+	/** Get Pre Date Scheduled.
+		@return Pre Date Scheduled	  */
+	public Timestamp getPreDateScheduled () 
+	{
+		return (Timestamp)get_Value(COLUMNNAME_PreDateScheduled);
+	}
+
+	/** Set Scheduled Meter Value.
+		@param ScheduledMeterValue Scheduled Meter Value	  */
+	public void setScheduledMeterValue (int ScheduledMeterValue)
+	{
+		set_Value (COLUMNNAME_ScheduledMeterValue, Integer.valueOf(ScheduledMeterValue));
+	}
+
+	/** Get Scheduled Meter Value.
+		@return Scheduled Meter Value	  */
+	public int getScheduledMeterValue () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_ScheduledMeterValue);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Sequence.

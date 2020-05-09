@@ -21,8 +21,9 @@ public class MAMCalenderSchedule extends X_AM_CalenderSchedule{
 	protected boolean beforeSave (boolean newRecord){
 		
 		if (getSeqNo() == 0){
-			String sql = "SELECT COALESCE(MAX(SeqNo),0)+1 AS DefaultValue FROM AM_CalenderSchedule WHERE AM_Maintenance_ID=?";
-			int ii = DB.getSQLValue (null, sql, getAM_Maintenance_ID());
+			String sql = "SELECT COALESCE(MAX(SeqNo),0)+1 AS DefaultValue FROM AM_CalenderSchedule WHERE AM_Maintenance_ID=? AND A_Asset_ID = ?";
+			
+			int ii = DB.getSQLValue (null, sql, getAM_Maintenance_ID() , getA_Asset_ID());
 			setSeqNo (ii);
 		}
 		return true;

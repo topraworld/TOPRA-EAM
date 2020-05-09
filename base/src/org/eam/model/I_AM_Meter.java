@@ -114,15 +114,6 @@ public interface I_AM_Meter
 	  */
 	public boolean isActive();
 
-    /** Column name LastRecordCount */
-    public static final String COLUMNNAME_LastRecordCount = "LastRecordCount";
-
-	/** Set Last Record Count	  */
-	public void setLastRecordCount (int LastRecordCount);
-
-	/** Get Last Record Count	  */
-	public int getLastRecordCount();
-
     /** Column name MaxDay */
     public static final String COLUMNNAME_MaxDay = "MaxDay";
 
@@ -131,6 +122,24 @@ public interface I_AM_Meter
 
 	/** Get Max Day	  */
 	public int getMaxDay();
+
+    /** Column name MaxRecords */
+    public static final String COLUMNNAME_MaxRecords = "MaxRecords";
+
+	/** Set Max Records	  */
+	public void setMaxRecords (int MaxRecords);
+
+	/** Get Max Records	  */
+	public int getMaxRecords();
+
+    /** Column name MinRecords */
+    public static final String COLUMNNAME_MinRecords = "MinRecords";
+
+	/** Set Min Records	  */
+	public void setMinRecords (int MinRecords);
+
+	/** Get Min Records	  */
+	public int getMinRecords();
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";

@@ -422,6 +422,15 @@ public interface I_AM_Maintenance
 	/** Get Last Read	  */
 	public BigDecimal getLastRead();
 
+    /** Column name LeadTime */
+    public static final String COLUMNNAME_LeadTime = "LeadTime";
+
+	/** Set LeadTime (Days)	  */
+	public void setLeadTime (int LeadTime);
+
+	/** Get LeadTime (Days)	  */
+	public int getLeadTime();
+
     /** Column name M_PriceList_ID */
     public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
 

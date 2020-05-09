@@ -173,6 +173,19 @@ public interface I_AM_AssetMeter_Log
 	  */
 	public boolean isActive();
 
+    /** Column name IsAllocated */
+    public static final String COLUMNNAME_IsAllocated = "IsAllocated";
+
+	/** Set Allocated.
+	  * Indicates if the payment has been allocated
+	  */
+	public void setIsAllocated (boolean IsAllocated);
+
+	/** Get Allocated.
+	  * Indicates if the payment has been allocated
+	  */
+	public boolean isAllocated();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 

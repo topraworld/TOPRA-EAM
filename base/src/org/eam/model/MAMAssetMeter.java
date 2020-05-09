@@ -65,12 +65,11 @@ public class MAMAssetMeter extends X_AM_AssetMeter {
 		return true;
 	}
 	
-	protected MAMAssetMeterLog [] getLines(int limit){
+	protected MAMAssetMeterLog [] getLines(){
 	 
 		List<MAMAssetMeterLog> list = new Query(getCtx(), "AM_AssetMeter_Log","AM_AssetMeter_ID = ? ", null)
 			.setParameters(get_ID())
 			.setOnlyActiveRecords(true)
-			.setLimit(limit)
 			.list();
 		
 		return list.toArray(new MAMAssetMeterLog[list.size()]);
