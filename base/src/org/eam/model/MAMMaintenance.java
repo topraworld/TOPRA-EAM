@@ -101,6 +101,19 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	//	return re.getPDF(file);
 	}	//	createPDF
 
+	public MAMCalenderSchedule getCalenderSchedule(int SeqNo){
+		
+		MAMCalenderSchedule schedule = new Query(getCtx(),
+			MAMCalenderSchedule.Table_Name,
+			MAMCalenderSchedule.COLUMNNAME_SeqNo + " = ? AND " + 
+			MAMCalenderSchedule.COLUMNNAME_AM_Maintenance_ID  + " = ? ",
+			null)
+			.setOnlyActiveRecords(true)
+			.setParameters(SeqNo , get_ID())
+		.firstOnly();
+		
+		return schedule;
+	}
 	
 	/**************************************************************************
 	 * 	Process document
