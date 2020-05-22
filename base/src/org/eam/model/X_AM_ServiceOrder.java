@@ -34,7 +34,7 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200424L;
+	private static final long serialVersionUID = 20200515L;
 
     /** Standard Constructor */
     public X_AM_ServiceOrder (Properties ctx, int AM_ServiceOrder_ID, String trxName)
@@ -139,6 +139,31 @@ public class X_AM_ServiceOrder extends PO implements I_AM_ServiceOrder, I_Persis
 	public int getAD_User_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_User_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.eam.model.I_AM_CalenderSchedule getAM_CalenderSchedule() throws RuntimeException
+    {
+		return (org.eam.model.I_AM_CalenderSchedule)MTable.get(getCtx(), org.eam.model.I_AM_CalenderSchedule.Table_Name)
+			.getPO(getAM_CalenderSchedule_ID(), get_TrxName());	}
+
+	/** Set AM_CalenderSchedule ID.
+		@param AM_CalenderSchedule_ID AM_CalenderSchedule ID	  */
+	public void setAM_CalenderSchedule_ID (int AM_CalenderSchedule_ID)
+	{
+		if (AM_CalenderSchedule_ID < 1) 
+			set_Value (COLUMNNAME_AM_CalenderSchedule_ID, null);
+		else 
+			set_Value (COLUMNNAME_AM_CalenderSchedule_ID, Integer.valueOf(AM_CalenderSchedule_ID));
+	}
+
+	/** Get AM_CalenderSchedule ID.
+		@return AM_CalenderSchedule ID	  */
+	public int getAM_CalenderSchedule_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_CalenderSchedule_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

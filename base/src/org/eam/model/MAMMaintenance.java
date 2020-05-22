@@ -59,6 +59,20 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
     {
       super (ctx, rs, trxName);
     }
+    
+    //Before save method
+    protected boolean beforeSave(boolean newRecord)
+	{
+    	//validate the valid from date >> It should be a future date
+    	boolean isvalid = getValidFrom().after(new Timestamp(System.currentTimeMillis()));
+    	
+    	if(!isvalid) {
+    		throw new AdempiereException("Valid From date should be a future date!");
+    	}
+    	
+    	return isvalid;
+	}
+    
 
 	/**
 	 * 	Get Document Info
@@ -106,11 +120,14 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		MAMCalenderSchedule schedule = new Query(getCtx(),
 			MAMCalenderSchedule.Table_Name,
 			MAMCalenderSchedule.COLUMNNAME_SeqNo + " = ? AND " + 
-			MAMCalenderSchedule.COLUMNNAME_AM_Maintenance_ID  + " = ? ",
+			MAMCalenderSchedule.COLUMNNAME_AM_Maintenance_ID  + " = ? AND " +
+			"Type = 'C'",
 			null)
 			.setOnlyActiveRecords(true)
 			.setParameters(SeqNo , get_ID())
 		.firstOnly();
+		
+		
 		
 		return schedule;
 	}
@@ -235,7 +252,7 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		MAMCalenderSchedule sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
 		sc.setAM_Maintenance_ID(this.get_ID());
 		//sc.setSeqNo(1);
-		sc.setStatus(MAMCalenderSchedule.STATUS_Open);
+		sc.setStatus(MAMCalenderSchedule.STATUS_Drafted);
 		sc.setType(MAMCalenderSchedule.TYPE_Meter);
 		sc.setIsWOGeneratable(true);
 		sc.setDuePercentage(new BigDecimal(0));
@@ -275,7 +292,7 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 			sc = new MAMCalenderSchedule(getCtx(), 0, get_TrxName());
 			sc.setAM_Maintenance_ID(this.get_ID());
 			sc.setSeqNo(count);
-			sc.setStatus(MAMCalenderSchedule.STATUS_Open);
+			sc.setStatus(MAMCalenderSchedule.STATUS_Drafted);
 			sc.setType(MAMCalenderSchedule.TYPE_Calander);
 			sc.setIsWOGeneratable(true);
 			sc.setDuePercentage(new BigDecimal(0));
@@ -450,6 +467,7 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 	{
 		log.info("reActivateIt - " + toString());
 		setProcessed(false);
+		setDocAction(DOCACTION_Complete);
 		
 		return true;
 	}	//	reActivateIt

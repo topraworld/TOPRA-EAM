@@ -28,7 +28,6 @@ public class CalDuePercentage extends SvrProcess{
 			+ "WHERE sc. TYPE = 'C' AND "
 			+ "sc.status = 'OP' AND "
 			+ "sc.isactive = 'Y' AND "
-			+ "M.validfrom <=CURRENT_DATE AND "
 			+ "M.validto > CURRENT_DATE AND "
 			+ "M .docstatus = 'CO' "
 			+ "GROUP BY 1 ";
@@ -43,7 +42,7 @@ public class CalDuePercentage extends SvrProcess{
 			rs = ps.executeQuery();
 			
 			MAMMaintenance maintenance = null; 
-			MAMCalenderSchedule cs = null , csPrevious = null;
+			MAMCalenderSchedule cs = null , csPrevious = null , csAfter = null;
 			
 			while(rs.next()){
 				
@@ -51,7 +50,8 @@ public class CalDuePercentage extends SvrProcess{
 				cs = maintenance.getCalenderSchedule(rs.getInt("SeqNo"));
 				
 				if(cs.getSeqNo() == 1){ //calculate with schedule valid fro date
-					divisor = new BigDecimal(cs.getDateScheduled().getTime() - maintenance.getValidFrom().getTime());
+					csAfter = maintenance.getCalenderSchedule(cs.getSeqNo()+1);
+					divisor = new BigDecimal(csAfter.getDateScheduled().getTime() - cs.getDateScheduled().getTime());
 				}else{
 					csPrevious = maintenance.getCalenderSchedule(cs.getSeqNo()-1);
 					divisor = new BigDecimal(cs.getDateScheduled().getTime() - csPrevious.getDateScheduled().getTime());
@@ -62,9 +62,6 @@ public class CalDuePercentage extends SvrProcess{
 				
 				denominator = new BigDecimal(cs.getDateScheduled().getTime() - System.currentTimeMillis());
 				denominator = denominator.divide(new BigDecimal((24 * 60 * 60 * 1000)) , 0 , RoundingMode.HALF_UP);
-				
-				System.out.println(denominator);
-				System.out.println(divisor);
 				
 				percentage = denominator.divide(divisor , 2 , RoundingMode.HALF_UP).multiply(new BigDecimal(100));
 				percentage = percentage.setScale(0, RoundingMode.HALF_UP);

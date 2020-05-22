@@ -114,6 +114,24 @@ public class MAMServiceOrder extends X_AM_ServiceOrder implements DocAction , Do
 	{
 		m_processMsg = null;
 		DocumentEngine engine = new DocumentEngine (this, getDocStatus());
+		
+		//update the calendar schedule based on the work order doc action 
+		MAMCalenderSchedule cs = (MAMCalenderSchedule) getAM_CalenderSchedule();
+		
+		if(cs != null && cs.get_ID() > 0) {
+			
+			if(getDocAction().equals("PR") || getDocAction().equals("RE"))
+				cs.setStatus(DOCSTATUS_InProgress);
+			else if(getDocAction().equals("CO"))
+				cs.setStatus(DOCSTATUS_Completed);
+			else if(getDocAction().equals("CL"))
+				cs.setStatus(DOCSTATUS_Closed);
+			else if(getDocAction().equals("VO"))
+				cs.setStatus(DOCSTATUS_Voided);
+			
+			cs.save();
+		}
+		
 		return engine.processIt (processAction, getDocAction());
 	}	//	processIt
 	
@@ -205,14 +223,6 @@ public class MAMServiceOrder extends X_AM_ServiceOrder implements DocAction , Do
 			}
 		}
 		
-		MDocType dt = MDocType.get(getCtx(), getC_DocType_ID());
-		
-		//	Std Period open?
-		/*if (!MPeriod.isOpen(getCtx(), getDateDoc(), dt.getDocBaseType(), getAD_Org_ID()))
-		{
-			m_processMsg = "@PeriodClosed@";
-			return DocAction.STATUS_Invalid;
-		}*/
 		//	Add up Amounts
 		m_processMsg = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_PREPARE);
 		if (m_processMsg != null)
@@ -281,6 +291,9 @@ public class MAMServiceOrder extends X_AM_ServiceOrder implements DocAction , Do
 
 		setProcessed(true);
 		setDocAction(DOCACTION_Close);
+		
+		//update the calender schedule
+		
 		return DocAction.STATUS_Completed;
 	}	//	completeIt
 	

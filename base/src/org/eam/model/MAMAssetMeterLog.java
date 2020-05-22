@@ -58,11 +58,15 @@ public class MAMAssetMeterLog extends X_AM_AssetMeter_Log {
 		super(ctx, rs, trxName);
 	}
 	
-	/*@Override
+	@Override
 	protected boolean beforeSave(boolean newRecord) {
 		
+		//validate the meter accumulated with previous input
+		//get
+		//SELECT * FROM ad_session ORDER BY CREATED DESC LIMIT 1
+		
 		return true;
-	}*/
+	}
 	
 	//afterSave
 	@Override
@@ -111,7 +115,7 @@ public class MAMAssetMeterLog extends X_AM_AssetMeter_Log {
 		+ "WHERE AM_Maintenance_ID=?  "
 		+ "AND A_Asset_ID=? "
 		+ "AND TYPE = 'M' "
-		+ "AND Status NOT IN('OP') "
+		+ "AND Status NOT IN('DR') "
 		+ "AND duepercentage >=100) "
 		+ "FROM AM_CalenderSchedule WHERE AM_CalenderSchedule_ID=?";
 		
@@ -143,7 +147,7 @@ public class MAMAssetMeterLog extends X_AM_AssetMeter_Log {
 				
 				newSchedule.setScheduledMeterValue(sc.getScheduledMeterValue()+sc.getAM_Maintenance().getMBInterval().intValue());
 				newSchedule.setSeqNo(0);
-				newSchedule.setStatus(MAMCalenderSchedule.STATUS_Open);
+				newSchedule.setStatus(MAMCalenderSchedule.STATUS_Drafted);
 				newSchedule.setDuePercentage(new BigDecimal(0));
 				
 				if(sc.getAM_Maintenance().isPerformValueBase()){
@@ -247,10 +251,9 @@ public class MAMAssetMeterLog extends X_AM_AssetMeter_Log {
 			+ "INNER JOIN AM_Maintenance mt ON mt.AM_Maintenance_ID = cs.AM_Maintenance_ID "
 			+ "AND mt.docstatus = 'CO' WHERE "
 			+ "cs.TYPE = 'M' "
-			+ "AND mt.AM_Meter_ID=? " // --Parameter 
-			+ "AND mt.validfrom <= CURRENT_DATE " //--Parameter 
+			+ "AND mt.AM_Meter_ID=? " // --Parameter
 			+ "AND mt.validto > CURRENT_DATE " //--Parameter 
-			+ "AND cs.status = 'OP' "
+			+ "AND cs.status = 'DR' "
 			+ "AND cs.A_Asset_ID = ? " //--Parameter 
 			+ "AND mt.AD_Client_ID = ?"//--Parameter 
 			+ "AND mt.AD_Org_ID = ?";//--Parameter

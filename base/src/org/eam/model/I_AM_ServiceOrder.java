@@ -93,6 +93,17 @@ public interface I_AM_ServiceOrder
 
 	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException;
 
+    /** Column name AM_CalenderSchedule_ID */
+    public static final String COLUMNNAME_AM_CalenderSchedule_ID = "AM_CalenderSchedule_ID";
+
+	/** Set AM_CalenderSchedule ID	  */
+	public void setAM_CalenderSchedule_ID (int AM_CalenderSchedule_ID);
+
+	/** Get AM_CalenderSchedule ID	  */
+	public int getAM_CalenderSchedule_ID();
+
+	public org.eam.model.I_AM_CalenderSchedule getAM_CalenderSchedule() throws RuntimeException;
+
     /** Column name AM_Maintenance_ID */
     public static final String COLUMNNAME_AM_Maintenance_ID = "AM_Maintenance_ID";
 

@@ -33,7 +33,7 @@ public class X_AM_CalenderSchedule extends PO implements I_AM_CalenderSchedule, 
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200509L;
+	private static final long serialVersionUID = 20200515L;
 
     /** Standard Constructor */
     public X_AM_CalenderSchedule (Properties ctx, int AM_CalenderSchedule_ID, String trxName)
@@ -305,16 +305,32 @@ public class X_AM_CalenderSchedule extends PO implements I_AM_CalenderSchedule, 
 		return ii.intValue();
 	}
 
-	/** Status AD_Reference_ID=1000004 */
-	public static final int STATUS_AD_Reference_ID=1000004;
-	/** Open = OP */
-	public static final String STATUS_Open = "OP";
-	/** In Progress = IN */
-	public static final String STATUS_InProgress = "IN";
-	/** Done = DO */
-	public static final String STATUS_Done = "DO";
-	/** Skipped = SK */
-	public static final String STATUS_Skipped = "SK";
+	/** Status AD_Reference_ID=131 */
+	public static final int STATUS_AD_Reference_ID=131;
+	/** Drafted = DR */
+	public static final String STATUS_Drafted = "DR";
+	/** Completed = CO */
+	public static final String STATUS_Completed = "CO";
+	/** Approved = AP */
+	public static final String STATUS_Approved = "AP";
+	/** Not Approved = NA */
+	public static final String STATUS_NotApproved = "NA";
+	/** Voided = VO */
+	public static final String STATUS_Voided = "VO";
+	/** Invalid = IN */
+	public static final String STATUS_Invalid = "IN";
+	/** Reversed = RE */
+	public static final String STATUS_Reversed = "RE";
+	/** Closed = CL */
+	public static final String STATUS_Closed = "CL";
+	/** Unknown = ?? */
+	public static final String STATUS_Unknown = "??";
+	/** In Progress = IP */
+	public static final String STATUS_InProgress = "IP";
+	/** Waiting Payment = WP */
+	public static final String STATUS_WaitingPayment = "WP";
+	/** Waiting Confirmation = WC */
+	public static final String STATUS_WaitingConfirmation = "WC";
 	/** Set Status.
 		@param Status 
 		Status of the currently running check

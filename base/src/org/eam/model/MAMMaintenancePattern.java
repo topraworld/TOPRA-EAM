@@ -252,6 +252,7 @@ public class MAMMaintenancePattern extends X_AM_MaintenancePattern implements Do
 	public boolean voidIt()
 	{
 		log.info("voidIt - " + toString());
+		setProcessed(true);
 		return closeIt();
 	}	//	voidIt
 	
