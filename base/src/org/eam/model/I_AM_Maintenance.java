@@ -42,36 +42,6 @@ public interface I_AM_Maintenance
 
     /** Load Meta Data */
 
-    /** Column name A_Asset_Group_ID */
-    public static final String COLUMNNAME_A_Asset_Group_ID = "A_Asset_Group_ID";
-
-	/** Set Asset Group.
-	  * Group of Assets
-	  */
-	public void setA_Asset_Group_ID (int A_Asset_Group_ID);
-
-	/** Get Asset Group.
-	  * Group of Assets
-	  */
-	public int getA_Asset_Group_ID();
-
-	public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException;
-
-    /** Column name A_Asset_ID */
-    public static final String COLUMNNAME_A_Asset_ID = "A_Asset_ID";
-
-	/** Set Fixed Asset.
-	  * Fixed Asset used internally or by customers
-	  */
-	public void setA_Asset_ID (int A_Asset_ID);
-
-	/** Get Fixed Asset.
-	  * Fixed Asset used internally or by customers
-	  */
-	public int getA_Asset_ID();
-
-	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException;
-
     /** Column name AD_Client_ID */
     public static final String COLUMNNAME_AD_Client_ID = "AD_Client_ID";
 
@@ -93,6 +63,21 @@ public interface I_AM_Maintenance
 	  */
 	public int getAD_Org_ID();
 
+    /** Column name AD_Role_ID */
+    public static final String COLUMNNAME_AD_Role_ID = "AD_Role_ID";
+
+	/** Set Role.
+	  * Responsibility Role
+	  */
+	public void setAD_Role_ID (int AD_Role_ID);
+
+	/** Get Role.
+	  * Responsibility Role
+	  */
+	public int getAD_Role_ID();
+
+	public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException;
+
     /** Column name AD_User_ID */
     public static final String COLUMNNAME_AD_User_ID = "AD_User_ID";
 
@@ -107,15 +92,6 @@ public interface I_AM_Maintenance
 	public int getAD_User_ID();
 
 	public org.compiere.model.I_AD_User getAD_User() throws RuntimeException;
-
-    /** Column name AM_Maintenance_ID */
-    public static final String COLUMNNAME_AM_Maintenance_ID = "AM_Maintenance_ID";
-
-	/** Set AM Maintenance	  */
-	public void setAM_Maintenance_ID (int AM_Maintenance_ID);
-
-	/** Get AM Maintenance	  */
-	public int getAM_Maintenance_ID();
 
     /** Column name AM_MaintenanceArea_ID */
     public static final String COLUMNNAME_AM_MaintenanceArea_ID = "AM_MaintenanceArea_ID";
@@ -150,6 +126,15 @@ public interface I_AM_Maintenance
 
 	public org.eam.model.I_AM_MaintenancePattern getAM_MaintenancePatern() throws RuntimeException;
 
+    /** Column name AM_Maintenance_ID */
+    public static final String COLUMNNAME_AM_Maintenance_ID = "AM_Maintenance_ID";
+
+	/** Set AM Maintenance	  */
+	public void setAM_Maintenance_ID (int AM_Maintenance_ID);
+
+	/** Get AM Maintenance	  */
+	public int getAM_Maintenance_ID();
+
     /** Column name AM_Meter_ID */
     public static final String COLUMNNAME_AM_Meter_ID = "AM_Meter_ID";
 
@@ -172,20 +157,35 @@ public interface I_AM_Maintenance
 
 	public org.eam.model.I_AM_PatternType getAM_PatternType() throws RuntimeException;
 
-    /** Column name C_DocType_ID */
-    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
+    /** Column name A_Asset_Group_ID */
+    public static final String COLUMNNAME_A_Asset_Group_ID = "A_Asset_Group_ID";
 
-	/** Set Document Type.
-	  * Document type or rules
+	/** Set Asset Group.
+	  * Group of Assets
 	  */
-	public void setC_DocType_ID (int C_DocType_ID);
+	public void setA_Asset_Group_ID (int A_Asset_Group_ID);
 
-	/** Get Document Type.
-	  * Document type or rules
+	/** Get Asset Group.
+	  * Group of Assets
 	  */
-	public int getC_DocType_ID();
+	public int getA_Asset_Group_ID();
 
-	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
+	public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException;
+
+    /** Column name A_Asset_ID */
+    public static final String COLUMNNAME_A_Asset_ID = "A_Asset_ID";
+
+	/** Set Fixed Asset.
+	  * Fixed Asset used internally or by customers
+	  */
+	public void setA_Asset_ID (int A_Asset_ID);
+
+	/** Get Fixed Asset.
+	  * Fixed Asset used internally or by customers
+	  */
+	public int getA_Asset_ID();
+
+	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException;
 
     /** Column name CBInterval */
     public static final String COLUMNNAME_CBInterval = "CBInterval";
@@ -208,6 +208,21 @@ public interface I_AM_Maintenance
 	  * The unit of time for grouping chart data.
 	  */
 	public String getCBTimeUnit();
+
+    /** Column name C_DocType_ID */
+    public static final String COLUMNNAME_C_DocType_ID = "C_DocType_ID";
+
+	/** Set Document Type.
+	  * Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID);
+
+	/** Get Document Type.
+	  * Document type or rules
+	  */
+	public int getC_DocType_ID();
+
+	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException;
 
     /** Column name CopyFrom */
     public static final String COLUMNNAME_CopyFrom = "CopyFrom";
@@ -431,21 +446,6 @@ public interface I_AM_Maintenance
 	/** Get LeadTime (Days)	  */
 	public int getLeadTime();
 
-    /** Column name M_PriceList_ID */
-    public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
-
-	/** Set Price List.
-	  * Unique identifier of a Price List
-	  */
-	public void setM_PriceList_ID (int M_PriceList_ID);
-
-	/** Get Price List.
-	  * Unique identifier of a Price List
-	  */
-	public int getM_PriceList_ID();
-
-	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException;
-
     /** Column name MBInterval */
     public static final String COLUMNNAME_MBInterval = "MBInterval";
 
@@ -463,6 +463,21 @@ public interface I_AM_Maintenance
 
 	/** Get Start Value	  */
 	public int getMBStartValue();
+
+    /** Column name M_PriceList_ID */
+    public static final String COLUMNNAME_M_PriceList_ID = "M_PriceList_ID";
+
+	/** Set Price List.
+	  * Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID);
+
+	/** Get Price List.
+	  * Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID();
+
+	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException;
 
     /** Column name Name */
     public static final String COLUMNNAME_Name = "Name";
@@ -530,6 +545,19 @@ public interface I_AM_Maintenance
 	/** Get Process Now	  */
 	public boolean isProcessing();
 
+    /** Column name UUID */
+    public static final String COLUMNNAME_UUID = "UUID";
+
+	/** Set Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public void setUUID (String UUID);
+
+	/** Get Immutable Universally Unique Identifier.
+	  * Immutable Universally Unique Identifier
+	  */
+	public String getUUID();
+
     /** Column name Updated */
     public static final String COLUMNNAME_Updated = "Updated";
 
@@ -545,19 +573,6 @@ public interface I_AM_Maintenance
 	  * User who updated this records
 	  */
 	public int getUpdatedBy();
-
-    /** Column name UUID */
-    public static final String COLUMNNAME_UUID = "UUID";
-
-	/** Set Immutable Universally Unique Identifier.
-	  * Immutable Universally Unique Identifier
-	  */
-	public void setUUID (String UUID);
-
-	/** Get Immutable Universally Unique Identifier.
-	  * Immutable Universally Unique Identifier
-	  */
-	public String getUUID();
 
     /** Column name ValidFrom */
     public static final String COLUMNNAME_ValidFrom = "ValidFrom";

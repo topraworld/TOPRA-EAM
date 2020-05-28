@@ -33,7 +33,7 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	/**
 	 *
 	 */
-	private static final long serialVersionUID = 20200509L;
+	private static final long serialVersionUID = 20200525L;
 
     /** Standard Constructor */
     public X_AM_Maintenance (Properties ctx, int AM_Maintenance_ID, String trxName)
@@ -96,57 +96,29 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
       return sb.toString();
     }
 
-	public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException
+	public org.compiere.model.I_AD_Role getAD_Role() throws RuntimeException
     {
-		return (org.compiere.model.I_A_Asset_Group)MTable.get(getCtx(), org.compiere.model.I_A_Asset_Group.Table_Name)
-			.getPO(getA_Asset_Group_ID(), get_TrxName());	}
+		return (org.compiere.model.I_AD_Role)MTable.get(getCtx(), org.compiere.model.I_AD_Role.Table_Name)
+			.getPO(getAD_Role_ID(), get_TrxName());	}
 
-	/** Set Asset Group.
-		@param A_Asset_Group_ID 
-		Group of Assets
+	/** Set Role.
+		@param AD_Role_ID 
+		Responsibility Role
 	  */
-	public void setA_Asset_Group_ID (int A_Asset_Group_ID)
+	public void setAD_Role_ID (int AD_Role_ID)
 	{
-		if (A_Asset_Group_ID < 1) 
-			set_Value (COLUMNNAME_A_Asset_Group_ID, null);
+		if (AD_Role_ID < 0) 
+			set_Value (COLUMNNAME_AD_Role_ID, null);
 		else 
-			set_Value (COLUMNNAME_A_Asset_Group_ID, Integer.valueOf(A_Asset_Group_ID));
+			set_Value (COLUMNNAME_AD_Role_ID, Integer.valueOf(AD_Role_ID));
 	}
 
-	/** Get Asset Group.
-		@return Group of Assets
+	/** Get Role.
+		@return Responsibility Role
 	  */
-	public int getA_Asset_Group_ID () 
+	public int getAD_Role_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_A_Asset_Group_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException
-    {
-		return (org.compiere.model.I_A_Asset)MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
-			.getPO(getA_Asset_ID(), get_TrxName());	}
-
-	/** Set Fixed Asset.
-		@param A_Asset_ID 
-		Fixed Asset used internally or by customers
-	  */
-	public void setA_Asset_ID (int A_Asset_ID)
-	{
-		if (A_Asset_ID < 1) 
-			set_Value (COLUMNNAME_A_Asset_ID, null);
-		else 
-			set_Value (COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
-	}
-
-	/** Get Fixed Asset.
-		@return Fixed Asset used internally or by customers
-	  */
-	public int getA_Asset_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_A_Asset_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_AD_Role_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -175,26 +147,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public int getAD_User_ID () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_AD_User_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
-	/** Set AM Maintenance.
-		@param AM_Maintenance_ID AM Maintenance	  */
-	public void setAM_Maintenance_ID (int AM_Maintenance_ID)
-	{
-		if (AM_Maintenance_ID < 1) 
-			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_ID, null);
-		else 
-			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_ID, Integer.valueOf(AM_Maintenance_ID));
-	}
-
-	/** Get AM Maintenance.
-		@return AM Maintenance	  */
-	public int getAM_Maintenance_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -275,6 +227,26 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
+	/** Set AM Maintenance.
+		@param AM_Maintenance_ID AM Maintenance	  */
+	public void setAM_Maintenance_ID (int AM_Maintenance_ID)
+	{
+		if (AM_Maintenance_ID < 1) 
+			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_ID, null);
+		else 
+			set_ValueNoCheck (COLUMNNAME_AM_Maintenance_ID, Integer.valueOf(AM_Maintenance_ID));
+	}
+
+	/** Get AM Maintenance.
+		@return AM Maintenance	  */
+	public int getAM_Maintenance_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_AM_Maintenance_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
 	public org.eam.model.I_AM_Meter getAM_Meter() throws RuntimeException
     {
 		return (org.eam.model.I_AM_Meter)MTable.get(getCtx(), org.eam.model.I_AM_Meter.Table_Name)
@@ -325,29 +297,57 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException
+	public org.compiere.model.I_A_Asset_Group getA_Asset_Group() throws RuntimeException
     {
-		return (org.compiere.model.I_C_DocType)MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
-			.getPO(getC_DocType_ID(), get_TrxName());	}
+		return (org.compiere.model.I_A_Asset_Group)MTable.get(getCtx(), org.compiere.model.I_A_Asset_Group.Table_Name)
+			.getPO(getA_Asset_Group_ID(), get_TrxName());	}
 
-	/** Set Document Type.
-		@param C_DocType_ID 
-		Document type or rules
+	/** Set Asset Group.
+		@param A_Asset_Group_ID 
+		Group of Assets
 	  */
-	public void setC_DocType_ID (int C_DocType_ID)
+	public void setA_Asset_Group_ID (int A_Asset_Group_ID)
 	{
-		if (C_DocType_ID < 0) 
-			set_Value (COLUMNNAME_C_DocType_ID, null);
+		if (A_Asset_Group_ID < 1) 
+			set_Value (COLUMNNAME_A_Asset_Group_ID, null);
 		else 
-			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+			set_Value (COLUMNNAME_A_Asset_Group_ID, Integer.valueOf(A_Asset_Group_ID));
 	}
 
-	/** Get Document Type.
-		@return Document type or rules
+	/** Get Asset Group.
+		@return Group of Assets
 	  */
-	public int getC_DocType_ID () 
+	public int getA_Asset_Group_ID () 
 	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		Integer ii = (Integer)get_Value(COLUMNNAME_A_Asset_Group_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.compiere.model.I_A_Asset getA_Asset() throws RuntimeException
+    {
+		return (org.compiere.model.I_A_Asset)MTable.get(getCtx(), org.compiere.model.I_A_Asset.Table_Name)
+			.getPO(getA_Asset_ID(), get_TrxName());	}
+
+	/** Set Fixed Asset.
+		@param A_Asset_ID 
+		Fixed Asset used internally or by customers
+	  */
+	public void setA_Asset_ID (int A_Asset_ID)
+	{
+		if (A_Asset_ID < 1) 
+			set_Value (COLUMNNAME_A_Asset_ID, null);
+		else 
+			set_Value (COLUMNNAME_A_Asset_ID, Integer.valueOf(A_Asset_ID));
+	}
+
+	/** Get Fixed Asset.
+		@return Fixed Asset used internally or by customers
+	  */
+	public int getA_Asset_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_A_Asset_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();
@@ -402,6 +402,34 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public String getCBTimeUnit () 
 	{
 		return (String)get_Value(COLUMNNAME_CBTimeUnit);
+	}
+
+	public org.compiere.model.I_C_DocType getC_DocType() throws RuntimeException
+    {
+		return (org.compiere.model.I_C_DocType)MTable.get(getCtx(), org.compiere.model.I_C_DocType.Table_Name)
+			.getPO(getC_DocType_ID(), get_TrxName());	}
+
+	/** Set Document Type.
+		@param C_DocType_ID 
+		Document type or rules
+	  */
+	public void setC_DocType_ID (int C_DocType_ID)
+	{
+		if (C_DocType_ID < 0) 
+			set_Value (COLUMNNAME_C_DocType_ID, null);
+		else 
+			set_Value (COLUMNNAME_C_DocType_ID, Integer.valueOf(C_DocType_ID));
+	}
+
+	/** Get Document Type.
+		@return Document type or rules
+	  */
+	public int getC_DocType_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_C_DocType_ID);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
 	}
 
 	/** Set Copy From.
@@ -758,34 +786,6 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 		return ii.intValue();
 	}
 
-	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException
-    {
-		return (org.compiere.model.I_M_PriceList)MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
-			.getPO(getM_PriceList_ID(), get_TrxName());	}
-
-	/** Set Price List.
-		@param M_PriceList_ID 
-		Unique identifier of a Price List
-	  */
-	public void setM_PriceList_ID (int M_PriceList_ID)
-	{
-		if (M_PriceList_ID < 1) 
-			set_Value (COLUMNNAME_M_PriceList_ID, null);
-		else 
-			set_Value (COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
-	}
-
-	/** Get Price List.
-		@return Unique identifier of a Price List
-	  */
-	public int getM_PriceList_ID () 
-	{
-		Integer ii = (Integer)get_Value(COLUMNNAME_M_PriceList_ID);
-		if (ii == null)
-			 return 0;
-		return ii.intValue();
-	}
-
 	/** Set Interval.
 		@param MBInterval Interval	  */
 	public void setMBInterval (BigDecimal MBInterval)
@@ -815,6 +815,34 @@ public class X_AM_Maintenance extends PO implements I_AM_Maintenance, I_Persiste
 	public int getMBStartValue () 
 	{
 		Integer ii = (Integer)get_Value(COLUMNNAME_MBStartValue);
+		if (ii == null)
+			 return 0;
+		return ii.intValue();
+	}
+
+	public org.compiere.model.I_M_PriceList getM_PriceList() throws RuntimeException
+    {
+		return (org.compiere.model.I_M_PriceList)MTable.get(getCtx(), org.compiere.model.I_M_PriceList.Table_Name)
+			.getPO(getM_PriceList_ID(), get_TrxName());	}
+
+	/** Set Price List.
+		@param M_PriceList_ID 
+		Unique identifier of a Price List
+	  */
+	public void setM_PriceList_ID (int M_PriceList_ID)
+	{
+		if (M_PriceList_ID < 1) 
+			set_Value (COLUMNNAME_M_PriceList_ID, null);
+		else 
+			set_Value (COLUMNNAME_M_PriceList_ID, Integer.valueOf(M_PriceList_ID));
+	}
+
+	/** Get Price List.
+		@return Unique identifier of a Price List
+	  */
+	public int getM_PriceList_ID () 
+	{
+		Integer ii = (Integer)get_Value(COLUMNNAME_M_PriceList_ID);
 		if (ii == null)
 			 return 0;
 		return ii.intValue();

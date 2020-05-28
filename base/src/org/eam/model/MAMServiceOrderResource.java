@@ -27,8 +27,8 @@ public class MAMServiceOrderResource extends X_AM_ServiceOrderResource{
 
 		//set Line No
 		if (getLine() == 0){
-			String sql = "SELECT NVL(MAX(Line),0)+1 AS DefaultValue FROM AM_ServiceOrderResource WHERE AM_ServiceOrderTask_ID=?";
-			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_ServiceOrderTask_ID());
+			String sql = "SELECT NVL(MAX(Line),0)+1 AS DefaultValue FROM AM_ServiceOrderResource WHERE AM_ServiceOrder_ID=?";
+			int ii = DB.getSQLValue (get_TrxName(), sql, getAM_ServiceOrder_ID());
 			setLine (ii);
 		}
 		

@@ -196,6 +196,10 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		if(getA_Asset_ID() == 0 && getA_Asset_Group_ID() == 0)
 			throw new AdempiereException("Error - Asset or Asset group is selected!");
 		
+		//validate user or role is selected
+		if(getAD_Role_ID() == 0 && getAD_User_ID() == 0)
+			throw new AdempiereException("Error - User or Role is not selected!");
+		
 		//delete existing schedule
 		String sql = "DELETE FROM AM_CalenderSchedule WHERE AM_Maintenance_ID = ?";
 		DB.executeUpdate(sql,this.get_ID() , null);
@@ -376,7 +380,47 @@ public class MAMMaintenance extends X_AM_Maintenance implements DocAction , DocO
 		if (!isApproved())
 			approveIt();
 		log.info(toString());
-		//
+		
+		X_AD_Message message = new X_AD_Message(getCtx(), 0, null);
+		message.setMsgType(X_AD_Message.MSGTYPE_Information);
+		message.setMsgText("New PM Action is created - Document no : " + getDocumentNo());
+		message.save();
+		
+		//Communication & Notification
+		if(getAD_User_ID() > 0) {
+			
+			MNote note = new MNote(getCtx(), 0, null);
+			note.setAD_Message_ID(message.get_ID());
+			note.setAD_User_ID(getAD_User_ID());
+			note.setAD_Table_ID(get_Table_ID());
+			note.setRecord_ID(get_ID());
+			note.setReference("PM Action");
+			note.setTextMsg(message.getMsgText());
+			note.save();
+		}
+		
+		//Communication & Notification
+		if(getAD_Role_ID() > 0) {
+			
+			//AD_User_Roles
+			MUserRoles roles [] = MUserRoles.getOfRole(getCtx(), getAD_Role_ID());
+			MNote note = null;
+			
+			for (MUserRoles role : roles) {
+			
+				if(getAD_User_ID() == role.getAD_User_ID()) {
+					continue;
+				}
+				note = new MNote(getCtx(), 0, null);
+				note.setAD_Message_ID(message.get_ID());
+				note.setAD_User_ID(role.getAD_User_ID());
+				note.setAD_Table_ID(get_Table_ID());
+				note.setRecord_ID(get_ID());
+				note.setReference("PM Action");
+				note.setTextMsg(message.getMsgText());
+				note.save();
+			}
+		}
 		
 		//	User Validation
 		String valid = ModelValidationEngine.get().fireDocValidate(this, ModelValidator.TIMING_AFTER_COMPLETE);

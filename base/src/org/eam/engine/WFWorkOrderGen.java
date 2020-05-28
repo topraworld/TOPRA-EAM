@@ -1,5 +1,8 @@
 package org.eam.engine;
 
+import org.compiere.model.MNote;
+import org.compiere.model.MUserRoles;
+import org.compiere.model.X_AD_Message;
 import org.compiere.process.SvrProcess;
 import org.compiere.util.Env;
 import org.eam.model.MAMCalenderSchedule;
@@ -55,6 +58,47 @@ class WorkOrder implements Runnable{
 			
 			cs.setAM_ServiceOrder_ID(wo.get_ID());
 			cs.save();
+			
+			X_AD_Message message = new X_AD_Message(Env.getCtx(), 0, null);
+			message.setMsgType(X_AD_Message.MSGTYPE_Information);
+			message.setMsgText("New Work order is generated - Document no : " + wo.getDocumentNo());
+			message.save();
+			//Generate notification
+			//Communication & Notification
+			if(pm.getAD_User_ID() > 0) {
+				
+				MNote note = new MNote(Env.getCtx(), 0, null);
+				note.setAD_Message_ID(message.get_ID());
+				note.setAD_User_ID(pm.getAD_User_ID());
+				note.setAD_Table_ID(wo.get_Table_ID());
+				note.setRecord_ID(wo.get_ID());
+				note.setReference("Work Order");
+				note.setTextMsg(message.getMsgText());
+				note.save();
+			}
+			
+			//Communication & Notification
+			if(pm.getAD_Role_ID() > 0) {
+				
+				//AD_User_Roles
+				MUserRoles roles [] = MUserRoles.getOfRole(Env.getCtx(), pm.getAD_Role_ID());
+				MNote note = null;
+				
+				for (MUserRoles role : roles) {
+				
+					if(pm.getAD_User_ID() == role.getAD_User_ID()) {
+						continue;
+					}
+					note = new MNote(Env.getCtx(), 0, null);
+					note.setAD_Message_ID(message.get_ID());
+					note.setAD_User_ID(role.getAD_User_ID());
+					note.setAD_Table_ID(wo.get_Table_ID());
+					note.setRecord_ID(wo.get_ID());
+					note.setReference("Work Order");
+					note.setTextMsg(message.getMsgText());
+					note.save();
+				}
+			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();

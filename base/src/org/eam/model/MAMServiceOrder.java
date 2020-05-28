@@ -286,6 +286,9 @@ public class MAMServiceOrder extends X_AM_ServiceOrder implements DocAction , Do
 			m_processMsg = valid;
 			return DocAction.STATUS_Invalid;
 		}
+		
+		//COMPLETE ALL TASK
+		//getTa
 		//	Set Definitive Document No
 		setDefiniteDocumentNo();
 
